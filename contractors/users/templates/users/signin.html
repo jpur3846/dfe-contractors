@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block pagetitle %}
+Contractor Sign-in DFE
+{% endblock %}
+
+{% block body %}
+<div class="row" style="height: 10vh;"></div>
+
+<!--This is the signin form.-->
+<div class="row justify-content-center align-items-center p-5">
+    <div class="col-lg-6 md-form">
+        <form class="form-signin" action="{% url 'signin' %}" method="POST">
+            {% csrf_token %}
+            <h1>Contractor Sign-in</h1>
+            <br>
+            <label for="inputEmail" class="sr-only">Username</label>
+            <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+            <br>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <br>
+            <div class="checkbox mb-3">
+                <label>
+                <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-dark btn-block" type="submit">Sign in</button>
+            <br>
+            <div>
+                Don't have an account? 
+                <a href="{% url 'signup' %}">Sign Up!</a>
+            </div>
+            {% if message %}
+            <h5 class="alert alert-primary">{{message}}</h1>
+            {% endif %}
+        </form>
+
+    </div>
+</div>
+
+
+{% endblock %}
+
