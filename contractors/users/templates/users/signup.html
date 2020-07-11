@@ -13,12 +13,6 @@ Contractor Sign-up DFE
         <form class="form-signin" action="{% url 'signup' %}" method="POST">
             <h1>Contractor Sign-up</h1>
             {% csrf_token %}
-            <div class="row justify-content-center pt-2">
-                <label>First Name:</label>
-            </div>
-            <div class="row justify-content-center">
-                <input name='first_name'>
-            </div>
             {% for field in form %}
             <div class="row justify-content-center pt-2">
                 {{ field.label_tag }}
