@@ -27,16 +27,19 @@ Contractor Sign-in DFE
             </div>
             <button class="btn btn-lg btn-dark btn-block" type="submit">Sign in</button>
             <br>
+
             <div>
                 Don't have an account? 
                 <a href="{% url 'signup' %}">Sign Up!</a>
             </div>
+
             <br>
             {% if messages %}
                 {% for message in messages %}
                     <h5 class="alert alert-{{ message.tags }}">{{ message }}</h1>
                 {% endfor %}
             {% endif %}
+            
         </form>
 
     </div>

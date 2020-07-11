@@ -1,2 +1,31 @@
 {% extends "user_template.html" %}
 {% load static %}
+
+
+{% block pagetitle %}
+Edit User Details
+{% endblock %}
+
+{% block user-body %}
+
+<!--Right column for gig list.-->
+<div class="col-md-10 pl-0">
+    <div class="row pr-5 pt-4">
+        <h3>Edit your details</h3>
+    {% for message in messages %}  
+        <h6 class=' alert alert alert-primary'>{{ message }}</h6>
+    {% endfor %}
+    </div>
+    <div class="row pr-5 pt-4">
+        <form method="POST">
+            {% csrf_token %}
+            <table>
+            {% for field in form %}
+                <td>{{ field }}</td>
+            {% endfor %}
+            </table>
+            <button type="Submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

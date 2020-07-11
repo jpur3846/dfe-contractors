@@ -7,19 +7,20 @@ Contractor Sign-up DFE
 {% block body %}
 <div class="row" style="height: 10vh;"></div>
 
-<!--This is the signin form.-->
+<!--This is the signin form.>-->
 <div class="row justify-content-center align-items-center p-5">
     <div class="col-lg-6 md-form">
         <form class="form-signin" action="{% url 'signup' %}" method="POST">
             <h1>Contractor Sign-up</h1>
+            <br>
+
             {% csrf_token %}
+
             {% for field in form %}
-            <div class="row justify-content-center pt-2">
-                {{ field.label_tag }}
-            </div>
             <div class="row justify-content-center">
                 {{ field }}
             </div>
+            <br>
                 {% for error in field.errors %}
                     <p style="color: red">{{ error }}</p>
                 {% endfor %}
@@ -28,6 +29,7 @@ Contractor Sign-up DFE
             <br>
             <button class="btn btn-lg btn-dark btn-block" type="submit">Sign up</button>
         </form>
+        
         <br>
         <div>
             Already have an account? 

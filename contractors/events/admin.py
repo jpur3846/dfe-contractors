@@ -1,8 +1,4 @@
 from django.contrib import admin
+from .models import Event
 
-# Register your models here.
-
-from .models import Contractor, Event
-
-admin.site.register(Contractor)
 admin.site.register(Event)

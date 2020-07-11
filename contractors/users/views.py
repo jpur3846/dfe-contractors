@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignupForm, ContractorProfileForm
+from .forms import SignupForm, ContractorSignupProfileForm, UserEditForm
 from .models import Contractor
 
 # Default landing page.
@@ -16,7 +16,21 @@ def user_home(request):
     })
 
 def user_details(request):
-    return render(request, 'users/user_details.html')
+    """
+    Page to update and edit user details.
+    """
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, 'Profile successfully updated')
+            return render(request, 'users/user_home.html')
+
+    else:
+        form = UserEditForm(instance=request.user)
+        context = {'form': form}
+    return render(request, 'users/user_details.html', context)
 
 def signin_view(request):
     if request.method == 'POST':
@@ -38,7 +52,7 @@ def signin_view(request):
 def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
-        contractor_form = ContractorProfileForm(request.POST)
+        contractor_form = ContractorSignupProfileForm(request.POST)
 
         if form.is_valid() and contractor_form.is_valid():
             user = form.save()
@@ -52,17 +66,16 @@ def signup_view(request):
         
     else:
         form = SignupForm()
-        contractor_form = ContractorProfileForm()
+        contractor_form = ContractorSignupProfileForm()
         
     context = {'form': form}
     return render(request, 'users/signup.html', context)
 
 def signout_view(request):
     logout(request)
-
-    return render(request, "users/signin.html", {
-        "message": "You have successfully signed out!"
-    })
+    
+    messages.add_message(request, messages.SUCCESS, "You have successfully signed out!")
+    return render(request, "users/signin.html")
 
 def contact_view(request):
     return render(request, "users/contact.html")
