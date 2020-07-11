@@ -77,3 +77,18 @@ class UserEditForm(UserChangeForm):
             'first_name': forms.TextInput(attrs= {'class': 'form-control'}),
             'last_name': forms.TextInput(attrs= {'class': 'form-control'}),
         }
+
+class UserContractorEditDetailsForm(forms.ModelForm):
+    class Meta:
+        model = Contractor
+        fields = (
+            'profile_picture', 
+            'phone_number',
+            'main_instrument',
+            'city',
+            'public_liability',
+            'pa_system',
+            'battery_amp',
+            'alumni',
+            'year_finished', 
+            )

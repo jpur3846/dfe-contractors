@@ -16,7 +16,7 @@
             <ul class="list-group-flush p-0">
                 <li class="list-group-item">
                     {% for message in messages %}  
-                        <h6 class=' alert alert alert-primary'>{{ message }}</h6>
+                        <h6 class=' alert alert alert-{{ message.tags }}'>{{ message }}</h6>
                     {% endfor %}
                 </li>
                 <li class="list-group-item"><a href="{% url 'user_home' %}"><u>Gig List</u></a></li>

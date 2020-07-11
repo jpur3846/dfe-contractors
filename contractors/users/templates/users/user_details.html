@@ -13,15 +13,27 @@ Edit User Details
     <div class="row pr-5 pt-4">
         <h3>Edit your details</h3>
     {% for message in messages %}  
-        <h6 class=' alert alert alert-primary'>{{ message }}</h6>
+        <h6 class=' alert alert alert-{{ message.tags }}'>{{ message }}</h6>
     {% endfor %}
     </div>
     <div class="row pr-5 pt-4">
+        <h5>Personal Details </h5>
         <form method="POST">
             {% csrf_token %}
             <table>
             {% for field in form %}
                 <td>{{ field }}</td>
+            {% endfor %}
+            </table>
+    </div>
+    <div class="row pr-5 pt-4">
+            <table>
+            {% for field in profile_form %}
+            <tr>
+                <td>{{ field.label }}</td>
+                <td>{{ field }}</td>
+                <td>{{ field.errors }}</td>
+            </tr>
             {% endfor %}
             </table>
             <button type="Submit">Save Changes</button>

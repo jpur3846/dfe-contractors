@@ -3,7 +3,12 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignupForm, ContractorSignupProfileForm, UserEditForm
+from .forms import (
+    SignupForm, 
+    ContractorSignupProfileForm, 
+    UserEditForm, 
+    UserContractorEditDetailsForm
+)
 from .models import Contractor
 
 # Default landing page.
@@ -23,13 +28,19 @@ def user_details(request):
         form = UserEditForm(request.POST, instance=request.user)
 
         if form.is_valid():
-            form.save()
+            user = form.save()
+
             messages.add_message(request, messages.SUCCESS, 'Profile successfully updated')
             return render(request, 'users/user_home.html')
+        else:
+            messages.add_message(request, messages.ERROR, 'Profile has not been updated')
+            context = {'form': form}
+            return render(request, 'users/user_details.html', context)
 
     else:
         form = UserEditForm(instance=request.user)
         context = {'form': form}
+
     return render(request, 'users/user_details.html', context)
 
 def signin_view(request):
