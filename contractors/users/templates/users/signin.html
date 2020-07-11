@@ -32,8 +32,10 @@ Contractor Sign-in DFE
                 <a href="{% url 'signup' %}">Sign Up!</a>
             </div>
             <br>
-            {% if message %}
-            <h5 class="alert alert-primary">{{message}}{{ message.tags }}</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <h5 class="alert alert-{{ message.tags }}">{{ message }}</h1>
+                {% endfor %}
             {% endif %}
         </form>
 

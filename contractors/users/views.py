@@ -15,6 +15,9 @@ def user_home(request):
         'user': request.user
     })
 
+def user_details(request):
+    return render(request, 'users/user_details.html')
+
 def signin_view(request):
     if request.method == 'POST':
         email = request.POST['email']
@@ -23,11 +26,12 @@ def signin_view(request):
 
         if user is not None:
             login(request, user)
+            banner = 'You have successfully logged in. Welcome!' # we can add some user banners here if we needed.
+            messages.add_message(request, messages.SUCCESS, banner) 
             return HttpResponseRedirect(reverse("user_home"))
         else:
-            return render(request, "users/signin.html", {
-                "message": messages.error(request, 'Invalid Credentials')
-            })
+            messages.add_message(request, messages.ERROR, 'Invalid Credentials')
+            return render(request, "users/signin.html")
 
     return render(request, 'users/signin.html')
 
@@ -38,14 +42,13 @@ def signup_view(request):
 
         if form.is_valid() and contractor_form.is_valid():
             user = form.save()
-            contractor = contractor_form.save(commit=False)
+            contractor = contractor_form.save(commit=False) # Creates the contractor profile on user creation.
 
             contractor.user = user
             contractor.save()
 
-            return render(request, "users/signin.html", {
-                "message": "You have successfully signed up!"
-            })
+            messages.add_message(request, messages.SUCCESS, 'You have signed up!')
+            return render(request, "users/signin.html")
         
     else:
         form = SignupForm()
