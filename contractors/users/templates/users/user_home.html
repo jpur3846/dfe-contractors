@@ -30,7 +30,7 @@ Gig List DFE
                 <td>{{ event.venue }}</td>
                 <td>{{ event.call_time }}</td>
                 <td>${{ event.fee_incl_gst }}</td>
-                <td><a href="#"><u>Click Here</u></a></td>
+                <td><a href="{% url 'worksheet_view' event.pk %}"><u>Click Here</u></a></td>
                 <td>Event Pending</td>
                 </tr>
             {% empty %}

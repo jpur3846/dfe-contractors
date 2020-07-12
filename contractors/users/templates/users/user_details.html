@@ -12,17 +12,19 @@ Edit User Details
 <div class="col-md-10 pl-0">
     <div class="row pr-5 pt-4">
         <h3>Edit your details</h3>
-    {% for message in messages %}  
-        <h6 class=' alert alert alert-{{ message.tags }}'>{{ message }}</h6>
-    {% endfor %}
     </div>
     <div class="row pr-5 pt-4">
         <h5>Personal Details </h5>
-        <form method="POST">
+    </div>
+    <div class="row pr-5 pt-4">
+        <form method="POST" action="{% url 'user_details' %}" enctype='multipart/form-data'>
             {% csrf_token %}
             <table>
             {% for field in form %}
                 <td>{{ field }}</td>
+                {% if field.errors %}
+                <td>{{ field.errors }}</td>
+                {% endif %}
             {% endfor %}
             </table>
     </div>

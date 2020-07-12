@@ -35,6 +35,14 @@ Contractor Sign-up DFE
             Already have an account? 
             <a href="{% url 'signin' %}">Sign In!</a>
         </div>
+
+        <br>
+        {% if messages %}
+            {% for message in messages %}
+                <h5 class="alert alert-{{ message.tags }}">{{ message }}</h1>
+            {% endfor %}
+        {% endif %}
+        
     </div>
 </div>
 

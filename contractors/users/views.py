@@ -10,6 +10,7 @@ from .forms import (
     UserContractorEditDetailsForm
 )
 from .models import Contractor
+from django.db import IntegrityError
 
 # Default landing page.
 def user_home(request):
@@ -26,20 +27,25 @@ def user_details(request):
     """
     if request.method == 'POST':
         form = UserEditForm(request.POST, instance=request.user)
+        # request.FILES to allow profile pic upload
+        profile_form = UserContractorEditDetailsForm(request.POST, request.FILES, instance=request.user.contractor)
 
-        if form.is_valid():
+        if form.is_valid() and profile_form.is_valid():
             user = form.save()
+            profile_form.save()
 
             messages.add_message(request, messages.SUCCESS, 'Profile successfully updated')
-            return render(request, 'users/user_home.html')
+            context = {'form': form, 'profile_form': profile_form}
+            return render(request, 'users/user_details.html', context)
         else:
             messages.add_message(request, messages.ERROR, 'Profile has not been updated')
-            context = {'form': form}
+            context = {'form': form, 'profile_form': profile_form}
             return render(request, 'users/user_details.html', context)
 
     else:
         form = UserEditForm(instance=request.user)
-        context = {'form': form}
+        profile_form = UserContractorEditDetailsForm(instance=request.user.contractor) # Instance pre populates the form.
+        context = {'form': form, 'profile_form': profile_form}
 
     return render(request, 'users/user_details.html', context)
 
@@ -66,14 +72,25 @@ def signup_view(request):
         contractor_form = ContractorSignupProfileForm(request.POST)
 
         if form.is_valid() and contractor_form.is_valid():
-            user = form.save()
-            contractor = contractor_form.save(commit=False) # Creates the contractor profile on user creation.
-
+            
+            try:
+                user = form.save()
+                contractor = contractor_form.save(commit=False) # Creates the contractor profile on user creation.
+            except IntegrityError:
+                messages.add_message(request, messages.ERROR, 'User already registered')
+                context = {'form': form}
+                return render(request, "users/signup.html", context)
+            
             contractor.user = user
             contractor.save()
 
             messages.add_message(request, messages.SUCCESS, 'You have signed up!')
             return render(request, "users/signin.html")
+        
+        else:
+            messages.add_message(request, messages.SUCCESS, 'You have signed up!')
+            context = {'form': form}
+            return render(request, "users/signup.html", context)
         
     else:
         form = SignupForm()
