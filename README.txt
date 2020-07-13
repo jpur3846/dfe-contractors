@@ -24,6 +24,8 @@ To Do:
 - Con-client app for their special view
 - User updates need to propagate through the system.
 - Standardise profile picture size
+- Singer songlist
+- Create a blacklist option.
 
 NB/Other Issues to fix:
 - Block get requests to worksheets (i.e. events/1) or wrong number/404.

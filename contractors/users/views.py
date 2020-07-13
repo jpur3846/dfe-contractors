@@ -121,4 +121,4 @@ def signout_view(request):
     return render(request, "users/signin.html")
 
 def contact_view(request):
-    return render(request, "users/contact.html")
+    return render(request, "users/contact.html", {'user': request.user})

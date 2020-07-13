@@ -17,9 +17,15 @@ Contact Us
                 <li class="list-group-item"><u>Email:</u> info@danielfrancis.com.au</li>
                 <li class="list-group-item"><u>Mobile:</u> 0423 526 197</li>
                 <li class="list-group-item text-primary">
+                {% if user.is_authenticated %}
                     <a href="{% url 'user_home' %}" class="list-group-item text-primary bg-light">
                         <u>Back to your gig list</u>
                     </a>
+                {% else %}
+                    <a href="{% url 'signin' %}" class="list-group-item text-primary bg-light">
+                        <u>Sign in!</u>
+                    </a>
+                {% endif %}
                 </li>
             </ul>
     </div>

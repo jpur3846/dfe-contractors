@@ -12,7 +12,7 @@
 
     <body class="text-center">
         <nav class="navbar justify-content-center header">
-            <a href="www.danielfrancis.com.au"><img src="{% static '/logos/logo-grey.png' %}" style="max-height: 60px"></a>
+            <a href="{% url 'user_home' %}"><img src="{% static '/logos/logo-grey.png' %}" style="max-height: 60px"></a>
         </nav>
         {% block body %}
 

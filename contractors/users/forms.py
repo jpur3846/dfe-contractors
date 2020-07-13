@@ -80,17 +80,33 @@ class UserEditForm(UserChangeForm):
         }
 
 class UserContractorEditDetailsForm(forms.ModelForm):
+    profile_picture = forms.ImageField(widget=forms.FileInput) # Widget removes clear and currently fields. 
     class Meta:
         model = Contractor
         fields = (
             'profile_picture', 
             'phone_number',
-            'main_instrument',
             'city',
-            'public_liability',
+            'state',
+
+            'abn',
+            'gst_status',
+            'account_name',
+            'bsb',
+            'account_number',
+
+            'main_instrument',
+            'secondary_instrument',
+            'other_instruments',
+
+            'meal_preference',
             'pa_system',
             'battery_amp',
+            'public_liability',
+            'can_mc',
+            'number_plate',
+            'accept_on_spot_requests',
+
             'alumni',
-            'year_finished', 
-            'gst_status'
+            'year_finished'
             )
