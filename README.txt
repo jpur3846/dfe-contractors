@@ -16,4 +16,13 @@ Users:
 To Do:
 - Client Model
 - If client tries to login to contractor portal redirect them somewhere.
+- Generate a PDF invoice.
+- Date field for events.
 
+NB/Other Issues:
+- Block get requests to worksheets (i.e. events/1) or wrong number/404.
+
+Dependencies:
+- Django
+- Python 3
+- Pillow

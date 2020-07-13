@@ -8,7 +8,7 @@ class Event(models.Model):
     client = models.ForeignKey(Client, on_delete=models.PROTECT, related_name='events', default=None, blank=True, null=True)
 
     # Event Details
-    date = models.CharField(max_length=30)
+    date = models.DateField()
     name = models.CharField(max_length=30)
     venue = models.CharField(max_length=30)
     call_time = models.CharField(max_length=30)

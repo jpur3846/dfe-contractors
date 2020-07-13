@@ -18,7 +18,7 @@ year_dropdown = [(year,year) for year in range(1950, now + 6)]
 class Contractor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None) # .CASCADE will delete the user account related to this contractor and vice versa.
     profile_picture = models.ImageField(null=True, blank=True, default='generic-user.jpg')   
-    phone_number = models.CharField(max_length=12, null=True, blank=True)
+    phone_number = models.IntegerField(null=True, blank=True)
 
     main_instrument = models.CharField(max_length=100, null=True, blank=True)
  

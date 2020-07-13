@@ -73,7 +73,7 @@ coverage.xml
 *.mo
 
 # Django stuff:
-settings.py
+secret.txt
 
 # Flask stuff:
 instance/
