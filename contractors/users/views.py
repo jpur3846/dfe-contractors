@@ -1,8 +1,18 @@
+# From Django
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+
+# Error Handling
+from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
+
+# Other imports
+from datetime import datetime
+
+# My imports
 from .forms import (
     SignupForm, 
     ContractorSignupProfileForm, 
@@ -10,14 +20,13 @@ from .forms import (
     UserContractorEditDetailsForm
 )
 from .models import Contractor
-from django.db import IntegrityError
 
 # Default landing page.
 def user_home(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('signin'))
     return render(request, 'users/user_home.html', {
-        'events': (request.user.contractor.events.all()),
+        'events': (request.user.contractor.events.filter(date__gte=datetime.now())),
         'user': request.user
     })
 
@@ -48,6 +57,12 @@ def user_details(request):
         context = {'form': form, 'profile_form': profile_form}
 
     return render(request, 'users/user_details.html', context)
+
+def user_event_history(request):
+    context = {
+        'past_events': (request.user.contractor.events.filter(date__lte=datetime.now()))
+    }
+    return render(request, 'users/user_event_history.html', context)
 
 def signin_view(request):
     if request.method == 'POST':

@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -25,6 +24,9 @@ with open('contractors/secret.txt') as f:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# Email Debugging python -m smtpd -n -c DebuggingServer localhost:1025
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
 
 ALLOWED_HOSTS = []
 
@@ -69,7 +71,7 @@ MESSAGE_TAGS = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [(os.path.join(BASE_DIR, 'templates')),(os.path.join(BASE_DIR, 'users/templates/users')), ],
+        'DIRS': [(os.path.join(BASE_DIR, 'templates')),(os.path.join(BASE_DIR, 'users/templates/users')), (os.path.join(BASE_DIR, 'events/templates/events'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
