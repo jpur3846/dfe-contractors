@@ -80,7 +80,7 @@ class UserEditForm(UserChangeForm):
         }
 
 class UserContractorEditDetailsForm(forms.ModelForm):
-    profile_picture = forms.ImageField(widget=forms.FileInput) # Widget removes clear and currently fields. 
+    profile_picture = forms.ImageField() # widget=forms.FileInput Widget removes clear and currently fields. 
     class Meta:
         model = Contractor
         fields = (

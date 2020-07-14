@@ -34,7 +34,7 @@ states = [
     ('sa', 'SA'),
 ]
 meal_preferences = [
-    ('standard', 'standard'),
+    ('standard', 'Standard'),
     ('vegetarian', 'Vegetarian'),
     ('vegan', 'Vegan'),
     ('pescetarian', 'Pescetarian'),
@@ -114,6 +114,14 @@ class Contractor(models.Model):
     # Conservatorium Stuff
     alumni = models.CharField(max_length=3, null=True, blank=True, choices=yes_no_choices) # yes/no. Conservatorium alumni
     year_finished = models.IntegerField(null=True, blank=True, choices=year_dropdown) # year number year
+
+    def save(self, *args, **kwargs):
+        """
+        Overwrites save and will allow some fields to auto update on save.
+        """
+        self.number_plate = self.number_plate.upper()
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'Name: {self.user.first_name} {self.user.last_name} | Email: {self.user.email} | Ex-Student: {self.alumni}'
