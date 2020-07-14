@@ -71,14 +71,27 @@ def signin_view(request):
         password = request.POST['password']
         user = authenticate(request, username=email, password=password) # No username. Username and email are same.
 
-        if user is not None:
+        if user is not None and hasattr(user, 'contractor'): # Does the user have a contractor? Can use this for clients and con folk.
             login(request, user)
             banner = 'You have successfully logged in. Welcome!' # we can add some user banners here if we needed.
             messages.add_message(request, messages.SUCCESS, banner) 
             return HttpResponseRedirect(reverse("user_home"))
+
+        elif user is not None and hasattr(user, 'constaff'):
+            login(request, user)
+            banner = f'You have successfully logged in. Welcome {user.first_name}!' # we can add some user banners here if we needed.
+            messages.add_message(request, messages.SUCCESS, banner) 
+            return HttpResponseRedirect(reverse("con_staff_view"))
+
+        elif user is not None and hasattr(user, 'eventadmin'):
+            login(request, user)
+            banner = f'You have successfully logged in. Welcome {user.first_name}!' # we can add some user banners here if we needed.
+            messages.add_message(request, messages.SUCCESS, banner) 
+            return HttpResponseRedirect(reverse("event_admin_home_view"))
+
         else:
             messages.add_message(request, messages.ERROR, 'Invalid Credentials')
-            return render(request, "users/signin.html")
+            return HttpResponseRedirect(reverse("signin"))
 
     return render(request, 'users/signin.html')
 

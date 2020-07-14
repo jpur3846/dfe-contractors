@@ -26,6 +26,7 @@ To Do:
 - Standardise profile picture size
 - Singer songlist
 - Create a blacklist option.
+- Create an administrator frontend for bookers.
 
 NB/Other Issues to fix:
 - Block get requests to worksheets (i.e. events/1) or wrong number/404.

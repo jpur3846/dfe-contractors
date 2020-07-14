@@ -36,9 +36,11 @@ from django.contrib import messages
 # Application definition
 
 INSTALLED_APPS = [
+    'contractors',
     'users',
     'events',
     'clients',
+    'con',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,7 +73,11 @@ MESSAGE_TAGS = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [(os.path.join(BASE_DIR, 'templates')),(os.path.join(BASE_DIR, 'users/templates/users')), (os.path.join(BASE_DIR, 'events/templates/events'))],
+        'DIRS': [(os.path.join(BASE_DIR, 'templates')),
+                (os.path.join(BASE_DIR, 'users/templates/users')), 
+                (os.path.join(BASE_DIR, 'events/templates/events')),
+                (os.path.join(BASE_DIR, 'events/templates/events/event_admin')),
+                (os.path.join(BASE_DIR, 'con/templates/con'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

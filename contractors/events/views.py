@@ -8,6 +8,12 @@ from django.urls import reverse
 from .models import Event
 from .utils import render_to_pdf
 
+# Event Admin Views
+
+def event_admin_home_view(request):
+    return render(request, 'event_admin/event_admin_home_view.html')
+
+# Contractor Views
 def worksheet_view(request, event_id):
     event = Event.objects.get(pk=event_id)
     context = {
@@ -19,7 +25,6 @@ def generate_pdf_invoice(request, event_id, *args, **kwargs):
     """
     for force download visit https://www.youtube.com/watch?v=B7EIK9yVtGY
     """
-    
     event = Event.objects.get(pk=event_id)
 
     template = get_template('pdf/contractor_invoice.html')

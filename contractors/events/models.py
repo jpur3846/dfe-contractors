@@ -1,9 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib import admin
 from datetime import datetime
 
 from users.models import Contractor
 from clients.models import Client
+
+class EventAdmin(admin.ModelAdmin):
+    """
+    Slap all of the read-only fields here.
+    The event admin is the booking manager that can create events etc etc.
+    """
+    readonly_fields = ('fee_incl_gst',)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
+
 
 class Event(models.Model):
     # Client

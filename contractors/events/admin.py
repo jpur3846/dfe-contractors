@@ -1,10 +1,5 @@
 from django.contrib import admin
-from .models import Event
+from .models import Event, EventAdmin
 
-class EventAdmin(admin.ModelAdmin):
-    """
-    Slap all of the read-only fields here.
-    """
-    readonly_fields = ('fee_incl_gst',)
-
+# To alter readonly fields
 admin.site.register(Event, EventAdmin)

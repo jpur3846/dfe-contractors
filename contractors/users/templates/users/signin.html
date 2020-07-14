@@ -12,7 +12,8 @@ Contractor Sign-in DFE
     <div class="col-lg-6 md-form">
         <form class="form-signin" action="{% url 'signin' %}" method="POST">
             {% csrf_token %}
-            <h1>Contractor Sign-in</h1>
+            <h1>Sign In</h1>
+            <p class="text-dark">Administrators - Contractors - Staff</p>
             <br>
             <label for="inputEmail" class="sr-only">Username</label>
             <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
@@ -29,7 +30,7 @@ Contractor Sign-in DFE
             <br>
 
             <div>
-                Don't have an account? 
+                Been asked to contract for us but don't have an account? 
                 <a href="{% url 'signup' %}">Sign Up!</a>
             </div>
             <br>
