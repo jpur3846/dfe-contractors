@@ -4,6 +4,7 @@ from django.views.generic import View
 from django.template.loader import get_template
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib import messages
 
 from .models import Event
 from .utils import render_to_pdf
@@ -18,8 +19,12 @@ def edit_event_view(request, event_id):
     if request.method == 'POST':
         form =  EventEditForm(request.POST, instance=event)
 
-        if form.is_valid():
+        if form.is_valid() and 'save_changes' in request.POST:
             form.save()
+        elif form.is_valid() and 'delete_event' in request.POST:
+            event.delete()
+            messages.add_message(request, messages.SUCCESS, 'Event successfully deleted')
+            return HttpResponseRedirect(reverse('bookers_home_view'))
 
     context = {
             'event': event,
@@ -33,7 +38,7 @@ def worksheet_view(request, event_id):
     """
     event = Event.objects.get(pk=event_id)
     context = {
-            'event': event
+            'event': event.__dict__.items() # Getting all data.
         }
     return render(request, "events/contractor_worksheet.html", context)
 

@@ -23,8 +23,13 @@ def bookers_edit_clients_view(request, client_id):
     if request.method == "POST":
         form = ClientEditForm(request.POST, instance=client)
 
-        if form.is_valid():
+        if form.is_valid() and 'save_changes' in request.POST:
             form.save()
+        elif form.is_valid() and 'delete_client' in request.POST:
+            client.delete()
+            messages.add_message(request, messages.SUCCESS, 'Client successfully deleted')
+            return HttpResponseRedirect(reverse('bookers_clients_view'))
+
 
     context = {
         'client': client,

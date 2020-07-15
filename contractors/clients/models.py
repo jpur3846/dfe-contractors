@@ -11,6 +11,7 @@ class Client(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None, blank=True, null=True)
     
+    company = models.CharField(max_length=30, default='', blank=True)
     contact_name = models.CharField(max_length=30, default='', blank=True)
     contact_email = models.EmailField(max_length=30, default='', blank=True)
     contact_number = models.IntegerField(null=True, blank=True)
@@ -18,4 +19,4 @@ class Client(models.Model):
     general_info = models.TextField(default='', blank=True)
 
     def __str__(self):
-        return f'Client: {self.contact_name} | Email: {self.contact_email}'
+        return f'Client: {self.contact_name} | Company: {self.company} | Email: {self.contact_email}'

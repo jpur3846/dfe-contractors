@@ -6,4 +6,9 @@ Con Staff Portal
 
 {% block body %}
 <h1>Con Staff Portal</h1>
+
+{% for message in messages %}
+    {{ message }}
+{% endfor %}
+
 {% endblock %}

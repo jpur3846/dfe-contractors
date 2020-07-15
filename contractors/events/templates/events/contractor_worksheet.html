@@ -4,19 +4,14 @@
 
 <h1>Worksheet: {{ event.name }} {{ event.date }}</h1>
 
-<h3>Client Details</h3>
-Name: {{ event.client.user.first_name }} {{ event.client.user.last_name  }}
-Email: {{ event.client.user.email }}
+<ul>
+{% for key, value in event %}
+    <li>
+    {{ key }}: 
+    {{ value }}
+    </li>
+{% endfor %}
+</ul>
 
-<h3>Event Details</h3>
-Event Name: {{ event.name }}
-Venue: {{ event.venue }}
-Call Time: {{ event.call_time }}
-
-<h3>Musician Details</h3>
-Bandleader: {{ event.bandleader.user.first_name }} {{ event.bandleader.user.last_name }}
-
-<h3>Payment Details</h3>
-Fee: ${{ event.fee_incl_gst }}
 
 {% endblock %}
