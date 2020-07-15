@@ -91,8 +91,8 @@ class Contractor(models.Model):
     state = models.CharField(max_length=3, default='NSW', null=True, choices=states)
     
     # Financial Details
-    abn = models.IntegerField(validators=[abn_validator], null=True) # 11 digits
-    gst_status = models.CharField(max_length=3, null=True, blank=True, choices=yes_no_choices)
+    abn = models.IntegerField(validators=[abn_validator], null=True, blank=True) # 11 digits
+    gst_status = models.CharField(max_length=3, default='no', blank=True, choices=yes_no_choices)
     account_name = models.CharField(max_length=50, blank=True, default='')
     bsb = models.IntegerField(blank=True, null=True)
     account_number = models.IntegerField(blank=True, null=True)
@@ -119,7 +119,8 @@ class Contractor(models.Model):
         """
         Overwrites save and will allow some fields to auto update on save.
         """
-        self.number_plate = self.number_plate.upper()
+        if self.number_plate != None:
+            self.number_plate = self.number_plate.upper()
 
         super().save(*args, **kwargs)
 

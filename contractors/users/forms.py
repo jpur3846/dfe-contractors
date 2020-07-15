@@ -50,14 +50,40 @@ class SignupForm(UserCreationForm):
         return user
 
 class ContractorSignupProfileForm(forms.ModelForm):
+
     class Meta:
         model = Contractor
-        fields = ('main_instrument',)
+        exclude = (
+            'profile_picture', 
+            'phone_number',
+            'city',
+            'state',
+
+            'abn',
+            'gst_status',
+            'account_name',
+            'bsb',
+            'account_number',
+
+            'main_instrument',
+            'secondary_instrument',
+            'other_instruments',
+
+            'meal_preference',
+            'pa_system',
+            'battery_amp',
+            'public_liability',
+            'can_mc',
+            'number_plate',
+            'accept_on_spot_requests',
+
+            'alumni',
+            'year_finished'
+            )
     
-    # Field is not required.
     def __init__(self, *args, **kwargs):
         super(ContractorSignupProfileForm, self).__init__(*args, **kwargs)
-        self.fields['main_instrument'].required = False
+        self.fields['user'].required = False
 
 
 class UserEditForm(UserChangeForm):

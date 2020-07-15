@@ -7,14 +7,30 @@ from django.urls import reverse
 
 from .models import Event
 from .utils import render_to_pdf
+from .forms import EventEditForm
 
-# Event Admin Views
+def edit_event_view(request, event_id):
+    """
+    Edit event and save changes.
+    """
+    event = Event.objects.get(pk=event_id)
 
-def event_admin_home_view(request):
-    return render(request, 'event_admin/event_admin_home_view.html')
+    if request.method == 'POST':
+        form =  EventEditForm(request.POST, instance=event)
 
-# Contractor Views
+        if form.is_valid():
+            form.save()
+
+    context = {
+            'event': event,
+            'event_edit_form': EventEditForm(instance=event)
+        }
+    return render(request, "events/edit_event.html", context)
+
 def worksheet_view(request, event_id):
+    """
+    View auto generated worksheet as a contractor
+    """
     event = Event.objects.get(pk=event_id)
     context = {
             'event': event
@@ -23,6 +39,7 @@ def worksheet_view(request, event_id):
 
 def generate_pdf_invoice(request, event_id, *args, **kwargs):
     """
+    When click to send an invoice it generates one.
     for force download visit https://www.youtube.com/watch?v=B7EIK9yVtGY
     """
     event = Event.objects.get(pk=event_id)

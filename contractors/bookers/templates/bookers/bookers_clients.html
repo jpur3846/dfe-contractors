@@ -1,0 +1,18 @@
+{% extends  'bookers_template.html' %}
+
+{% block bookers-body %}
+
+<ol>
+    {% for client in clients %}
+    <li><a href="{% url 'bookers_edit_clients_view' client.pk %}">{{ client }}</a></li>
+    {% endfor %}
+</ol>
+
+<form action="{% url 'bookers_create_new_client' %}" method="POST">
+    {% csrf_token %}
+    {{ client_creation_form.as_p }}
+    <button type="submit">Create a new Client</button>
+</form>
+
+
+{% endblock %}

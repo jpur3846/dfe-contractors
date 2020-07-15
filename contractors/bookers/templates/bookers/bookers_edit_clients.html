@@ -1,0 +1,10 @@
+{% extends 'bookers_template.html' %}
+
+{% block bookers-body %}
+<form action="{% url 'bookers_edit_clients_view' client.pk %}" method='POST'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+</form>
+
+{% endblock %}

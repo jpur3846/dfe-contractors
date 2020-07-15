@@ -1,0 +1,12 @@
+{% extends  'bookers_template.html' %}
+
+{% block bookers-body %}
+
+<form action="{% url 'bookers_details' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ booker_form.as_p }}
+    <button type='submit'>Save Changes</button>
+</form>
+
+{%endblock %}

@@ -1,0 +1,11 @@
+{% extends 'events_template.html' %}
+
+{% block events-body %}
+
+<form action="{% url 'edit_event_view' event.pk %}" method="POST">
+{% csrf_token %}
+{{ event_edit_form.as_p }}
+<button type="submit">Save Changes</button>
+</form>
+
+{% endblock %}

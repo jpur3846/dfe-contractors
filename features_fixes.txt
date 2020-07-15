@@ -1,0 +1,44 @@
+
+Users:
+- Admin
+
+- Contractors (users)
+--> Require their own signup form. This form automatically generates a contractor profile for them.
+
+- Clients (client) (view the event they have booked)
+--> Do not require their own signup form as this would be provided to them.
+
+- Con Staff (con)
+--> View events that are pertaining to them.
+
+- Bookers (bookers)
+--> Create, Update, Delete and Book in new events.
+--> See upcoming events on dashboard.
+
+Apps:
+- Events (events)
+--> Store the event model and connect to its various users.
+--> EVERYTHING to do with an event is here. So worksheets (contractor), creating/editing an event(booker) is all done here.
+
+To Do:
+- Client Model
+- If client tries to login to contractor portal redirect them somewhere.
+- User forgotten password
+- Make invoice and other aspects have all details.
+- Pretty up views.
+- Feedback form.
+- Gig history
+- Comment on events
+- Complete event details -> calculate GST etc.
+- Con-client app for their special view
+- User updates need to propagate through the system.
+- Standardise profile picture size
+- Singer songlist
+- Create a blacklist option.
+- Create an administrator frontend for bookers.
+- 
+
+NB/Other Issues to fix:
+- Block get requests to worksheets (i.e. events/1) or wrong number/404.
+- .gitignore setup to leave out files with possbile privacy issues i.e. sqlite DB and secret key.
+- Users should not be able to be more that one of the attributes (i.e. Contractor, Booker, Client, Con Staff)

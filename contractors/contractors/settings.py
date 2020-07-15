@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'events',
     'clients',
     'con',
+    'bookers',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,7 +77,7 @@ TEMPLATES = [
         'DIRS': [(os.path.join(BASE_DIR, 'templates')),
                 (os.path.join(BASE_DIR, 'users/templates/users')), 
                 (os.path.join(BASE_DIR, 'events/templates/events')),
-                (os.path.join(BASE_DIR, 'events/templates/events/event_admin')),
+                (os.path.join(BASE_DIR, 'bookers/templates/bookers')),
                 (os.path.join(BASE_DIR, 'con/templates/con'))],
         'APP_DIRS': True,
         'OPTIONS': {

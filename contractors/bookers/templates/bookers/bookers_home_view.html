@@ -1,40 +1,42 @@
-{% extends "user_template.html" %}
-{% load static %}
+{% extends  'bookers_template.html' %}
 
-{% block pagetitle %}
-DFE | Gig List
-{% endblock %}
+{% block bookers-body %}
 
-{% block user-body %}
-<!--Right column for gig list.-->
 <div class="col-md-10 pl-0">
     <div class="row justify-content-center pr-5 pt-4">
-        <h3>Gig History</h3>
+        <h3>Current Bookings:</h3>
+        <form action="{% url 'create_new_event' %}" method="POST">
+            {% csrf_token %}
+            {{ event_creation_form.as_p }}
+            <button type="submit">Create New Event</button>
+        </form>
         <table class="table table-hover">
             <thead>
                 <tr>
                 <th scope="col">Gig Date</th>
                 <th scope="col">Event Name</th>
                 <th scope="col">Venue</th>
+                <th scope="col">Call Time</th>
                 <th scope="col">Fee (Incl. GST)</th>
-                <th scope="col">Worksheet</th>
+                <th scope="col">Edit Event</th>
                 </tr>
             </thead>
             <tbody>
-            {% for event in past_events %}
+            {% for event in events %}
                 <tr>
                 <td>{{ event.date }}</td>
                 <td>{{ event.name }}</td>
                 <td>{{ event.venue }}</td>
+                <td>{{ event.call_time }}</td>
                 <td>${{ event.fee_incl_gst }}</td>
-                <td><a href="{% url 'worksheet_view' event.pk %}"><u>Click Here</u></a></td>
+                <td><a href="{% url 'edit_event_view' event.pk %}"><u>Click Here</u></a></td>
                 </tr>
             {% empty %}
                 <tr>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><h4>You haven't done any gigs with us yet :(</h4></td>
+                    <td><h4>No Gigs booked!</h4></td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -23,7 +23,11 @@ Contact Us
                     </a>
                 {% elif user.constaff %}
                     <a href="{% url 'con_staff_view' %}" class="list-group-item text-primary bg-light">
-                        <u>Back Con Staff Portal</u>
+                        <u>Back Con Staff portal</u>
+                    </a>
+                {% elif user.booker %}
+                    <a href="{% url 'bookers_home_view' %}" class="list-group-item text-primary bg-light">
+                        <u>Back to Booker portal</u>
                     </a>
                 {% else %}
                     <a href="{% url 'signin' %}" class="list-group-item text-primary bg-light">

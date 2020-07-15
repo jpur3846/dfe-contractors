@@ -13,5 +13,5 @@ def same_instrument(inst_1, inst_2):
     """
     Checks if someone has tried to list 2 of the instruments as their primary and secondary instrument.
     """
-    if (inst_1 == inst_2):
+    if (inst_1 == inst_2 != None):
         raise ValidationError({'secondary_instrument': "Instrument 1 and 2 cannot be the same instrument."})

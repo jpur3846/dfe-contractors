@@ -25,6 +25,7 @@ urlpatterns = [
     path('users/', include("users.urls")),
     path('events/', include("events.urls")),
     path('con/', include("con.urls")),
+    path('bookers/', include("bookers.urls")),
     path("", views.signin_view, name="main_signin"),
 ]
 
