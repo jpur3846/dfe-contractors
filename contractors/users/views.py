@@ -45,7 +45,7 @@ def user_details(request):
 
             messages.add_message(request, messages.SUCCESS, 'Profile successfully updated')
             context = {'form': form, 'profile_form': profile_form}
-            return HttpResponseRedirect(reverse('user_home'))
+            return HttpResponseRedirect(reverse('user_details'))
 
         else:
             messages.add_message(request, messages.ERROR, 'Profile has not been updated')
