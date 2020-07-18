@@ -1,0 +1,14 @@
+{% extends 'events_template.html' %}
+
+{% block events-body %}
+
+<form method="POST">
+{% csrf_token %}
+
+{{ event_musicians_edit_form.as_p }}
+
+<button type="submit" name='save_changes'>Save Changes</button>
+<button type="submit" name='delete_musician'>Delete Musician</button>
+</form>
+
+{% endblock %}

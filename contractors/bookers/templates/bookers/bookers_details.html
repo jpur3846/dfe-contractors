@@ -2,7 +2,7 @@
 
 {% block bookers-body %}
 
-<form action="{% url 'bookers_details' %}" method="POST">
+<form action="{% url 'bookers_details' %}" method="POST"  enctype='multipart/form-data'>
     {% csrf_token %}
     {{ form.as_p }}
     {{ booker_form.as_p }}

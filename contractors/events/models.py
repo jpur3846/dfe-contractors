@@ -3,9 +3,10 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from datetime import datetime
 
-from users.models import Contractor
+# from users.models import Contractor
 from clients.models import Client
 from bookers.models import Booker
+from users.models import Contractor
 
 class EventAdmin(admin.ModelAdmin):
     """
@@ -130,59 +131,9 @@ class Event(models.Model):
     ### Musician Details
     asked_musicians = models.TextField(null=True, blank=True)
     unavailable_musicians = models.TextField(null=True, blank=True)
-    # Bandleader
-    bandleader = models.ForeignKey(Contractor, on_delete=models.PROTECT, related_name='events', default=None, blank=True, null=True)
-    bandleader_fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    bandleader_gst_amnt = models.FloatField(null=True, blank=True)
-    bandleader_fee_all_incl = models.FloatField(null=True, blank=True)
-    bandleader_feedback_status = models.BooleanField(default=False, blank=True, null=True)
-    bandleader_invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    bandleader_payment_status = models.BooleanField(default=False, blank=True, null=True)
-    # musician 2
-    # musician_2 = models.ForeignKey(Contractor, on_delete=models.PROTECT, related_name='events', default=None, blank=True, null=True)
-    musician_2_fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    musician_2_gst_amnt = models.FloatField(null=True, blank=True)
-    musician_2_fee_all_incl = models.FloatField(null=True, blank=True)
-    musician_2_invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    musician_2_payment_status = models.BooleanField(default=False, blank=True, null=True)
-    # musician 3
-    # musician_3 = models.ForeignKey(Contractor, on_delete=models.PROTECT, related_name='events', default=None, blank=True, null=True)
-    musician_3_fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    musician_3_gst_amnt = models.FloatField(null=True, blank=True)
-    musician_3_fee_all_incl = models.FloatField(null=True, blank=True)
-    musician_3_invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    musician_3_payment_status = models.BooleanField(default=False, blank=True, null=True)
-    # musician 4
-    # musician_4 = models.ForeignKey(Contractor, on_delete=models.PROTECT, related_name='events', default=None, blank=True, null=True)
-    musician_4_fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    musician_4_gst_amnt = models.FloatField(null=True, blank=True)
-    musician_4_fee_all_incl = models.FloatField(null=True, blank=True)
-    musician_4_invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    musician_4_payment_status = models.BooleanField(default=False, blank=True, null=True)
-    # musician 5
-    musician_5_fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    musician_5_gst_amnt = models.FloatField(null=True, blank=True)
-    musician_5_fee_all_incl = models.FloatField(null=True, blank=True)
-    musician_5_invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    musician_5_payment_status = models.BooleanField(default=False, blank=True, null=True)
-    # musician 6
-    musician_6_fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    musician_6_gst_amnt = models.FloatField(null=True, blank=True)
-    musician_6_fee_all_incl = models.FloatField(null=True, blank=True)
-    musician_6_invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    musician_6_payment_status = models.BooleanField(default=False, blank=True, null=True)
-    # musician 7
-    musician_7_fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    musician_7_gst_amnt = models.FloatField(null=True, blank=True)
-    musician_7_fee_all_incl = models.FloatField(null=True, blank=True)
-    musician_7_invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    musician_7_payment_status = models.BooleanField(default=False, blank=True, null=True)
-    # musician 8
-    musician_8_fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    musician_8_gst_amnt = models.FloatField(null=True, blank=True)
-    musician_8_fee_all_incl = models.FloatField(null=True, blank=True)
-    musician_8_invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    musician_8_payment_status = models.BooleanField(default=False, blank=True, null=True)
+
+    musicians = models.ManyToManyField(Contractor, through='EventMusicians')
+    # bandleader = models.ForeignKey(Contractor, on_delete=models.PROTECT, related_name='events', default=None, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         """
@@ -201,3 +152,15 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.name} event on {self.date}."
+
+class EventMusicians(models.Model):
+    contractor = models.ForeignKey(Contractor, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    
+    is_bandleader = models.BooleanField(default=False, blank=True, null=True)
+    fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
+    gst_amnt = models.FloatField(null=True, blank=True)
+    fee_all_incl = models.FloatField(null=True, blank=True)
+    feedback_status = models.BooleanField(default=False, blank=True, null=True)
+    invoice_status = models.BooleanField(default=False, blank=True, null=True)
+    payment_status = models.BooleanField(default=False, blank=True, null=True)

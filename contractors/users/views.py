@@ -26,7 +26,7 @@ def user_home(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('signin'))
     return render(request, 'users/user_home.html', {
-        'events': (request.user.contractor.events.filter(date__gte=datetime.now())),
+        'events': request.user.contractor.event_set.filter(date__gte=datetime.now()),
         'user': request.user
     })
 
@@ -61,7 +61,7 @@ def user_details(request):
 
 def user_event_history(request):
     context = {
-        'past_events': (request.user.contractor.events.filter(date__lte=datetime.now()))
+        'past_events': (request.user.contractor.event_set.filter(date__lte=datetime.now()))
     }
     return render(request, 'users/user_event_history.html', context)
 

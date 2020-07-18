@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Event
+from .models import Event, EventMusicians
 
 class EventCreationForm(forms.ModelForm):
     class Meta:
@@ -10,5 +10,17 @@ class EventCreationForm(forms.ModelForm):
 class EventEditForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = '__all__'
+        exclude = ('musicians',)
+
+class AddEventMusician(forms.ModelForm):
+    class Meta:
+        model = EventMusicians
+        fields = ('contractor', )
+
+class EditEventMusician(forms.ModelForm):
+    class Meta:
+        model = EventMusicians
+        exclude = (
+            'event',
+        )
     

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class Booker(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
 
+    profile_picture = models.ImageField(null=True, blank=True, default='generic-user.jpg')
     contact_email = models.EmailField(null=True)
     contact_number = models.IntegerField(null=True)
     

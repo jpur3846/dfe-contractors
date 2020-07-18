@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+
 from .validators import abn_validator, same_instrument
 
-# Create your models here.
 # Null -> DB storage
 # Blank -> Form validation
 

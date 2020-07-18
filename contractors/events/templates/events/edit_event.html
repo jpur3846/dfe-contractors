@@ -5,8 +5,18 @@
 <form action="{% url 'edit_event_view' event.pk %}" method="POST">
 {% csrf_token %}
 {{ event_edit_form.as_p }}
+
+<table>
+{% for musician in musicians %}
+    <tr>
+        <td><a href="{% url 'edit_event_musicians_view' musician_id=musician.pk event_id=event.pk %}">{{ musician }}</a></td>
+    </tr>
+{% endfor %}
+</table>
+{{ add_event_musician.as_p }}
 <button type="submit" name='save_changes'>Save Changes</button>
 <button type="submit" name='delete_event'>Delete Event</button>
+<button type="submit" name='add_musician'>Add Musician</button>
 </form>
 
 {% endblock %}

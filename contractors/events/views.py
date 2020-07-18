@@ -6,9 +6,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 
-from .models import Event
+from .models import Event, EventMusicians
 from .utils import render_to_pdf
-from .forms import EventEditForm
+from .forms import EventEditForm, EditEventMusician, AddEventMusician
+from users.models import Contractor
 
 def edit_event_view(request, event_id):
     """
@@ -17,20 +18,58 @@ def edit_event_view(request, event_id):
     event = Event.objects.get(pk=event_id)
 
     if request.method == 'POST':
-        form =  EventEditForm(request.POST, instance=event)
+        form = EventEditForm(request.POST, instance=event)
+        add_musician = AddEventMusician(request.POST)
 
         if form.is_valid() and 'save_changes' in request.POST:
             form.save()
+
         elif form.is_valid() and 'delete_event' in request.POST:
             event.delete()
             messages.add_message(request, messages.SUCCESS, 'Event successfully deleted')
             return HttpResponseRedirect(reverse('bookers_home_view'))
+        
+        elif form.is_valid() and 'add_musician' in request.POST:
+            musician_id  = request.POST['contractor']
 
+            if Contractor.objects.get(pk=musician_id) not in event.musicians.all():
+                event.musicians.add(request.POST['contractor'])
+                messages.add_message(request, messages.SUCCESS, 'Musician successfully added')
+            
+            else:
+                messages.add_message(request, messages.ERROR, 'Musician already added to event')
+            
     context = {
             'event': event,
-            'event_edit_form': EventEditForm(instance=event)
+            'musicians': event.musicians.all(),
+            'event_edit_form': EventEditForm(instance=event),
+            'add_event_musician': AddEventMusician(),
         }
     return render(request, "events/edit_event.html", context)
+
+def edit_event_musicians_view(request, musician_id, event_id):
+    event = Event.objects.get(pk=event_id)
+    contractor = Contractor.objects.get(pk=musician_id)
+    musician = EventMusicians.objects.filter(contractor=contractor, event=event).first()
+
+    context = {
+        'musician': musician,
+        'event_musicians_edit_form': EditEventMusician(instance=musician)
+    }
+
+    if request.method == 'POST':
+        form = EditEventMusician(request.POST, instance=musician)
+
+        if form.is_valid() and 'save_changes' in request.POST:
+            form.save()
+            return HttpResponseRedirect(reverse('edit_event_view', args=(event_id, )))
+
+        elif form.is_valid() and 'delete_musician' in request.POST:
+            musician.delete()
+            messages.add_message(request, messages.SUCCESS, 'Musician successfully deleted')
+            return HttpResponseRedirect(reverse('edit_event_view', args=(event_id,)))
+
+    return render(request, "events/edit_event_musicians.html", context)
 
 def worksheet_view(request, event_id):
     """

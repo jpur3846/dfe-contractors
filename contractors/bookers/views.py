@@ -82,9 +82,9 @@ def bookers_details(request):
     """
     if request.method == 'POST':
         form = UserEditForm(request.POST, instance=request.user)
-        booker_form = BookerEditDetailsForm(request.POST, instance=request.user.booker)
+        booker_form = BookerEditDetailsForm(request.POST, request.FILES, instance=request.user.booker)
 
-        if form.is_valid():
+        if form.is_valid() and booker_form.is_valid():
             user = form.save()
             booker = booker_form.save()
 
