@@ -85,10 +85,11 @@ class Event(models.Model):
     # Locations
     venue = models.CharField(max_length=100, blank=True, null=True)
     venue_in_case_of_rain = models.CharField(max_length=100, blank=True, null=True)
-    parking_provided = models.CharField(max_length=50, default='Not Required', blank=True, null=True)
+    parking_provided = models.BooleanField(max_length=50, default=False, blank=True, null=True)
     number_parking_spots_required  = models.IntegerField(blank=True, null=True)
     parking_cost_per_car = models.FloatField(blank=True, null=True)
-    parking_address = models.CharField(max_length=100, blank=True, null=True)
+    parking_address = models.CharField(max_length=100, default='Near Venue', blank=True, null=True)
+    parking_assignment = models.TextField(blank=True, null=False) # Select from musicians?
     loading_zone_details = models.CharField(max_length=100, blank=True, null=True)
     # Timings
     booking_start_time = models.TimeField(blank=True, null=True)
@@ -100,14 +101,13 @@ class Event(models.Model):
     production = models.CharField(max_length=100, blank=True, null=True)
     power_required = models.BooleanField(default=True)
     crew_meals = models.BooleanField(default=False)
-    run_sheet = models.TextField(blank=True, null=False)
+    run_sheet = models.TextField(blank=True, null=True)
     # Additional Information
     important_requests = models.TextField(blank=True, null=False)
     general_requests = models.TextField(blank=True, null=False)
     do_not_play = models.TextField(blank=True, null=False)
     further_musician_requirements = models.TextField(blank=True, null=False)
     musician_only_notes = models.TextField(blank=True, null=False)
-    parking_assignment = models.TextField(blank=True, null=False) # Select from musicians?
 
     ### File Upload (runsheet)
     helpful_files = models.FileField(upload_to='event_uploads/%Y/%m/%d/', null=True, blank=True)
@@ -133,7 +133,6 @@ class Event(models.Model):
     unavailable_musicians = models.TextField(null=True, blank=True)
 
     musicians = models.ManyToManyField(Contractor, through='EventMusicians')
-    # bandleader = models.ForeignKey(Contractor, on_delete=models.PROTECT, related_name='events', default=None, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         """
@@ -158,9 +157,16 @@ class EventMusicians(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     
     is_bandleader = models.BooleanField(default=False, blank=True, null=True)
+    instrument = models.CharField(max_length=100, default='', blank=True, null=True)
+    
     fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
     gst_amnt = models.FloatField(null=True, blank=True)
     fee_all_incl = models.FloatField(null=True, blank=True)
+    
     feedback_status = models.BooleanField(default=False, blank=True, null=True)
     invoice_status = models.BooleanField(default=False, blank=True, null=True)
     payment_status = models.BooleanField(default=False, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.contractor.user.first_name} {self.contractor.user.last_name} | \n \
+            {self.contractor.user.email} | {self.contractor.phone_number}'

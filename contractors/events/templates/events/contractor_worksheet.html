@@ -1,17 +1,233 @@
-{% extends 'layout.html' %}
+{% extends 'user_template.html' %}
 
-{% block body %}
+{% block written-title %}
+Worksheet {{ event.event.date }}
+{% endblock %}
 
-<h1>Worksheet: {{ event.name }} {{ event.date }}</h1>
+{% block user-body %}
+<br>
+<!-- Accessing the EventMusician Model and getting deets from there. -->
+<div class="container">
+  <div class="row">
+    <div class="col border-bottom text-left">
+      <h5>Basic Client Details</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      Company: {{ event.event.client.company }}
+    </div>
+    <div class="col-sm">
+      Contact Name: {{ event.event.client.contact_name }}
+    </div>
+    <div class="col-sm">
+      Contact Number: {{ event.event.client.contact_number }}
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col border-bottom text-left">
+      <h5>Basic Client Details</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      Company: {{ event.event.client.company }}
+    </div>
+    <div class="col-sm">
+      Contact Name: {{ event.event.client.contact_name }}
+    </div>
+    <div class="col-sm">
+      Contact Number: {{ event.event.client.contact_number }}
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col border-bottom text-left">
+      <h5>Basic Client Details</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      Company: {{ event.event.client.company }}
+    </div>
+    <div class="col-sm">
+      Contact Name: {{ event.event.client.contact_name }}
+    </div>
+    <div class="col-sm">
+      Contact Number: {{ event.event.client.contact_number }}
+    </div>
+  </div>
+</div>
 
-<ul>
-{% for key, value in event %}
-    <li>
-    {{ key }}: 
-    {{ value }}
-    </li>
+
+
+
+
+
+
+<br>
+<h1>Worksheet: {{ event.event.name }} {{ event.event.date }}</h1>
+    <br>
+    <p>Heya {{event.contractor.user.first_name }} </p>
+  
+  <p>This is the worksheet letting you know you are LOCKED IN for an event on the {{ event.event.date }}. </p>
+  <p>
+{% if event.is_bandleader %}
+    <b>Your bandleader responsibilities: </b><br>
+    - Introduce yourself to the client and be the first point of contact.<br>
+    - Take control (if required) when leading the band, calling tunes, choosing where to setup etc.<br>
+    - Please take a photo of the gig at some point and text it to 0423 526 197.<br>
+    - Grab a photo/copy of a runsheet on the day so you know when you’ll need to play.</p> 
+{% endif %}
+
+<p><b>Documentation:</b><br>
+	<a href="https://www.danielfrancis.com.au/musicianexpectations">Musician/Expectations/Singer Songlists</a><br>
+	<a href="https://www.danielfrancis.com.au/djchecklist">DJ Checklist</a><br>
+	<a href="https://www.danielfrancis.com.au/standardrepertoire">Standard Repertoire</a><br>
+	<a href="https://www.danielfrancis.com.au">Our Website</a></p>
+
+<p><i>By accepting this gig you acknowledge the information contained in the attached document regarding your expectations as a contractor of "Daniel Francis Entertainment."</i></p>
+<p><b>WORKSHEET DETAILS:</b></p>
+<table style="width:50%; min-width: 500px;" border="1" align="center">
+  <tr>
+    <td>Client Details:</td>
+    <td>Company: {{ event.event.client.company }}<br>
+        Contact Name: {{ event.event.client.contact_name }}<br>
+        Contact Number: {{ event.event.client.contact_number }}</td>
+  </tr>
+  <tr>
+    <td>Band Leader:</td>
+    <td>
+        {{ bandleader }}
+    </td>
+  </tr>
+  <tr>
+    <td>Booker:</td>
+    <td> {{ event.event.booker }}</td>
+  </tr>
+   <tr>
+    <td>Date:</td>
+    <td>{{ event.event.date }}</td>
+  </tr>
+  <tr>
+    <td>Run Through/Rehearsal details (date/time/location):</td>
+    <td>{{ event.event.rehearsal }}</td>
+  </tr>
+  <tr>
+    <td>Event Name:</td>
+    <td>{{ event.event.name }}</td>
+  </tr>
+   <tr>
+    <td>Venue:</td>
+    <td>{{ event.event.name }}</td>
+  </tr>
+  <tr>
+    <td>Venue in case of rain:</td>
+    <td>{{ event.event.venue_in_case_of_rain }}</td>
+  </tr>
+   <tr>
+    <td>Parking Address:<br> 
+Parking Cost reimbursed P/Car:<br>
+Who Gets the Parking Reimbursement?:<br> 
+No. of spots provided: </td>
+    <td>{{ event.event.parking_address }}<br>
+        {{ event.event.parking_cost_per_car }}<br>
+        {{ event.event.parking_assignment }}<br>
+        {{ event.event.number_parking_spots_required }}
+    </td>
+  </tr>
+  <tr>
+    <td>Call Start Time <b>(Be setup and ready to go by this time.):</b></td>
+    <td>{{ event.event.musicians_call_time }}</td>
+  </tr>
+   <tr>
+    <td>Call End Time:</td>
+    <td>{{ event.event.booking_end_time }}</td>
+  </tr>
+   <tr>
+    <td>Performer attire:</td>
+    <td>{{ event.event.musicians_attire }}</td>
+  </tr>
+  <tr>
+    <td>Band:</td>
+    <td>{{ event.event.band_lineup }}</td>
+  </tr>
+  <tr>
+    <td>Musical style:</td>
+    <td>{{ event.event.musical_style }}</td>
+  </tr>
+   <tr>
+    <td>Production (AV requirements/provided):</td>
+    <td>{{ event.event.production }}</td>
+  </tr>
+  <tr>
+    <td>Requirements:</td>
+    <td>
+        Power provided: {{ event.event.power_required }}<br>
+        Further requirements: {{ event.event.further_musician_requirements }}
+    </td>
+  </tr>
+   <tr>
+    <td>Crew meals:</td>
+    <td>{{ event.event.crew_meals }}</td>
+  </tr>
+  <tr>
+    <td>Musician Notes:</td>
+    <td>{{ event.event.musician_only_notes }}</td>
+  </tr>
+  <tr>
+    <td>Run Sheet:</td>
+    <td>
+        {{ event.event.run_sheet }}
+        {% if event.event.helpful_files %}
+            <a href="{{ event.event.helpful_files.url }}">Click Here!</a>
+        {% endif %}
+    </td>
+  </tr>
+   <tr>
+    <td>IMPORTANT REQUESTS and performance routines:
+    <br>
+    	<p style="color: red;">You must play these songs</p>
+</td>
+    <td>Important requests: {{ event.event.important_requests }}<br><br> 
+    Do Not Play: {{ event.event.do_not_play }}<br><br>
+    <a href="https://www.danielfrancis.com.au/djchecklist">DJ Checklist</a></td>
+  </tr>
+  <tr>
+    <td>General requests:</td>
+    <td>{{ event.event.general_requests }}</td>
+  </tr>
+</table>
+<br>
+
+<p><b>Payment Details:</b></p>
+<p>
+Your fee: ${{ event.fee_all_incl }}<br>
+GST: ${{ event.gst_amnt }}<br>
+<br>
+BAND: {{ event.event.band_lineup }}<br>
+
+{% for musician in musicians %}
+    {% if musician.is_bandleader %}
+        <p style="color; blue">Band Leader: {{ musician }}</p><br>
+    {% else %}
+        <p> {{ musician.instrument }}: {{ musician }} </p>
+    {% endif %}
 {% endfor %}
-</ul>
 
+<br>
+<p>If approached for further work please refer any potential clients to the below contact details.<br>
+<br>
+If you have any questions/issues reply to this email or call/text me on 0423 526 197.<br>
+<br>
+Jack Purdon<br></p>
+<br>
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSe-Te67mD5f13rKswmXWfNBBwTmdzR8rcqe-nrZfEtFZnTV5A/viewform?usp=sf_link">Musicians feedback form</a></p>
+
+</body>
+</html>
 
 {% endblock %}

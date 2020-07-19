@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-md-2 px-4 user-col justify-content-center">
+        <!-- Left column for user. -->
+        <div class="row justify-content-center p-4">
+            <!-- Image file is dynamic. -->
+            <img src="{{ user.contractor.profile_picture.url }}" class="img-thumbnail rounded" style="max-height: 200px;">
+        </div>
+        <div class="row justify-content-center p-0">
+            <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4>
+        </div>
+        <div class="row justify-content-center">
+            <ul class="list-group-flush p-0">
+                <li class="list-group-item">
+                    {% for message in messages %}  
+                        <h6 class='alert alert-{{ message.tags }}'>
+                            {{ message }}. {% block add-message %}{% endblock %}
+                        </h6>
+
+                    {% empty %}
+                    {% endfor %}
+                </li>
+                
+            </ul>
+        </div>
+    </div>

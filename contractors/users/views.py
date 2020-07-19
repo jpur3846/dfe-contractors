@@ -10,7 +10,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
 # Other imports
-from datetime import datetime
+import datetime
 
 # My imports
 from .forms import (
@@ -20,14 +20,26 @@ from .forms import (
     UserContractorEditDetailsForm
 )
 from .models import Contractor
+from events.models import EventMusicians
 
 # Default landing page.
 def user_home(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('signin'))
+
+    contractor = request.user.contractor
+
+    events = EventMusicians.objects.filter(contractor=contractor)
+    # Returns a query set of EventMusicians objects that we can then get
+    # The details from. See EventMusician model for more.
+    new_events = []
+    
+    for event in events:
+        if event.event.date > datetime.date.today():
+            new_events.append(event)
+
     return render(request, 'users/user_home.html', {
-        'events': request.user.contractor.event_set.filter(date__gte=datetime.now()),
-        'user': request.user
+        'events': new_events
     })
 
 def user_details(request):
@@ -48,7 +60,6 @@ def user_details(request):
             return HttpResponseRedirect(reverse('user_details'))
 
         else:
-            messages.add_message(request, messages.ERROR, 'Profile has not been updated')
             context = {'form': form, 'profile_form': profile_form}
             return render(request, 'users/user_details.html', context)
 
@@ -60,8 +71,16 @@ def user_details(request):
     return render(request, 'users/user_details.html', context)
 
 def user_event_history(request):
+    contractor = request.user.contractor
+    events = EventMusicians.objects.filter(contractor=contractor)
+    past_events = []
+
+    for event in events:
+        if event.event.date < datetime.date.today():
+            past_events.append(event)
+
     context = {
-        'past_events': (request.user.contractor.event_set.filter(date__lte=datetime.now()))
+        'past_events': past_events
     }
     return render(request, 'users/user_event_history.html', context)
 
@@ -74,7 +93,7 @@ def signin_view(request):
         if user is not None:
             if hasattr(user, 'contractor'): # Does the user have a contractor? 
                 login(request, user)
-                banner = 'You have successfully logged in. Welcome!' # we can add some user banners here if we needed.
+                banner = f'Hey {user.first_name}! Welcome!' # we can add some user banners here if we needed.
                 messages.add_message(request, messages.SUCCESS, banner) 
                 return HttpResponseRedirect(reverse("user_home"))
 

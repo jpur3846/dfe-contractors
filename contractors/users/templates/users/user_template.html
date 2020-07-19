@@ -1,40 +1,50 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block pagetitle %}
 DFE | Contractors
 {% endblock %}
 
-<!-- body is from layout.html -->
-{% block body %}
-<div class="row">
-    <!-- Left column for user.-->
-    <div class="col-md-2 text-center pl-4">
-        <div class="row justify-content-center p-4">
-            <!-- Image file is dynamic. -->
-            <img src="{{ user.contractor.profile_picture.url }}" class="img-thumbnail rounded profile-pic">
-        </div>
-        <div class="row justify-content-center p-0">
-            <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4>
-        </div>
-        <div class="row justify-content-center">
-            <ul class="list-group-flush p-0">
-                <li class="list-group-item">
-                    {% for message in messages %}  
-                        <h6 class=' alert alert alert-{{ message.tags }}'>{{ message }}</h6>
-                    {% endfor %}
-                </li>
-                <li class="list-group-item"><a href="{% url 'user_home' %}"><u>Gig List</u></a></li>
-                <li class="list-group-item"><a href="{% url 'user_details' %}"><u>Edit My Details</u></a></li>
-                <li class="list-group-item"><a href="{% url 'user_event_history' %}"><u>Gig History</u></a></li>
-                <li class="list-group-item"><a href="{% url 'contact' %}"><u>Provide Feedback</u></a></li>
-                <li class="list-group-item text-primary"><a href="{% url 'signout' %}" class="list-group-item text-primary bg-light"><u>Log out</u></a></li>
-            </ul>
-        </div>
+{% block nav %}
+<nav class="navbar justify-content-center header py-0" style="max-height: 70px;">
+    <div class="row">
+        <table class="table">
+            <tr class="text-dark">
+                <td><a href="{% url 'user_home' %}" class="text-dark">Gig List</a></td>
+                <td><a href="{% url 'user_details' %}" class="text-dark">Edit My Details</a></td>
+                <td><a href="{% url 'user_event_history' %}" class="text-dark">Gig History</a></td>
+                <td><a href="{% url 'contact' %}" class="text-dark">Provide Feedback</a></td>
+                <td><a href="{% url 'signout' %}" class="text-dark">Log out</a></td>
+            </tr>
+        </table>
     </div>
-
-{% block user-body %}
-<!-- This is where the 'right column' content will go. -->
+</nav>
 {% endblock %}
 
-</div>
+{% block body %}
+    <div class="row pt-4 justify-content-center">
+        <h3>
+    {% block written-title %}
+    {% endblock %}
+        </h3>
+    </div>
+
+    {% if messages %}
+    <div class="row justify-content-center">
+        <ul style="width: 100%; padding: 0px;">
+            <li>
+                {% for message in messages %}  
+                    <h6 class='alert alert-{{ message.tags }} list-group'>
+                        {{ message }}. {% block add-message %}{% endblock %}
+                    </h6>
+                {% empty %}
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+
+    {% block user-body %}
+    {% endblock %}
+
 {% endblock %}

@@ -18,7 +18,7 @@ def edit_event_view(request, event_id):
     event = Event.objects.get(pk=event_id)
 
     if request.method == 'POST':
-        form = EventEditForm(request.POST, instance=event)
+        form = EventEditForm(request.POST, request.FILES, instance=event)
         add_musician = AddEventMusician(request.POST)
 
         if form.is_valid() and 'save_changes' in request.POST:
@@ -73,11 +73,21 @@ def edit_event_musicians_view(request, musician_id, event_id):
 
 def worksheet_view(request, event_id):
     """
-    View auto generated worksheet as a contractor
+    View auto generated worksheet as a contractor.
+    The event_id is an EventMusician object
     """
-    event = Event.objects.get(pk=event_id)
+    event = EventMusicians.objects.get(pk=event_id)
+    bandleader = None
+    musicians = event.event.eventmusicians_set.all() # Need to get a set of musicians.
+
+    for musician in musicians:
+        if musician.is_bandleader:
+            bandleader = musician
+
     context = {
-            'event': event.__dict__.items() # Getting all data.
+            'event': event,
+            'bandleader': bandleader,
+            'musicians': musicians
         }
     return render(request, "events/contractor_worksheet.html", context)
 
@@ -86,7 +96,7 @@ def generate_pdf_invoice(request, event_id, *args, **kwargs):
     When click to send an invoice it generates one.
     for force download visit https://www.youtube.com/watch?v=B7EIK9yVtGY
     """
-    event = Event.objects.get(pk=event_id)
+    event = EventMusicians.objects.get(pk=event_id)
 
     template = get_template('pdf/contractor_invoice.html')
     context = {'event': event, 'user': request.user}

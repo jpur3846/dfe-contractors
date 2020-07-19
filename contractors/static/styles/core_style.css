@@ -8,7 +8,8 @@ html {
 
 body {
   margin-bottom: 60px;
-  /* Margin bottom by footer height */ }
+  /* Margin bottom by footer height */
+  min-width: 640px; }
 
 .footer {
   position: absolute;
@@ -24,5 +25,8 @@ body {
 .navbar {
   padding: 20px;
   background-color: #f5f5f5; }
+
+.user-col ul {
+  width: 80%; }
 
 /*# sourceMappingURL=core_style.css.map */

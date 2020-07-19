@@ -5,49 +5,48 @@
 DFE | Gig List
 {% endblock %}
 
-{% block user-body %}
+{% block written-title %}
+Gig List
+{% endblock %}
 
-<!--Right column for gig list.-->
-<div class="col-md-10 pl-0">
-    <div class="row justify-content-center pr-5 pt-4">
-        <h3>Gig List</h3>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th scope="col">Gig Date</th>
-                <th scope="col">Event Name</th>
-                <th scope="col">Venue</th>
-                <th scope="col">Call Time</th>
-                <th scope="col">Fee (Incl. GST)</th>
-                <th scope="col">Worksheet</th>
-                <th scope="col">Send an Invoice</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for event in events %}
-                <tr>
-                <td>{{ event.date }}</td>
-                <td>{{ event.name }}</td>
-                <td>{{ event.venue }}</td>
-                <td>{{ event.call_time }}</td>
-                <td>${{ event.fee_incl_gst }}</td>
-                <td><a href="{% url 'worksheet_view' event.pk %}"><u>Click Here</u></a></td>
-                {% if event.event_complete %}
-                    <td><a href="{% url 'generate_pdf_invoice' event.pk %}"><u>Generate Invoice</u></a></td>
-                {% else %}
-                    <td>Event pending</td>
-                {% endif %}
-                </tr>
-            {% empty %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><h4>No Gigs booked!</h4></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            </table>
-    </div>
-</div>
+{% block user-body %}
+<br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+        <th scope="col">Gig Date</th>
+        <th scope="col">Event Name</th>
+        <th scope="col">Venue</th>
+        <th scope="col">Call Time</th>
+        <th scope="col">Fee (Incl. GST)</th>
+        <th scope="col">Worksheet</th>
+        <th scope="col">Send an Invoice</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for event in events %}
+        <tr>
+        <td>{{ event.event.date }}</td>
+        <td>{{ event.event.name }}</td>
+        <td>{{ event.event.venue }}</td>
+        <td>{{ event.event.musicians_call_time }}</td>
+        <td>${{ event.fee_all_incl }}</td>
+        <td><a href="{% url 'worksheet_view' event.pk %}"><u>Click Here</u></a></td>
+        {% if event.event.event_complete %}
+            <td><a href="{% url 'generate_pdf_invoice' event.pk %}"><u>Generate Invoice</u></a></td>
+        {% else %}
+            <td>Event pending</td>
+        {% endif %}
+        </tr>
+    {% empty %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><h4>No Gigs booked!</h4></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
 {% endblock %}

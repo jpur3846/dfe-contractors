@@ -121,6 +121,7 @@ class Contractor(models.Model):
         """
         if self.number_plate != None:
             self.number_plate = self.number_plate.upper()
+        
 
         super().save(*args, **kwargs)
 

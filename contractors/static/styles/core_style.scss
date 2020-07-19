@@ -15,6 +15,7 @@ html {
 }
 body {
     margin-bottom: 60px; /* Margin bottom by footer height */
+    min-width: 640px;
 }
 
 .footer {
@@ -30,4 +31,8 @@ body {
 .navbar {
     padding: 20px;
     background-color: $background-color;
+}
+
+.user-col ul {
+    width: 80%;
 }

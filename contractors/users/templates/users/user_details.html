@@ -1,44 +1,188 @@
 {% extends "user_template.html" %}
-{% load static %}
 
 {% block pagetitle %}
 DFE | Edit User Details
 {% endblock %}
 
+{% block add-message %}
+{% endblock %}
+
+{% block written-title %}
+    <h3>Edit your details</h3>
+{% endblock %}
+
 {% block user-body %}
 
 <!--Right column for gig list.-->
-<div class="col-md-10 pl-0">
-    <div class="row pr-5 pt-4">
-        <h3>Edit your details</h3>
-    </div>
-    <div class="row pr-5 pt-4">
-        <h5>Personal Details </h5>
-    </div>
-    <div class="row pr-5 pt-4">
-        <form method="POST" action="{% url 'user_details' %}" enctype='multipart/form-data'>
-            {% csrf_token %}
-            <table>
+<div class="row justify-content-center" style="width: 100%;">
+    <form method="POST" action="{% url 'user_details' %}" enctype='multipart/form-data' style="width: 90%; max-width: 1000px;">
+        {% csrf_token %}
+        <!-- ERRORS -->
+        <div class="row justify-content-center">
             {% for field in form %}
-                <td>{{ field }}</td>
                 {% if field.errors %}
-                <td>{{ field.errors }}</td>
+                <ul style="width: 100%; padding: 0px;">
+                    <li class="alert alert-danger list-group">{{ field.errors|striptags }}</li>
+                    {% endif %}
+            {% endfor %}
+            {% for field in profile_form %}
+                {% if field.errors %}
+                    <li class="alert alert-danger list-group">{{ field.errors|striptags }}</li>
+                </ul>
                 {% endif %}
             {% endfor %}
-            </table>
-    </div>
-    <div class="row pr-5 pt-4">
-            <table>
-            {% for field in profile_form %}
+            <br>
+        </div>
+
+        <div class="row">
+            <h5>Account Details </h5>
+        </div>
+        <table class="table">
             <tr>
-                <td>{{ field.label }}</td>
-                <td>{{ field }}</td>
-                <td>{{ field.errors }}</td>
+                <td>
+                    <label>Log-in Email</label>
+                    {{ form.email }}
+                </td>
+                <td>
+                    <label>First Name</label>
+                    {{ form.first_name }}
+                </td>
+                <td>
+                    <label>Last Name</label>
+                    {{ form.last_name }}
+                </td>
+                <td>
+                    <label>Profile Picture</label>
+                    <br>
+                    <img src='{{ request.user.contractor.profile_picture.url }}' class='img-thumbnail' style="max-height: 200px;">
+                </td>
             </tr>
-            {% endfor %}
-            </table>
-            <button type="Submit">Save Changes</button>
-        </form>
-    </div>
+        </table>
+
+        <div class="row pt-4">
+            <h5>Personal Details </h5>
+        </div>
+        <table class="table">
+            <tr>
+                <td>
+                    <label>Phone Number</label>
+                    {{ profile_form.phone_number }}
+                </td>
+                <td>
+                    <label>City</label>
+                    {{ profile_form.city }}
+                </td>
+                <td>
+                    <label>State</label>
+                    {{ profile_form.state }}
+                </td>
+                <td>
+                    <label>Profile Picture</label>
+                    <br>
+                    {{ profile_form.profile_picture }}
+                </td>
+            </tr>
+        </table>
+
+        <div class="row pt-4 ">
+            <h5>Financial Details </h5>
+        </div>
+        <table class="table" style="display: flexbox;">
+            <tr>
+                <td>
+                    <label>ABN</label>
+                    {{ profile_form.abn }}
+                </td>
+                <td>
+                    <label>GST Status</label>
+                    {{ profile_form.gst_status }}
+                </td>
+                <td>
+                    <label>Bank Account Name</label>
+                    {{ profile_form.account_name }}
+                </td>
+                <td>
+                    <label>BSB</label>
+                    {{ profile_form.bsb }}
+                </td>
+                <td>
+                    <label>Account Number</label>
+                    {{ profile_form.account_number }}
+                </td>
+            </tr>
+        </table>
+
+
+        <div class="row pt-4">
+            <h5>Musical/Work Details </h5>
+        </div>
+
+        <table class="table">
+            <tr>
+                <td>
+                    <label>Main Instrument</label>
+                    {{ profile_form.main_instrument }}
+                </td>
+                <td>
+                    <label>Secondary Instrument</label>
+                    {{ profile_form.secondary_instrument }}
+                </td>
+                <td> 
+                    <label>Other Instruments</label>
+                    {{ profile_form.other_instruments }}
+                </td>         
+            </tr>
+            <tr>
+                <td>
+                    <label>Meal Preference</label>
+                    {{ profile_form.meal_preference }}
+                </td>
+                <td>
+                    <label>Can you provide a PA?</label>
+                    {{ profile_form.pa_system }}
+                </td>
+                <td> 
+                    <label>Can you provide a battery amp?</label>
+                    {{ profile_form.battery_amp }}
+                </td>         
+            </tr>
+            <tr>
+                <td>
+                    <label>Public Liability Insurance</label>
+                    {{ profile_form.public_liability }}
+                </td>
+                <td>
+                    <label>Can you comfortably MC?</label>
+                    {{ profile_form.can_mc }}
+                </td>
+                <td> 
+                    <label>Car Number Plate</label>
+                    {{ profile_form.number_plate }}
+                </td>         
+            </tr>
+            <tr>
+                <td> 
+                    <label>If you DJ, can you accept on-the-spot requests?</label>
+                    {{profile_form.accept_on_spot_requests }}
+                </td>
+                <td>
+                    <label>Are you a Sydney Conservatorium Alumni?</label>
+                    {{ profile_form.alumni }}
+                </td>
+                <td> 
+                    <label>If so, what year did you finish?</label>
+                    {{ profile_form.year_finished }}
+                </td>         
+            </tr>
+            
+        </table>
+        <br>
+        <br>
+
+        <button class="btn btn-lg btn-dark btn-block" type="Submit">Save Changes</button>
+        <br>
+        <br>
+    </form>
+
 </div>
 {% endblock %}

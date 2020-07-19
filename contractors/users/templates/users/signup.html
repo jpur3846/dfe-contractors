@@ -9,7 +9,7 @@ DFE | Contractor Sign-up
 
 <!--This is the signin form.>-->
 <div class="row justify-content-center align-items-center p-5">
-    <div class="col-lg-6 md-form">
+    <div class="col-lg-6">
         <form class="form-signin" action="{% url 'signup' %}" method="POST">
             <h1>Contractor Sign-up</h1>
             <p class="text-dark">Sign up as a contractor to see your gigs online</p>
@@ -28,7 +28,9 @@ DFE | Contractor Sign-up
 
             {% endfor %}
             <br>
-            <button class="btn btn-lg btn-dark btn-block" type="submit">Sign up</button>
+            <div class="row justify-content-center">
+                <button class="btn btn-lg btn-dark btn-block form-control" type="submit">Sign up</button>
+            </div>
         </form>
         
         <br>

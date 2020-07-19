@@ -2,7 +2,7 @@
 
 {% block events-body %}
 
-<form action="{% url 'edit_event_view' event.pk %}" method="POST">
+<form action="{% url 'edit_event_view' event.pk %}" method="POST"  enctype='multipart/form-data'>
 {% csrf_token %}
 {{ event_edit_form.as_p }}
 

@@ -1,0 +1,32 @@
+<div class="col-md-10 pl-0">
+    <div class="row pr-5 pt-4">
+        <h3>Edit your details</h3>
+    </div>
+    <div class="row pr-5 pt-4">
+        <h5>Personal Details </h5>
+    </div>
+    <div class="row pr-5 pt-4">
+            
+            <table>
+            {% for field in form %}
+                <td>{{ field }}</td>
+                {% if field.errors %}
+                <td>{{ field.errors }}</td>
+                {% endif %}
+            {% endfor %}
+            </table>
+    </div>
+    <div class="row pr-5 pt-4">
+            <table>
+            {% for field in profile_form %}
+            <tr>
+                <td>{{ field.label }}</td>
+                <td>{{ field }}</td>
+                <td>{{ field.errors }}</td>
+            </tr>
+            {% endfor %}
+            </table>
+        </form>
+    </div>
+</div>
+

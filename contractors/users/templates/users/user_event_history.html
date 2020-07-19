@@ -5,11 +5,13 @@
 DFE | Gig List
 {% endblock %}
 
+{% block written-title %}
+Gig History
+{% endblock %}
+
 {% block user-body %}
 <!--Right column for gig list.-->
-<div class="col-md-10 pl-0">
-    <div class="row justify-content-center pr-5 pt-4">
-        <h3>Gig History</h3>
+    <div class="row justify-content-center px-5 pt-4">
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -17,17 +19,15 @@ DFE | Gig List
                 <th scope="col">Event Name</th>
                 <th scope="col">Venue</th>
                 <th scope="col">Fee (Incl. GST)</th>
-                <th scope="col">Worksheet</th>
                 </tr>
             </thead>
             <tbody>
             {% for event in past_events %}
                 <tr>
-                <td>{{ event.date }}</td>
-                <td>{{ event.name }}</td>
-                <td>{{ event.venue }}</td>
-                <td>${{ event.fee_incl_gst }}</td>
-                <td><a href="{% url 'worksheet_view' event.pk %}"><u>Click Here</u></a></td>
+                <td>{{ event.event.date }}</td>
+                <td>{{ event.event.name }}</td>
+                <td>{{ event.event.venue }}</td>
+                <td>${{ event.fee_all_incl }}</td>
                 </tr>
             {% empty %}
                 <tr>
@@ -40,6 +40,5 @@ DFE | Gig List
             </tbody>
             </table>
     </div>
-</div>
 
 {% endblock %}
