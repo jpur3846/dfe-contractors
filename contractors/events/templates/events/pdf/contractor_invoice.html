@@ -1,8 +1,61 @@
-<h1>Invoice:</h1>
+<h1>Tax Invoice:</h1>
+<hr>
 
-<h3>Your Details:</h3>
-{{ user.first_name }} {{ user.last_name }} 
+<table>
+    <th>
+        <h3>Paid To:</h3>
+    </th>
+    <th>
+        <h3>Billing to:</h3>
+    </th>
+    <tr>
+        <td>
+            <p>  
+                N: {{ user.first_name }} {{ user.last_name }}<br>
+                L: {{ user.contractor.city }}, {{ user.contractor.state }}<br>
+                E: {{ user.email }}<br>
+                P: {{ user.contractor.phone_number }}<br>
+                ABN: {{ user.contractor.abn }}<br>
+            </p>
+        </td>
+        <td>
+            N: Daniel Francis Entertainment ATTN: Jack Purdon<br>
+            L: 55 Lawrence Hargrave Dr, Austinmer, NSW, 2515<br>
+            E: info@danielfrancis.com.au<br>
+            P: 0423526197<br>
+            ABN: 74973232729<br>
+        </td>
+    </tr>
 
-<h3>Event Details:</h3>
-{{ event.name }} 
-${{ event.fee_incl_gst }}
+</table>
+<br><br><br>
+<table style="border-top:1px solid black; border-bottom:1px solid black;">
+    <th>
+        <br>
+        Description:
+    </th>
+    <th>
+        <br>
+        Fee:
+    </th>
+    <tr>
+        <td>
+            <br>
+            Payment for {{ event.event.name }} on {{ event.event.date }}.
+        </td>
+        <td>
+            <br>
+            <p>Base Fee: ${{ event.fee }}</p>
+            <p>GST Amount: ${{ event.gst_amnt }}</p>
+            <p>Full Amount: ${{ event.fee_all_incl }}
+        </td>
+    </tr>
+
+
+</table>
+
+<h3>Payee Details</h3>
+ABN: {{ event.contractor.abn }}<br>
+Account Name: {{ event.contractor.account_name }}<br>
+BSB: {{ event.contractor.bsb }}<br>
+Account Number: {{ event.contractor.account_number }}<br>

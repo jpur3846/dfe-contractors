@@ -30,12 +30,8 @@ Gig History
                 <td>${{ event.fee_all_incl }}</td>
                 </tr>
             {% empty %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><h4>You haven't done any gigs with us yet :(</h4></td>
-                </tr>
+                    <h4>You haven't done any gigs with us yet :(</h4>
+                    <br><br>
             {% endfor %}
             </tbody>
             </table>

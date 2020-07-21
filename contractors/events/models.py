@@ -55,8 +55,8 @@ class Event(models.Model):
     name = models.CharField(max_length=60, default='New Event')
     date = models.DateField(blank=True, null=True)
     event_complete = models.BooleanField(default=False, blank=True, null=True)
-    event_completion_status = models.CharField(max_length=50, default='Awaiting Balance and Deposit', blank=True, null=True, choices=event_completion_statuses)
-    event_status = models.CharField(max_length=20, default='Tentative', blank=True, null=True, choices=event_statuses)
+    event_completion_status = models.CharField(max_length=50, default='awaiting_balance_and_deposit', blank=True, null=True, choices=event_completion_statuses)
+    event_status = models.CharField(max_length=20, default='tentative', blank=True, null=True, choices=event_statuses)
     band_locked_in = models.BooleanField(default=False, blank=True, null=True)
     # Contract number is PK + 500 (starting from 500th invoice.)
 
@@ -113,9 +113,9 @@ class Event(models.Model):
     helpful_files = models.FileField(upload_to='event_uploads/%Y/%m/%d/', null=True, blank=True)
 
     ### Financial Details
-    total_fee_no_gst = models.FloatField(blank=True, null=True)
+    total_fee_no_gst = models.FloatField(default=0, blank=True, null=True)
     deposit_required = models.BooleanField(default=True, blank=True, null=True)
-    payment_method = models.CharField(max_length=30, blank=True, null=True, choices=payment_methods)
+    payment_method = models.CharField(max_length=30, blank=True, null=True, choices=payment_methods, default='direct_deposit')
     card_type = models.CharField(max_length=30, blank=True, null=True, choices=card_types)
     total_fee_incl_gst = models.FloatField(default=0, blank=True, null=True)
     credit_card_surcharge_amount = models.FloatField(default=0, blank=True, null=True)
@@ -156,16 +156,16 @@ class EventMusicians(models.Model):
     contractor = models.ForeignKey(Contractor, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     
-    is_bandleader = models.BooleanField(default=False, blank=True, null=True)
+    is_bandleader = models.CharField(max_length=4, default='no', choices=yes_or_no, blank=True, null=True)
     instrument = models.CharField(max_length=100, default='', blank=True, null=True)
     
-    fee = models.IntegerField(null=True, blank=True) # Incl. Parking, Leader fee etc. Excl. GST
-    gst_amnt = models.FloatField(null=True, blank=True)
-    fee_all_incl = models.FloatField(null=True, blank=True)
+    fee = models.IntegerField(null=True, blank=True, default=0) # Incl. Parking, Leader fee etc. Excl. GST
+    gst_amnt = models.FloatField(null=True, blank=True, default=0)
+    fee_all_incl = models.FloatField(null=True, blank=True, default=0)
     
-    feedback_status = models.BooleanField(default=False, blank=True, null=True)
-    invoice_status = models.BooleanField(default=False, blank=True, null=True)
-    payment_status = models.BooleanField(default=False, blank=True, null=True)
+    feedback_status = models.CharField(max_length=3, choices=yes_or_no, default='no', blank=True, null=True)
+    invoice_status = models.CharField(max_length=3, choices=yes_or_no, default='no', blank=True, null=True)
+    payment_status = models.CharField(max_length=3, choices=yes_or_no, default='no', blank=True, null=True)
 
     def __str__(self):
         return f'{self.contractor.user.first_name} {self.contractor.user.last_name} | \n \

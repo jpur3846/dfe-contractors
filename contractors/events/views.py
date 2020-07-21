@@ -30,7 +30,7 @@ def edit_event_view(request, event_id):
             return HttpResponseRedirect(reverse('bookers_home_view'))
         
         elif form.is_valid() and 'add_musician' in request.POST:
-            musician_id  = request.POST['contractor']
+            musician_id = request.POST['contractor']
 
             if Contractor.objects.get(pk=musician_id) not in event.musicians.all():
                 event.musicians.add(request.POST['contractor'])
@@ -53,6 +53,7 @@ def edit_event_musicians_view(request, musician_id, event_id):
     musician = EventMusicians.objects.filter(contractor=contractor, event=event).first()
 
     context = {
+        'event': event,
         'musician': musician,
         'event_musicians_edit_form': EditEventMusician(instance=musician)
     }
@@ -62,12 +63,17 @@ def edit_event_musicians_view(request, musician_id, event_id):
 
         if form.is_valid() and 'save_changes' in request.POST:
             form.save()
-            return HttpResponseRedirect(reverse('edit_event_view', args=(event_id, )))
+            messages.add_message(request, messages.SUCCESS, 'Changes successfully saved')
+            return HttpResponseRedirect(reverse('edit_event_musicians_view', args=(event_id, musician_id, )))
 
         elif form.is_valid() and 'delete_musician' in request.POST:
             musician.delete()
             messages.add_message(request, messages.SUCCESS, 'Musician successfully deleted')
             return HttpResponseRedirect(reverse('edit_event_view', args=(event_id,)))
+
+        else:
+            messages.add_message(request, messages.ERROR, 'Changes Invalid')
+            return HttpResponseRedirect(reverse('edit_event_musicians_view', args=(event_id, musician_id, )))
 
     return render(request, "events/edit_event_musicians.html", context)
 
@@ -102,6 +108,18 @@ def generate_pdf_invoice(request, event_id, *args, **kwargs):
     context = {'event': event, 'user': request.user}
     html = template.render(context)
     pdf = render_to_pdf('pdf/contractor_invoice.html', context)
+
+    requirements = [
+        request.user.contractor.gst_status,
+        request.user.contractor.abn,
+        request.user.contractor.account_name,
+        request.user.contractor.bsb,
+        request.user.contractor.account_number,
+    ]
+    for requirement in requirements:
+        if requirement == None:
+            messages.add_message(request, messages.ERROR, 'Banking details incomplete')
+            return HttpResponseRedirect(reverse('user_home'))
 
     if pdf:
         return HttpResponse(pdf, content_type='application/pdf')

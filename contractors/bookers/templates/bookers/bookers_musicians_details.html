@@ -1,0 +1,60 @@
+{% extends 'bookers_template.html' %}
+
+{% block written-title %}
+    Musicians Details
+{% endblock %}
+
+{% block bookers-body %}
+
+<div class="container-fluid px-5 pt-1">
+    {% for contractor in contractors %}
+    <div class="row border px-4 py-3 mb-4">
+        <div class="col-lg-6 border-bottom pb-2">
+            <div class="row">
+                <div class="col-sm-3 border-right">
+                    <label><b>Name:</b></label><br>
+                    {{ contractor.user.first_name }} {{ contractor.user.last_name }}
+                </div>
+                <div class="col-sm-3 border-right">
+                    <label><b>Account Name:</b></label><br>
+                    {{ contractor.account_name }}
+                </div>
+                <div class="col-sm-3 border-right">
+                    <label><b>BSB:</b></label><br>
+                    {{ contractor.bsb }}
+                </div>
+                <div class="col-sm-3 border-right">
+                    <label><b>Account Number:</b></label><br>
+                    {{ contractor.account_number }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            {% for eventmusician in contractor.eventmusicians_set.all %}
+            <div class="row border-bottom pb-1 mx-3 mt-2">
+                <div class="col border-right">
+                    {{ eventmusician.event }}
+                </div>
+                <div class="col pb-2">
+                    {% if eventmusician.payment_status == 'no' %}
+                    <form action="{% url 'bookers_musicians_view' eventmusician.pk %}" method="POST">
+                        {% csrf_token %}
+                    <button class="btn btn-primary" type="submit">Mark as paid</button>
+                    </form>
+                    {% else %}
+                    <p class="text-secondary">Payment Complete</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+                No Bookings
+            {% endfor %}
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+<br>
+{% endblock %}

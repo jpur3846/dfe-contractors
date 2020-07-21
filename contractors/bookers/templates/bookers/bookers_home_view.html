@@ -1,47 +1,59 @@
 {% extends  'bookers_template.html' %}
 
+{% block written-title %}
+    Bookers Dashboard
+{% endblock %}
+
 {% block bookers-body %}
 
-<div class="col-md-10 pl-0">
-    <div class="row justify-content-center pr-5 pt-4">
-        <h3>Current Bookings:</h3>
-        <form action="{% url 'create_new_event' %}" method="POST">
-            {% csrf_token %}
-            {{ event_creation_form.as_p }}
-            <button type="submit">Create New Event</button>
-        </form>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th scope="col">Gig Date</th>
-                <th scope="col">Event Name</th>
-                <th scope="col">Venue</th>
-                <th scope="col">Call Time</th>
-                <th scope="col">Fee (Incl. GST)</th>
-                <th scope="col">Edit Event</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for event in events %}
-                <tr>
-                <td>{{ event.date }}</td>
-                <td>{{ event.name }}</td>
-                <td>{{ event.venue }}</td>
-                <td>{{ event.call_time }}</td>
-                <td>${{ event.fee_incl_gst }}</td>
-                <td><a href="{% url 'edit_event_view' event.pk %}"><u>Click Here</u></a></td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><h4>No Gigs booked!</h4></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            </table>
+<!-- ERRORS -->
+{% for field in event_creation_form %}
+    {% if field.errors %}
+    <p class="alert alert-danger" style="width: 100%; max-width: 100%;">{{ field.errors|striptags }}</p>
+    {% endif %}
+{% endfor %}
+
+<div class="container-fluid px-5 pt-1 m-0">
+    <div class="row border-bottom px-4 py-3 mb-4">
+        <div class="col">Event Date</div>
+        <div class="col">Event Name</div>
+        <div class="col d-none d-md-block">Venue</div>
+        <div class="col d-none d-md-block">Booking Start Time</div>
+        <div class="col d-none d-md-block">Fee (Incl. GST)</div>
+        <div class="col">Edit Event</div>
     </div>
+
+    {% for event in events %}
+        <div class="row p-4 mb-4">
+            <div class="col border-left border-right">{{ event.date }}</div>
+            <div class="col border-right">{{ event.name }}</div>
+            <div class="col border-right d-none d-md-block">{{ event.venue }}</div>
+            <div class="col border-right d-none d-md-block">{{ event.booking_start_time }}</div>
+            <div class="col border-right d-none d-md-block">${{ event.total_fee_no_gst }}</div>
+            <div class="col border-right">
+                <a href="{% url 'edit_event_view' event.pk %}">
+                    <button class="btn btn-primary btn-block">
+                    Edit
+                    </button>
+                </a>
+            </div>
+        </div>
+        {% empty %}
+            <h4>No Gigs booked!</h4>
+    {% endfor %}
+    <form action="{% url 'create_new_event' %}" method="POST">
+        {% csrf_token %}
+        <div class="row p-4 mb-4">   
+            <div class="col border-left border-right">{{ event_creation_form.date }}</div>
+            <div class="col border-right">{{ event_creation_form.name }}</div>
+            <div class="col border-right d-none d-md-block">{{ event_creation_form.venue }}</div>
+            <div class="col border-right d-none d-md-block">{{ event_creation_form.booking_start_time }}</div>
+            <div class="col border-right d-none d-md-block">{{ event_creation_form.total_fee_no_gst }}</div>
+            <div class="col border-right">
+                <button class="btn btn-dark btn-block" type="submit">Create New</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 {% endblock %}

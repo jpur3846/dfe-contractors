@@ -93,7 +93,7 @@ def signin_view(request):
         if user is not None:
             if hasattr(user, 'contractor'): # Does the user have a contractor? 
                 login(request, user)
-                banner = f'Hey {user.first_name}! Welcome!' # we can add some user banners here if we needed.
+                banner = f'Hey {user.first_name}! Welcome' # we can add some user banners here if we needed.
                 messages.add_message(request, messages.SUCCESS, banner) 
                 return HttpResponseRedirect(reverse("user_home"))
 

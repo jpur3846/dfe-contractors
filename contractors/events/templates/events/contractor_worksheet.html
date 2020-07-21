@@ -1,233 +1,200 @@
 {% extends 'user_template.html' %}
 
+
+
 {% block written-title %}
-Worksheet {{ event.event.date }}
+<div class="container px-5">
+Worksheet {{ event.event.name }} {{ event.event.date }}
+</div>
 {% endblock %}
 
+
 {% block user-body %}
-<br>
 <!-- Accessing the EventMusician Model and getting deets from there. -->
+
 <div class="container">
-  <div class="row">
-    <div class="col border-bottom text-left">
-      <h5>Basic Client Details</h5>
+  <div class="container">
+    <div class="row">
+      <div class="col border-bottom text-left">
+        <h5>Event Details</h5>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <b>Event name:</b> {{ event.event.name }}<br>
+        <b>Date:</b> {{ event.event.date }}<br>
+        <b>Run through/rehearsal details:</b> {{ event.event.rehearsal }}<br>
+        <b>Venue:</b> {{ event.event.venue }}<br>
+        <b>Venue in case of rain:</b> {{ event.event.venue_in_case_of_rain }}<br>
+      </div>
+      <div class="col-md-6">
+        <b>Call time: (Be setup and ready to go by this time.)</b> {{ event.event.musicians_call_time }}<br>
+        <b>Call End Time:</b> {{ event.event.booking_end_time }}<br>
+        <b>Performer attire:</b> {{ event.event.musicians_attire }}<br>
+        <b>Band:</b> {{ event.event.band_lineup }}<br>
+        <b>Bandleader:</b> {{ bandleader }}<br>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm">
-      Company: {{ event.event.client.company }}
+  <br>
+
+  <div class="container">
+    <div class="row">
+      <div class="col border-bottom text-left">
+        <h5>Client/Booker Details</h5>
+      </div>
     </div>
-    <div class="col-sm">
-      Contact Name: {{ event.event.client.contact_name }}
-    </div>
-    <div class="col-sm">
-      Contact Number: {{ event.event.client.contact_number }}
+    
+    <div class="row">
+      <div class="col">
+        <b>Client</b><br>
+        <b>Company:</b> {{ event.event.client.company }}<br>
+        <b>Contact Name:</b> {{ event.event.client.contact_name }}<br>
+        <b>Contact Number:</b> {{ event.event.client.contact_number }}<br>
+      </div>
+      <div class="col">
+        <b>Booker</b><br>
+        <b>Name:</b> {{ event.event.booker.user.first_name }}<br>
+        <b>Contact Email:</b> {{ event.event.booker.user.email }}<br>
+        <b>Contact Number:</b> {{ event.event.booker.contact_number }}<br>
+      </div>
     </div>
   </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col border-bottom text-left">
-      <h5>Basic Client Details</h5>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm">
-      Company: {{ event.event.client.company }}
-    </div>
-    <div class="col-sm">
-      Contact Name: {{ event.event.client.contact_name }}
-    </div>
-    <div class="col-sm">
-      Contact Number: {{ event.event.client.contact_number }}
-    </div>
-  </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col border-bottom text-left">
-      <h5>Basic Client Details</h5>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm">
-      Company: {{ event.event.client.company }}
-    </div>
-    <div class="col-sm">
-      Contact Name: {{ event.event.client.contact_name }}
-    </div>
-    <div class="col-sm">
-      Contact Number: {{ event.event.client.contact_number }}
-    </div>
-  </div>
-</div>
+  <br>
 
-
-
-
-
-
-
-<br>
-<h1>Worksheet: {{ event.event.name }} {{ event.event.date }}</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col border-bottom text-left">
+        <h5>Timings/Notes</h5>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <p class="text-center">
+        {% if event.is_bandleader %}
+          <b>Your bandleader responsibilities:</b><br>
+          - Introduce yourself to the client and be the first point of contact.<br>
+          - Take control (if required) when leading the band, calling tunes, choosing where to setup etc.<br>
+          - Please take a photo of the gig at some point and text it to 0423 526 197.<br>
+          - Grab a photo/copy of a runsheet on the day so you know when you’ll need to play.</p> 
+        {% endif %}
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <b>Musical Style: </b> {{ event.event.musical_style }}<br>
+        <b>Production (AV requirements/provided): </b>{{ event.event.production }}<br>
+        <b>Power provided: </b> {{ event.event.power_required }}<br>
+        <b>Crew Meals: </b> {{ event.event.crew_meals }}<br>
+        <b>Further requirements: </b>{{ event.event.further_musician_requirements }}<br><br>
+      </div>
+      <div class="col-md-6">
+        <b>Parking Address: </b>{{ event.event.parking_address }}<br>
+        <b>Parking Cost reimbursed P/Car: </b> {{ event.event.parking_cost_per_car }}<br>
+        <b>Who Gets the Parking Reimbursement?: </b>{{ event.event.parking_assignment }}<br>
+        <b>No. of spots provided: </b> {{ event.event.number_parking_spots_required }}  
+      </div>
+    </div>
     <br>
-    <p>Heya {{event.contractor.user.first_name }} </p>
-  
-  <p>This is the worksheet letting you know you are LOCKED IN for an event on the {{ event.event.date }}. </p>
-  <p>
-{% if event.is_bandleader %}
-    <b>Your bandleader responsibilities: </b><br>
-    - Introduce yourself to the client and be the first point of contact.<br>
-    - Take control (if required) when leading the band, calling tunes, choosing where to setup etc.<br>
-    - Please take a photo of the gig at some point and text it to 0423 526 197.<br>
-    - Grab a photo/copy of a runsheet on the day so you know when you’ll need to play.</p> 
-{% endif %}
 
-<p><b>Documentation:</b><br>
-	<a href="https://www.danielfrancis.com.au/musicianexpectations">Musician/Expectations/Singer Songlists</a><br>
-	<a href="https://www.danielfrancis.com.au/djchecklist">DJ Checklist</a><br>
-	<a href="https://www.danielfrancis.com.au/standardrepertoire">Standard Repertoire</a><br>
-	<a href="https://www.danielfrancis.com.au">Our Website</a></p>
-
-<p><i>By accepting this gig you acknowledge the information contained in the attached document regarding your expectations as a contractor of "Daniel Francis Entertainment."</i></p>
-<p><b>WORKSHEET DETAILS:</b></p>
-<table style="width:50%; min-width: 500px;" border="1" align="center">
-  <tr>
-    <td>Client Details:</td>
-    <td>Company: {{ event.event.client.company }}<br>
-        Contact Name: {{ event.event.client.contact_name }}<br>
-        Contact Number: {{ event.event.client.contact_number }}</td>
-  </tr>
-  <tr>
-    <td>Band Leader:</td>
-    <td>
-        {{ bandleader }}
-    </td>
-  </tr>
-  <tr>
-    <td>Booker:</td>
-    <td> {{ event.event.booker }}</td>
-  </tr>
-   <tr>
-    <td>Date:</td>
-    <td>{{ event.event.date }}</td>
-  </tr>
-  <tr>
-    <td>Run Through/Rehearsal details (date/time/location):</td>
-    <td>{{ event.event.rehearsal }}</td>
-  </tr>
-  <tr>
-    <td>Event Name:</td>
-    <td>{{ event.event.name }}</td>
-  </tr>
-   <tr>
-    <td>Venue:</td>
-    <td>{{ event.event.name }}</td>
-  </tr>
-  <tr>
-    <td>Venue in case of rain:</td>
-    <td>{{ event.event.venue_in_case_of_rain }}</td>
-  </tr>
-   <tr>
-    <td>Parking Address:<br> 
-Parking Cost reimbursed P/Car:<br>
-Who Gets the Parking Reimbursement?:<br> 
-No. of spots provided: </td>
-    <td>{{ event.event.parking_address }}<br>
-        {{ event.event.parking_cost_per_car }}<br>
-        {{ event.event.parking_assignment }}<br>
-        {{ event.event.number_parking_spots_required }}
-    </td>
-  </tr>
-  <tr>
-    <td>Call Start Time <b>(Be setup and ready to go by this time.):</b></td>
-    <td>{{ event.event.musicians_call_time }}</td>
-  </tr>
-   <tr>
-    <td>Call End Time:</td>
-    <td>{{ event.event.booking_end_time }}</td>
-  </tr>
-   <tr>
-    <td>Performer attire:</td>
-    <td>{{ event.event.musicians_attire }}</td>
-  </tr>
-  <tr>
-    <td>Band:</td>
-    <td>{{ event.event.band_lineup }}</td>
-  </tr>
-  <tr>
-    <td>Musical style:</td>
-    <td>{{ event.event.musical_style }}</td>
-  </tr>
-   <tr>
-    <td>Production (AV requirements/provided):</td>
-    <td>{{ event.event.production }}</td>
-  </tr>
-  <tr>
-    <td>Requirements:</td>
-    <td>
-        Power provided: {{ event.event.power_required }}<br>
-        Further requirements: {{ event.event.further_musician_requirements }}
-    </td>
-  </tr>
-   <tr>
-    <td>Crew meals:</td>
-    <td>{{ event.event.crew_meals }}</td>
-  </tr>
-  <tr>
-    <td>Musician Notes:</td>
-    <td>{{ event.event.musician_only_notes }}</td>
-  </tr>
-  <tr>
-    <td>Run Sheet:</td>
-    <td>
-        {{ event.event.run_sheet }}
+    <div class="row">
+      <div class="col border">
+        <b>Runsheet/files: </b> {{ event.event.run_sheet }}
         {% if event.event.helpful_files %}
             <a href="{{ event.event.helpful_files.url }}">Click Here!</a>
         {% endif %}
-    </td>
-  </tr>
-   <tr>
-    <td>IMPORTANT REQUESTS and performance routines:
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class="container">
+    <div class="row">
+      <div class="col border-bottom text-left">
+        <h5>Requests/Performance Routines</h5>
+      </div>
+    </div>
     <br>
-    	<p style="color: red;">You must play these songs</p>
-</td>
-    <td>Important requests: {{ event.event.important_requests }}<br><br> 
-    Do Not Play: {{ event.event.do_not_play }}<br><br>
-    <a href="https://www.danielfrancis.com.au/djchecklist">DJ Checklist</a></td>
-  </tr>
-  <tr>
-    <td>General requests:</td>
-    <td>{{ event.event.general_requests }}</td>
-  </tr>
-</table>
+      <div class="row">
+        <div class="col-md-4 border">
+          <b>Do Not Play: </b>
+          {{ event.event.do_not_play }}
+        </div>
+        <div class="col-md-4 border">
+          <b>Important requests: </b><p style="color: red;">You must play these songs</p>
+          {{ event.event.important_requests }}
+        </div>
+        <div class="col-md-4 border">
+          <b>General requests: </b>{{ event.event.general_requests }}
+        </div>
+      </div>
+    </div>
+
 <br>
+  <div class="container">
+    <div class="row">
+      <div class="col border-bottom text-left">
+        <h5>Musicians</h5>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-6 border">
+        <b>Musician Notes:</b>{{ event.event.musician_only_notes }}<br>
+      </div>
+      <div class="col-md-6 border">
+        <b>The Band: </b>{{ event.event.band_lineup }}<br>
+        <ol>
+        <li><b>Bandleader: {{ bandleader }}</b></li>
+        {% for musician in musicians %}
+          {% if musician.is_bandleader %}
+          {% else %}
+            <li> {{ musician.instrument }}: {{ musician }} </li>
+          {% endif %}
+        {% endfor %}
+        </ol>
+      </div>
+    </div>
+  </div>
 
-<p><b>Payment Details:</b></p>
-<p>
-Your fee: ${{ event.fee_all_incl }}<br>
-GST: ${{ event.gst_amnt }}<br>
 <br>
-BAND: {{ event.event.band_lineup }}<br>
+  <div class="container">
+    <div class="row">
+      <div class="col border-bottom text-left">
+        <h5>Payment</h5>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-6 border">
+        <b>Payment Details: </b><br>
+        Your fee: ${{ event.fee_all_incl }}<br>
+        GST: ${{ event.gst_amnt }}<br>
+        {% if event.is_bandleader %}
+          As bandleader, to be paid you must send an invoice as well as complete this 
+          survey - https://forms.gle/PhhzGb7YuzmqhsMt5 <br><br>
+        {% endif %}
 
-{% for musician in musicians %}
-    {% if musician.is_bandleader %}
-        <p style="color; blue">Band Leader: {{ musician }}</p><br>
-    {% else %}
-        <p> {{ musician.instrument }}: {{ musician }} </p>
-    {% endif %}
-{% endfor %}
+          Please invoice info@danielfrancis.com.au. <br>
+          <a href="{% url 'generate_pdf_invoice' event.pk %}"><u style="color: orangered;">Generate an Invoice</u></a>
 
+      </div>
+      <div class="col-md-6 border">
+        <p><b>Documentation:</b><br>
+          <a href="https://www.danielfrancis.com.au/djchecklist">DJ Checklist</a><br>
+          <a href="https://www.danielfrancis.com.au/musicianexpectations">Musician/Expectations/Singer Songlists</a><br>
+          <a href="https://www.danielfrancis.com.au/djchecklist">DJ Checklist</a><br>
+          <a href="https://www.danielfrancis.com.au/standardrepertoire">Standard Repertoire</a><br>
+          <a href="https://www.danielfrancis.com.au">Our Website</a><br>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe-Te67mD5f13rKswmXWfNBBwTmdzR8rcqe-nrZfEtFZnTV5A/viewform?usp=sf_link">Musicians feedback form</a></p>
+      </div>
+    </div>
+  </div>
+</div>
 <br>
 <p>If approached for further work please refer any potential clients to the below contact details.<br>
 <br>
-If you have any questions/issues reply to this email or call/text me on 0423 526 197.<br>
-<br>
-Jack Purdon<br></p>
-<br>
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSe-Te67mD5f13rKswmXWfNBBwTmdzR8rcqe-nrZfEtFZnTV5A/viewform?usp=sf_link">Musicians feedback form</a></p>
 
-</body>
-</html>
+
 
 {% endblock %}

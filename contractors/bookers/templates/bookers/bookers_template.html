@@ -1,42 +1,51 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block pagetitle %}
 DFE | Bookers
 {% endblock %}
 
-<!-- body is from layout.html -->
-{% block body %}
-<div class="row">
-    <!-- Left column for booker.-->
-    <div class="col-lg-3 col-md-2 text-center pl-4 bg-light">
-        <div class="row justify-content-center p-4">
-            <!-- Image file is dynamic. -->
-            <img src="{{ user.booker.profile_picture.url }}" class="img-thumbnail rounded profile-pic">
-        </div>
-        <div class="row justify-content-center p-0">
-            <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4>
-        </div>
-        <div class="row justify-content-center">
-            <ul class="list-group-flush p-0">
-                <li class="list-group-item">
-                    {% for message in messages %}  
-                        <h6 class=' alert alert alert-{{ message.tags }}'>{{ message }}</h6>
-                    {% endfor %}
-                </li>
-                <li class="list-group-item"><a href="{% url 'bookers_home_view' %}"><u>Bookings</u></a></li>
-                <li class="list-group-item"><a href="{% url 'bookers_clients_view' %}"><u>Clients</u></a></li>
-                <li class="list-group-item"><a href="{% url 'bookers_details' %}"><u>Edit My Details</u></a></li>
-                <li class="list-group-item"><a href="{% url 'bookers_gig_history' %}"><u>Gig History</u></a></li>
-                <li class="list-group-item"><a href="{% url 'contact' %}"><u>Provide Feedback</u></a></li>
-                <li class="list-group-item text-primary"><a href="{% url 'signout' %}" class="list-group-item text-primary bg-light"><u>Log out</u></a></li>
-            </ul>
-        </div>
+{% block nav %}
+<nav class="navbar justify-content-center header py-0" style="max-height: 70px;">
+    <div class="row">
+        <table class="table">
+            <tr class="text-dark">
+                <td><a href="{% url 'bookers_home_view' %}" class="text-dark">Bookings</a></td>
+                <td><a href="{% url 'bookers_clients_view' %}" class="text-dark">Clients</a></td>
+                <td><a href="{% url 'bookers_musicians_view' %}" class="text-dark">Musicians</a></td>
+                <td><a href="{% url 'bookers_details' %}" class="text-dark">Edit my details</a></td>
+                <td><a href="{% url 'bookers_gig_history' %}" class="text-dark">Gig History</a></td>
+                <td><a href="{% url 'signout' %}" class="text-dark">Log out</a></td>
+            </tr>
+        </table>
     </div>
-
-{% block bookers-body %}
-<!-- This is where the 'right column' content will go. -->
+</nav>
 {% endblock %}
 
+<!-- body is from layout.html -->
+
+{% block body %}
+
+<div class="row pt-4 justify-content-center">
+    <h3>
+{% block written-title %}
+{% endblock %}
+    </h3>
 </div>
+
+{% if messages %}
+<div class="row d-flex justify-content-center">
+            {% for message in messages %}  
+                <p class='alert alert-{{ message.tags }} col'>
+                    {{ message|striptags }}. {% block add-message %}{% endblock %}
+                </p>
+            {% empty %}
+            {% endfor %}
+</div>
+{% endif %}
+
+{% block bookers-body %}
+<!-- This is where the content will go. -->
+{% endblock %}
 
 {% endblock %}

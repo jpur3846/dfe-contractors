@@ -10,43 +10,42 @@ Gig List
 {% endblock %}
 
 {% block user-body %}
-<br>
-<table class="table table-hover">
-    <thead>
-        <tr>
-        <th scope="col">Gig Date</th>
-        <th scope="col">Event Name</th>
-        <th scope="col">Venue</th>
-        <th scope="col">Call Time</th>
-        <th scope="col">Fee (Incl. GST)</th>
-        <th scope="col">Worksheet</th>
-        <th scope="col">Send an Invoice</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="container-fluid px-5 pt-1">
+    <div class="row border-bottom px-4 py-3 mb-4">
+        <div class="col">Gig Date</div>
+        <div class="col">Event Name</div>
+        <div class="col d-none d-sm-block">Venue</div>
+        <div class="col d-none d-md-block">Call Time</div>
+        <div class="col d-none d-lg-block">Fee (Incl. GST)</div>
+        <div class="col">Worksheet</div>
+        <div class="col d-none d-lg-block">Generate an invoice</div>
+    </div>
     {% for event in events %}
-        <tr>
-        <td>{{ event.event.date }}</td>
-        <td>{{ event.event.name }}</td>
-        <td>{{ event.event.venue }}</td>
-        <td>{{ event.event.musicians_call_time }}</td>
-        <td>${{ event.fee_all_incl }}</td>
-        <td><a href="{% url 'worksheet_view' event.pk %}"><u>Click Here</u></a></td>
+    <div class="row p-4 mb-4">
+        <div class="col border-left border-right">{{ event.event.date }}</div>
+        <div class="col border-right">{{ event.event.name }}</div>
+        <div class="col border-right d-none d-sm-block">{{ event.event.venue }}</div>
+        <div class="col border-right d-none d-md-block">{{ event.event.musicians_call_time }}</div>
+        <div class="col border-right d-none d-lg-block">${{ event.fee_all_incl }}</div>
+        <div class="col border-right">
+            <a href="{% url 'worksheet_view' event.pk %}">        
+                <button class="btn btn-dark btn-block">Worksheet</button>
+            </a>
+        </div>
         {% if event.event.event_complete %}
-            <td><a href="{% url 'generate_pdf_invoice' event.pk %}"><u>Generate Invoice</u></a></td>
+            <div class="col border-right d-none d-lg-block">
+                <a href="{% url 'generate_pdf_invoice' event.pk %}" class="d-none d-md-block">
+                    <button class="btn btn-primary btn-block">Generate Invoice</button>
+                </a>
+            </div>
         {% else %}
-            <td>Event pending</td>
+            <div class="col border-right d-none d-md-block">Event pending</div>
         {% endif %}
-        </tr>
+    </div>
     {% empty %}
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><h4>No Gigs booked!</h4></td>
-        </tr>
+        No Gigs Booked!
     {% endfor %}
-    </tbody>
-    </table>
+</div>
+<br>
 
 {% endblock %}

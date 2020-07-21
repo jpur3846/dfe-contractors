@@ -9,7 +9,7 @@ html {
 body {
   margin-bottom: 60px;
   /* Margin bottom by footer height */
-  min-width: 640px; }
+  /* min-width: 640px;*/ }
 
 .footer {
   position: absolute;

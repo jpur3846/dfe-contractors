@@ -13,7 +13,6 @@ DFE | Contractors
                 <td><a href="{% url 'user_home' %}" class="text-dark">Gig List</a></td>
                 <td><a href="{% url 'user_details' %}" class="text-dark">Edit My Details</a></td>
                 <td><a href="{% url 'user_event_history' %}" class="text-dark">Gig History</a></td>
-                <td><a href="{% url 'contact' %}" class="text-dark">Provide Feedback</a></td>
                 <td><a href="{% url 'signout' %}" class="text-dark">Log out</a></td>
             </tr>
         </table>
@@ -30,17 +29,13 @@ DFE | Contractors
     </div>
 
     {% if messages %}
-    <div class="row justify-content-center">
-        <ul style="width: 100%; padding: 0px;">
-            <li>
+    <div class="row d-flex justify-content-center">
                 {% for message in messages %}  
-                    <h6 class='alert alert-{{ message.tags }} list-group'>
-                        {{ message }}. {% block add-message %}{% endblock %}
-                    </h6>
+                    <p class='alert alert-{{ message.tags }} col'>
+                        {{ message|striptags }}. {% block add-message %}{% endblock %}
+                    </p>
                 {% empty %}
                 {% endfor %}
-            </li>
-        </ul>
     </div>
     {% endif %}
 

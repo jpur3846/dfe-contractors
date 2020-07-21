@@ -1,6 +1,17 @@
-{% extends 'events_template.html' %}
+{% extends 'bookers_template.html' %}
 
-{% block events-body %}
+{% block written-title %}
+    Event Edit
+{% endblock %}
+
+{% block bookers-body %}
+
+<!-- ERRORS -->
+{% for field in event_edit_form %}
+    {% if field.errors %}
+    <p class="alert alert-danger" style="width: 100%; max-width: 100%;">{{ field.errors|striptags }}</p>
+    {% endif %}
+{% endfor %}
 
 <form action="{% url 'edit_event_view' event.pk %}" method="POST"  enctype='multipart/form-data'>
 {% csrf_token %}

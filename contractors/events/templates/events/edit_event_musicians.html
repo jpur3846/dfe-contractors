@@ -1,14 +1,70 @@
-{% extends 'events_template.html' %}
+{% extends 'bookers_template.html' %}
 
-{% block events-body %}
+{% block written-title %}
+    Musician Edit
+{% endblock %}
 
-<form method="POST">
-{% csrf_token %}
 
-{{ event_musicians_edit_form.as_p }}
+{% block bookers-body %}
 
-<button type="submit" name='save_changes'>Save Changes</button>
-<button type="submit" name='delete_musician'>Delete Musician</button>
-</form>
+<!-- ERRORS -->
+{% for field in event_musicians_edit_form %}
+    {% if field.errors %}
+    <p class="alert alert-danger" style="width: 100%; max-width: 100%;">{{ field.errors|striptags }}</p>
+    {% endif %}
+{% endfor %}
 
+<div class="container d-flex justify-content-center">
+    <form method='POST' style="width: 80%;">
+        {% csrf_token %}
+        {{ musician.contractor.user.first_name }} {{ musician.contractor.user.last_name }} | {{ musician.contractor.user.email }}v
+        <div class="row py-2">
+            <div class="col-lg-10 py-2">
+                <label>Instrument</label>
+                {{ event_musicians_edit_form.instrument }}
+            </div>
+            <div class="col-lg-2 py-2">
+                <label>Bandleader</label>
+                {{ event_musicians_edit_form.is_bandleader }}
+            </div>
+        </div>
+        <div class="row py-2">
+            <div class="col-6">
+                <label>Fee</label>
+                {{ event_musicians_edit_form.fee }}
+            </div>
+            <div class="col-6">
+                <label>Gst Amount</label>
+                {{ event_musicians_edit_form.gst_amnt }}
+            </div>
+        </div>
+        <div class="row py-2">
+            <div class="col-md-4 py-2">
+                <label>Feedback Status</label>
+                {{ event_musicians_edit_form.feedback_status }}
+            </div>
+            <div class="col-md-4 py-2">
+                <label>Invoice Status</label>
+                {{ event_musicians_edit_form.invoice_status }}
+            </div>
+            <div class="col-md-4 py-2">
+                <label>Payment Status</label>
+                {{ event_musicians_edit_form.payment_status }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-lg btn-success btn-block" type='submit' name='save_changes'>Save Changes</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-lg btn-danger btn-block" type="submit" name='delete_musician'>Delete Musician</button>
+            </div>
+        </div>
+    </form>
+</div>
+<br><br>
+<a href="{% url 'edit_event_view' event.pk %}">
+    <button class="btn btn-dark ">Back to event</button>
+</a>
 {% endblock %}

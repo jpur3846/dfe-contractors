@@ -1,11 +1,33 @@
 {% extends 'bookers_template.html' %}
 
+{% block written-title %}
+    Edit Client Details
+{% endblock %}
+
 {% block bookers-body %}
-<form action="{% url 'bookers_edit_clients_view' client.pk %}" method='POST'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" name='save_changes'>Save Changes</button>
-    <button type="submit" name='delete_client'>Delete Client</button>
-</form>
+
+<!-- ERRORS -->
+{% for field in form %}
+    {% if field.errors %}
+    <p class="alert alert-danger" style="width: 100%; max-width: 100%;">{{ field.errors|striptags }}</p>
+    {% endif %}
+{% endfor %}
+
+<div class="container d-flex justify-content-center">
+    <form action="{% url 'bookers_edit_clients_view' client.pk %}" method='POST' style="width: 80%;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-lg btn-success btn-block" type='submit' name='save_changes'>Save Changes</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-lg btn-danger btn-block" type="submit" name='delete_client'>Delete Client</button>
+            </div>
+        </div>
+    </form>
+</div>
+<br>
+
 
 {% endblock %}
