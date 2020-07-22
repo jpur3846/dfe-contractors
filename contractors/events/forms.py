@@ -108,6 +108,10 @@ class AddEventMusician(forms.ModelForm):
         model = EventMusicians
         fields = ('contractor', )
 
+        widgets = {
+            'contractor': forms.Select(attrs= {'class': 'form-control'}),
+        }
+
 class EditEventMusician(forms.ModelForm):
     class Meta:
         model = EventMusicians

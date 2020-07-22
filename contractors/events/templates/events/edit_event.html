@@ -16,114 +16,297 @@
 <br>
 
 <div class="container-fluid px-3" style="max-width: 80%">
-    <div class="row border-bottom mb-2">
-        <h3>Event Basic Details</h3>
-    </div>
-    <div class="row mb-3">
-        <div class="col-lg form-group">
-            <label>Event name</label>
-            {{ event_edit_form.name }}
+    <form action="{% url 'edit_event_view' event.pk %}" method="POST" enctype='multipart/form-data'>
+    {% csrf_token %}
+        <div class="row border-bottom mb-2">
+            <h3>Event Basic Details</h3>
         </div>
-        <div class="col-lg form-group">
-            <label>Event date</label>
-            {{ event_edit_form.date }}
+        <div class="row mb-3">
+            <div class="col-lg-8 col-md-8 form-group">
+                <label>Event name</label>
+                {{ event_edit_form.name }}
+            </div>
+            <div class="col-lg-4 col-md-4 form-group">
+                <label>Event date</label>
+                {{ event_edit_form.date }}
+            </div>
+            <div class="col-lg form-group">
+                <label>Completion status</label>
+                {{ event_edit_form.event_completion_status }}
+            </div>
+            <div class="col-lg form-group">
+                <label>Status</label>
+                {{ event_edit_form.event_status }}
+            </div>
+            <div class="col form-group">
+                <label>Band locked in</label>
+                {{ event_edit_form.band_locked_in }}
+            </div>
+            <div class="col form-group">
+                <label>Event complete</label>
+                {{ event_edit_form.event_complete }}
+            </div>
         </div>
-        <div class="col-lg form-group">
-            <label>Completion status</label>
-            {{ event_edit_form.event_completion_status }}
+
+        <div class="row border-bottom">
+            <h3>To Do List</h3>
         </div>
-        <div class="col-lg form-group">
-            <label>Status</label>
-            {{ event_edit_form.event_status }}
+        <div class="row mb-1 justify-content-center">
+            <label class="checkbox-inline mx-2 mt-2">Contract sent
+            <div class="pt-2">{{ event_edit_form.contract_sent }}</div>
+            </label>
+            <label class='checkbox-inline mx-2 mt-2'>Contract signed
+            <div class="pt-2">{{ event_edit_form.contract_signed }}</div>
+            </label>
+            <label class='checkbox-inline mx-2 mt-2'>Invoice sent
+                <div class="pt-2">{{ event_edit_form.invoice_sent }}</div>
+            </label>
+            <label class='checkbox-inline mx-2 mt-2'>Deposit paid
+                <div class="pt-2">{{ event_edit_form.deposit_paid }}</div>
+            </label>
+            <label class='checkbox-inline mx-2 mt-2'>Balance paid
+                <div class="pt-2">{{ event_edit_form.balance_paid }}</div>
+            </label>
+            <label class='checkbox-inline mx-2 mt-2'>Cal event created
+                <div class="pt-2">{{ event_edit_form.calendar_event_created }}</div>
+            </label>
+            <label class='checkbox-inline mx-2 mt-2'>Client followup
+                <div class="pt-2">{{ event_edit_form.client_followup }}</div>
+            </label>
+            <label class='checkbox-inline mx-2 mt-2'>Band locked
+                <div class="pt-2">{{ event_edit_form.band_locked_in }}</div>
+            </label>
+            <label class='checkbox-inline mx-2 mt-2'>Gig source
+                <div class="pt-2">{{ event_edit_form.gig_source }}</div>
+            </label>
         </div>
-        <div class="col form-group">
-            <label>Band locked in</label>
-            {{ event_edit_form.band_locked_in }}
+        <br>
+
+        <div class="row border-bottom">
+            <h3>Further Details</h3>
         </div>
-        <div class="col form-group">
-            <label>Event complete</label>
-            {{ event_edit_form.event_complete }}
+        <div class="row pt-1">
+            <div class="col-md">
+                <label>Client</label>
+                {{ event_edit_form.client }}
+            </div>
+            <div class="col-md">
+                <label>Band lineup</label>
+                {{ event_edit_form.band_lineup }}
+            </div>
+            <div class="col-md">
+                <label>Rehearsal</label>
+                {{ event_edit_form.rehearsal }}
+            </div>
         </div>
-    </div>
 
-    <div class="row border-bottom">
-        <h3>To Do List</h3>
-    </div>
-    <div class="row mb-4 justify-content-center">
-        <label class="checkbox-inline mx-2">Contract sent
-        {{ event_edit_form.contract_sent }}
-        </label>
-        <label class='checkbox-inline mx-2'>Contract signed
-        {{ event_edit_form.contract_signed }}
-        </label>
-        <label class='checkbox-inline mx-2'>Invoice sent
-            {{ event_edit_form.invoice_sent }}
-        </label>
-        <label class='checkbox-inline mx-2'>Deposit paid
-            {{ event_edit_form.deposit_paid }}
-        </label>
-        <label class='checkbox-inline mx-2'>Balance paid
-            {{ event_edit_form.balance_paid }}
-        </label>
-        <label class='checkbox-inline mx-2'>Cal event created
-            {{ event_edit_form.calendar_event_created }}
-        </label>
-        <label class='checkbox-inline mx-2'>Client followup
-            {{ event_edit_form.client_followup }}
-        </label>
-        <label class='checkbox-inline mx-2'>Band locked
-            {{ event_edit_form.band_locked_in }}
-        </label>
-        <label class='checkbox-inline mx-2'>Gig source
-            {{ event_edit_form.gig_source }}
-        </label>
-    </div>
-    <br>
+        <div class="row border-bottom mt-4">
+            <h3>Locations</h3>
+        </div>
+        <div class="row pt-1">
+            <div class="col">
+                <label>Venue</label>
+                {{ event_edit_form.venue }}
+            </div>
+            <div class="col">
+                <label>Venue in case rain</label>
+                {{ event_edit_form.venue_in_case_of_rain }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <label>Parking Provided</label>
+                {{ event_edit_form.parking_provided }}
+            </div>
+            <div class="col-md-6 mt-2">
+                <label>No. Spots</label>
+                {{ event_edit_form.number_parking_spots_required }}
+            </div>
+            <div class="col-md-6">
+                <label>Cost per car</label>
+                {{ event_edit_form.parking_cost_per_car }}
+            </div>
+            <div class="col-md-6">
+                <label>Parking address</label>
+                {{ event_edit_form.parking_cost_per_car }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label></label>
+                {{ event_edit_form.parking_assignment }}
+            </div>
+            <div class="col">
+                <label></label>
+                {{ event_edit_form.loading_zone_details }}
+            </div>
+        </div>
 
-    <div class="row border-bottom">
-        <h3>Further Details</h3>
-    </div>
+        <div class="row border-bottom mt-3">
+            <h3>Timings</h3>
+        </div>
+        <div class="row pt-1">
+            <div class="col-md">
+                <label>Booking start time</label>
+                {{ event_edit_form.booking_start_time }}
+            </div>
+            <div class="col-md">
+                <label>Booking end time</label>
+                {{ event_edit_form.booking_end_time }}
+            </div>
+            <div class="col-md">
+                <label>Musicians call time</label>
+                {{ event_edit_form.musicians_call_time }}
+            </div>
+        </div>
 
-    <div class="row border-bottom">
-        <h3>Locations</h3>
-    </div>
+        <div class="row border-bottom mt-3">
+            <h3>Musical Details/Additional Information</h3>
+        </div>
+        <div class="row mt-1">
+            <div class="col-lg-2">
+                <label>Attire</label>
+                {{ event_edit_form.musicians_attire }}
+            </div>
+            <div class="col-lg-2">
+                <label>Musical style</label>
+                {{ event_edit_form.musical_style }}
+            </div>
+            <div class="col-lg-4">
+                <label>Production/AV</label>
+                {{ event_edit_form.production }}
+            </div>
+            <div class="col col-lg-2">
+                <label>Power required</label>
+                {{ event_edit_form.power_required }}
+            </div>
+            <div class="col col-lg-2">
+                <label>Crew meals</label>
+                {{ event_edit_form.crew_meals }}
+            </div>
+        </div>
 
-    <div class="row border-bottom">
-        <h3>Timings</h3>
-    </div>
+        <div class="row mt-1">
+            <div class="col-lg">
+                <label class="mt-2">Important requests</label>
+                {{ event_edit_form.important_requests }}
+            </div>
+            <div class="col-lg">
+                <label class="mt-2">General requests</label>
+                {{ event_edit_form.general_requests }}
+            </div>
+            <div class="col-lg">
+                <label class="mt-2">DO NOT PLAY</label>
+                {{ event_edit_form.do_not_play }}
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-lg">
+                <label class="mt-2">Musician <b>only</b> notes</label>
+                {{ event_edit_form.musician_only_notes }}
+            </div>
+            <div class="col-lg">
+                <label class="mt-2">Run sheet</label>
+                {{ event_edit_form.run_sheet }}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <label>Helpful file (Runsheet etc)</label>
+                {{ event_edit_form.helpful_files }}
+            </div>
+        </div>
 
-    <div class="row border-bottom">
-        <h3>Musical Details/Additional Information</h3>
-    </div>
 
-    <div class="row border-bottom">
-        <h3>Financial Details</h3>
-    </div>
+        <div class="row border-bottom mt-3">
+            <h3>Financial Details</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group row mt-3">
+                        <label class="col-form-label">Total fee (No GST)</label>
+                        {{ event_edit_form.total_fee_no_gst }}
+                </div>
+                <div class="form-group row mt-3">
+                    <label class="col-form-label">Deposit required</label>
+                    {{ event_edit_form.deposit_required }}
+                </div>
+                <div class="form-group row mt-3">
+                    <label class="col-form-label">Payment method</label>
+                    {{ event_edit_form.payment_method }}
+                </div>
+                <div class="form-group row mt-3">
+                    <label class="col-form-label">Card type</label>
+                    {{ event_edit_form.card_type }}
+                </div>
+                <div class="form-group row mt-3">
+                    <label class="col-form-label">Booker fee</label>
+                    {{ event_edit_form.booker_fee }}
+                </div>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-md-6 border mt-3 align-right">
+                Calculations go here
+            </div>
+        </div>
+        <br>
+        
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-lg btn-success btn-block" type="submit" name='save_changes'>Save Changes</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-lg btn-danger btn-block" type="submit" name='delete_event'>Delete Event</button>
+            </div>
+        </div>
 
-    <div class="row border-bottom">
-        <h3>Musicians</h3>
-    </div>
+    </form>
 </div>
 
-<form action="{% url 'edit_event_view' event.pk %}" method="POST" enctype='multipart/form-data'>
-{% csrf_token %}
-{{ event_edit_form.as_p }}
-
-<button type="submit" name='save_changes'>Save Changes</button>
-<button type="submit" name='delete_event'>Delete Event</button>
-</form>
-
-<form action="{% url 'edit_event_view' event.pk %}" method="POST">
-    {% csrf_token %}
-    <table>
+<div class="container-fluid px-3" style="max-width: 80%">
+    <div class="row border-bottom my-3">
+        <h3>Musicians</h3>
+    </div>
+<!-- Edit a musician -->
     {% for musician in musicians %}
-        <tr>
-            <td><a href="{% url 'edit_event_musicians_view' musician_id=musician.pk event_id=event.pk %}">{{ musician }}</a></td>
-        </tr>
+    <div class="row border px-4 py-3 mb-4">
+        <div class="col-lg-8 mb-2 border-right">
+            {% if musician.is_bandleader == 'yes' %}<small class="text-success"> BANDLEADER </small>{% endif %} <br>
+            {{ musician }} 
+        </div>
+        <div class="col-6 col-lg-2">
+            <a href="{% url 'edit_event_musicians_view' musician_id=musician.contractor.pk event_id=event.pk %}">
+                <button class="btn btn-primary btn-block">
+                    Edit
+                </button>
+            </a>
+        </div>
+        <div class="col-6 col-lg-2">
+            <form action="{% url 'edit_event_musicians_view' musician_id=musician.contractor.pk event_id=event.pk %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-danger btn-block" type="submit" name='delete_musician'>Remove</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    No one is booked on this event yet!
     {% endfor %}
-    </table>
-    {{ add_event_musician.as_p }}
-    <button type="submit" name='add_musician'>Add Musician</button>
-</form>
 
+<!-- Add a musician -->
+    <form action="{% url 'edit_event_view' event.pk %}" method="POST">
+        {% csrf_token %}
+            <div class="row border px-4 py-3 mb-4">
+                <div class="col-8 border-right">
+                    {{ add_event_musician.contractor }}
+                </div>
+                <div class="col-4">
+                    <button type="submit" name='add_musician' class="btn btn-dark btn-block">Add Musician</button>
+                </div>
+            </div>
+    </form>
+
+    
+</div>
+<br><br>
 {% endblock %}
+

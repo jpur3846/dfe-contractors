@@ -42,7 +42,7 @@ def edit_event_view(request, event_id):
             
     context = {
             'event': event,
-            'musicians': event.musicians.all(),
+            'musicians': event.eventmusicians_set.all(),
             'event_edit_form': EventEditForm(instance=event),
             'add_event_musician': AddEventMusician(),
         }

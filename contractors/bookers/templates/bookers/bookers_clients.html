@@ -23,17 +23,20 @@
     {% endfor %}
 
     <div class="row border px-4 py-3 mb-4">
-            <div class="col-8 border-right">
-                <form action="{% url 'bookers_create_new_client' %}" method="POST"></form>
-                {% csrf_token %}
-                {{ client_creation_form.contact_name }}
-            </div>
-            <div class="col-4">
-                    <button class="btn btn-dark btn-block">
-                        Create Client
-                    </button>
-                </form>
-            </div>
+        <div class="col-8 border-right">
+            <form action="{% url 'bookers_create_new_client' %}" method="POST">
+            {% csrf_token %}
+            {{ client_creation_form.contact_name }}
+            {% for error in client_creation_form.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        <div class="col-4">
+                <button class="btn btn-dark btn-block">
+                    Create Client
+                </button>
+            </form>
+        </div>
     </div>
 
 </div>

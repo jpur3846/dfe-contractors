@@ -53,7 +53,7 @@ def bookers_create_new_client(request):
 
     context = {
         'clients': Client.objects.all(),
-        'client_creation_form': ClientCreationForm,
+        'client_creation_form': ClientCreationForm(),
         }
 
     return render(request, 'bookers/bookers_clients.html', context)

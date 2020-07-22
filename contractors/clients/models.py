@@ -12,7 +12,7 @@ class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None, blank=True, null=True)
     
     company = models.CharField(max_length=30, default='', blank=True)
-    contact_name = models.CharField(max_length=30, default='', blank=True)
+    contact_name = models.CharField(max_length=30, default='')
     contact_email = models.EmailField(max_length=30, default='', blank=True)
     contact_number = models.IntegerField(null=True, blank=True)
 
