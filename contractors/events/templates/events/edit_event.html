@@ -1,7 +1,8 @@
 {% extends 'bookers_template.html' %}
 
 {% block written-title %}
-    Event Edit
+    <b>Event Edit</b>
+
 {% endblock %}
 
 {% block bookers-body %}
@@ -12,22 +13,117 @@
     <p class="alert alert-danger" style="width: 100%; max-width: 100%;">{{ field.errors|striptags }}</p>
     {% endif %}
 {% endfor %}
+<br>
 
-<form action="{% url 'edit_event_view' event.pk %}" method="POST"  enctype='multipart/form-data'>
+<div class="container-fluid px-3" style="max-width: 80%">
+    <div class="row border-bottom mb-2">
+        <h3>Event Basic Details</h3>
+    </div>
+    <div class="row mb-3">
+        <div class="col-lg form-group">
+            <label>Event name</label>
+            {{ event_edit_form.name }}
+        </div>
+        <div class="col-lg form-group">
+            <label>Event date</label>
+            {{ event_edit_form.date }}
+        </div>
+        <div class="col-lg form-group">
+            <label>Completion status</label>
+            {{ event_edit_form.event_completion_status }}
+        </div>
+        <div class="col-lg form-group">
+            <label>Status</label>
+            {{ event_edit_form.event_status }}
+        </div>
+        <div class="col form-group">
+            <label>Band locked in</label>
+            {{ event_edit_form.band_locked_in }}
+        </div>
+        <div class="col form-group">
+            <label>Event complete</label>
+            {{ event_edit_form.event_complete }}
+        </div>
+    </div>
+
+    <div class="row border-bottom">
+        <h3>To Do List</h3>
+    </div>
+    <div class="row mb-4 justify-content-center">
+        <label class="checkbox-inline mx-2">Contract sent
+        {{ event_edit_form.contract_sent }}
+        </label>
+        <label class='checkbox-inline mx-2'>Contract signed
+        {{ event_edit_form.contract_signed }}
+        </label>
+        <label class='checkbox-inline mx-2'>Invoice sent
+            {{ event_edit_form.invoice_sent }}
+        </label>
+        <label class='checkbox-inline mx-2'>Deposit paid
+            {{ event_edit_form.deposit_paid }}
+        </label>
+        <label class='checkbox-inline mx-2'>Balance paid
+            {{ event_edit_form.balance_paid }}
+        </label>
+        <label class='checkbox-inline mx-2'>Cal event created
+            {{ event_edit_form.calendar_event_created }}
+        </label>
+        <label class='checkbox-inline mx-2'>Client followup
+            {{ event_edit_form.client_followup }}
+        </label>
+        <label class='checkbox-inline mx-2'>Band locked
+            {{ event_edit_form.band_locked_in }}
+        </label>
+        <label class='checkbox-inline mx-2'>Gig source
+            {{ event_edit_form.gig_source }}
+        </label>
+    </div>
+    <br>
+
+    <div class="row border-bottom">
+        <h3>Further Details</h3>
+    </div>
+
+    <div class="row border-bottom">
+        <h3>Locations</h3>
+    </div>
+
+    <div class="row border-bottom">
+        <h3>Timings</h3>
+    </div>
+
+    <div class="row border-bottom">
+        <h3>Musical Details/Additional Information</h3>
+    </div>
+
+    <div class="row border-bottom">
+        <h3>Financial Details</h3>
+    </div>
+
+    <div class="row border-bottom">
+        <h3>Musicians</h3>
+    </div>
+</div>
+
+<form action="{% url 'edit_event_view' event.pk %}" method="POST" enctype='multipart/form-data'>
 {% csrf_token %}
 {{ event_edit_form.as_p }}
 
-<table>
-{% for musician in musicians %}
-    <tr>
-        <td><a href="{% url 'edit_event_musicians_view' musician_id=musician.pk event_id=event.pk %}">{{ musician }}</a></td>
-    </tr>
-{% endfor %}
-</table>
-{{ add_event_musician.as_p }}
 <button type="submit" name='save_changes'>Save Changes</button>
 <button type="submit" name='delete_event'>Delete Event</button>
-<button type="submit" name='add_musician'>Add Musician</button>
+</form>
+
+<form action="{% url 'edit_event_view' event.pk %}" method="POST">
+    {% csrf_token %}
+    <table>
+    {% for musician in musicians %}
+        <tr>
+            <td><a href="{% url 'edit_event_musicians_view' musician_id=musician.pk event_id=event.pk %}">{{ musician }}</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+    {{ add_event_musician.as_p }}
+    <button type="submit" name='add_musician'>Add Musician</button>
 </form>
 
 {% endblock %}

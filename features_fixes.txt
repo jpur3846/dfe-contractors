@@ -38,6 +38,7 @@ To Do:
 - Create an administrator frontend for bookers.
 - ManyToMany relationship between events and muses
 - delete event button
+- Are you entitled to parking select
 
 NB/Other Issues to fix:
 - Block get requests to worksheets (i.e. events/1) or wrong number/404.

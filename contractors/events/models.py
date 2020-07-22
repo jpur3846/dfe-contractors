@@ -54,7 +54,7 @@ class Event(models.Model):
     ### Event Basic Details
     name = models.CharField(max_length=60, default='New Event')
     date = models.DateField(blank=True, null=True)
-    event_complete = models.BooleanField(default=False, blank=True, null=True)
+    event_complete = models.BooleanField(blank=True, null=True, default=False)
     event_completion_status = models.CharField(max_length=50, default='awaiting_balance_and_deposit', blank=True, null=True, choices=event_completion_statuses)
     event_status = models.CharField(max_length=20, default='tentative', blank=True, null=True, choices=event_statuses)
     band_locked_in = models.BooleanField(default=False, blank=True, null=True)
@@ -86,7 +86,7 @@ class Event(models.Model):
     venue = models.CharField(max_length=100, blank=True, null=True)
     venue_in_case_of_rain = models.CharField(max_length=100, blank=True, null=True)
     parking_provided = models.BooleanField(max_length=50, default=False, blank=True, null=True)
-    number_parking_spots_required  = models.IntegerField(blank=True, null=True)
+    number_parking_spots_required = models.IntegerField(blank=True, null=True)
     parking_cost_per_car = models.FloatField(blank=True, null=True)
     parking_address = models.CharField(max_length=100, default='Near Venue', blank=True, null=True)
     parking_assignment = models.TextField(blank=True, null=False) # Select from musicians?

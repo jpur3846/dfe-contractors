@@ -94,8 +94,11 @@ def bookers_details(request):
         booker_form = BookerEditDetailsForm(request.POST, request.FILES, instance=request.user.booker)
 
         if form.is_valid() and booker_form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
             booker = booker_form.save()
+
+            user.username = request.POST['email'] # Update username == email
+            user.save()
 
             messages.add_message(request, messages.SUCCESS, 'Profile successfully updated')
             return HttpResponseRedirect(reverse('bookers_details'))

@@ -52,8 +52,11 @@ def user_details(request):
         profile_form = UserContractorEditDetailsForm(request.POST, request.FILES, instance=request.user.contractor)
 
         if form.is_valid() and profile_form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
             profile_form.save()
+
+            user.username = request.POST['email'] # Username == to email
+            user.save()
 
             messages.add_message(request, messages.SUCCESS, 'Profile successfully updated')
             context = {'form': form, 'profile_form': profile_form}

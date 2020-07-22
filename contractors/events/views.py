@@ -23,13 +23,14 @@ def edit_event_view(request, event_id):
 
         if form.is_valid() and 'save_changes' in request.POST:
             form.save()
+            messages.add_message(request, messages.SUCCESS, 'Event successfully updated')
 
         elif form.is_valid() and 'delete_event' in request.POST:
             event.delete()
             messages.add_message(request, messages.SUCCESS, 'Event successfully deleted')
             return HttpResponseRedirect(reverse('bookers_home_view'))
         
-        elif form.is_valid() and 'add_musician' in request.POST:
+        elif add_musician.is_valid() and 'add_musician' in request.POST:
             musician_id = request.POST['contractor']
 
             if Contractor.objects.get(pk=musician_id) not in event.musicians.all():
