@@ -271,7 +271,9 @@
     {% for musician in musicians %}
     <div class="row border px-4 py-3 mb-4">
         <div class="col-lg-8 mb-2 border-right">
-            {% if musician.is_bandleader == 'yes' %}<small class="text-success"> BANDLEADER </small>{% endif %} <br>
+            {% if musician.is_bandleader == 'yes' %}<small class="text-primary"> BANDLEADER </small>{% endif %}
+            {% if musician.is_available == None %}<small class="text-warning"> INVITED </small> <br>{% endif %}
+            {% if musician.is_available %}<small class="text-success"> ACCEPTED </small> <br>{% endif %}
             {{ musician }} 
         </div>
         <div class="col-6 col-lg-2">
@@ -300,10 +302,24 @@
                     {{ add_event_musician.contractor }}
                 </div>
                 <div class="col-4">
-                    <button type="submit" name='add_musician' class="btn btn-dark btn-block">Add Musician</button>
+                    <button type="submit" name='add_musician' class="btn btn-dark btn-block">Invite Musician</button>
                 </div>
             </div>
     </form>
+
+    <div class="row">
+        <div class="col">
+            Unavailable Musicians
+        </div>
+    </div>
+    {% for musician in unavailable_musicians %}
+    <div class="row">
+        <div class="col">
+            {{ musician }}
+        </div>
+    </div>
+    {% endfor %}
+
 
     
 </div>

@@ -6,13 +6,6 @@
 
 {% block bookers-body %}
 
-<!-- ERRORS -->
-{% for field in event_creation_form %}
-    {% if field.errors %}
-    <p class="alert alert-danger" style="width: 100%; max-width: 100%;">{{ field.errors|striptags }}</p>
-    {% endif %}
-{% endfor %}
-
 <div class="container-fluid px-5 pt-1 m-0">
     <div class="row border-bottom px-4 py-3 mb-4">
         <div class="col">Event Date</div>

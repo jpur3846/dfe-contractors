@@ -11,6 +11,7 @@ from . import views
 urlpatterns = [
     path("", views.signin_view, name="signin"),
     path("user_home", views.user_home, name="user_home"),
+    path("user_home/<int:eventmusician_pk>", views.user_accept_decline_gig, name="user_accept_decline_gig"),
     path("user_details", views.user_details, name="user_details"),
     path("user_event_history", views.user_event_history, name="user_event_history"),
     path("signin", views.signin_view, name="signin"),

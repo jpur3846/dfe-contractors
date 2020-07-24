@@ -26,9 +26,7 @@ def edit_event_view(request, event_id):
             messages.add_message(request, messages.SUCCESS, 'Event successfully updated')
 
         elif form.is_valid() and 'delete_event' in request.POST:
-            event.delete()
-            messages.add_message(request, messages.SUCCESS, 'Event successfully deleted')
-            return HttpResponseRedirect(reverse('bookers_home_view'))
+            return HttpResponseRedirect(reverse('confirm_delete_event', args=(event_id, )))
         
         elif add_musician.is_valid() and 'add_musician' in request.POST:
             musician_id = request.POST['contractor']
@@ -39,14 +37,32 @@ def edit_event_view(request, event_id):
             
             else:
                 messages.add_message(request, messages.ERROR, 'Musician already added to event')
+
+        else:
+            messages.add_message(request, messages.ERROR, 'Event NOT updated')
             
     context = {
             'event': event,
             'musicians': event.eventmusicians_set.all(),
+            # Musos that decline are stored as a CSL.
+            'unavailable_musicians': event.unavailable_musicians.split(','),
             'event_edit_form': EventEditForm(instance=event),
             'add_event_musician': AddEventMusician(),
         }
     return render(request, "events/edit_event.html", context)
+
+def confirm_delete_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+
+    if request.method == 'POST':
+        if 'confirm' in request.POST:      
+            event.delete()
+            messages.add_message(request, messages.SUCCESS, 'Event successfully deleted')
+            return HttpResponseRedirect(reverse('bookers_home_view'))
+        else:
+            return HttpResponseRedirect(reverse('edit_event_view', args=(event_id, )))
+
+    return render(request, "events/confirm_delete_event.html")
 
 def edit_event_musicians_view(request, musician_id, event_id):
     event = Event.objects.get(pk=event_id)

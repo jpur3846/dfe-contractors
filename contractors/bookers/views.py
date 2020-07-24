@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.db import IntegrityError
 
+from datetime import datetime
+
 from events.forms import EventCreationForm
 from events.models import EventMusicians
 from clients.models import Client
@@ -68,7 +70,14 @@ def create_new_event(request):
             new_event.save()
             messages.add_message(request, messages.SUCCESS, 'Event successfully created!')
         else:
-            messages.add_message(request, messages.ERROR, 'Event failed to be added')
+            # Parse out our errors to give back.
+            error_dict = dict(new_event_form.errors)
+            errors = ''
+
+            for key in error_dict.keys():
+                errors += error_dict[key].as_text()[2:]
+
+            messages.add_message(request, messages.ERROR, 'Event failed to be added. ' + errors)
         
     context = {
         'events': request.user.booker.events.all(),
@@ -116,7 +125,7 @@ def bookers_details(request):
 
 def bookers_gig_history(request):
     context = {
-        'events': request.user.booker.events.all()
+        'events': request.user.booker.events.filter(date__lte=datetime.today())
     }
     return render(request, 'bookers/bookers_gig_history.html', context)
 

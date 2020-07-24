@@ -5,11 +5,86 @@
 DFE | Gig List
 {% endblock %}
 
-{% block written-title %}
-Gig List
-{% endblock %}
-
 {% block user-body %}
+
+<!-- Gig invites (only shows if they have some.)
+Remember we are using Eventmusician objects -->
+
+{% if invites %}
+<div class="row justify-content-center">
+    <h3>
+Gig Invites
+    </h3>
+</div>
+
+<div class="container-fluid px-3" style="max-width: 90%">
+    {% for invite in invites %}
+    <div class="row border px-4 py-3 mb-4">
+        <div class="col-lg-6 mb-2 border-right">
+            <div class="row pt-3">
+                <div class="col">
+                    Date:
+                </div>
+                <div class="col">
+                    Name:
+                </div>
+                <div class="col d-none d-md-block">
+                    Venue:
+                </div>
+                <div class="col d-none d-xl-block">
+                    Call time:
+                </div>
+                <div class="col-3 d-none d-md-block">
+                    Fee (Incl. GST):
+                </div>
+            </div>
+            <div class="row pb-1">
+                <div class="col border-right">
+                    {{ invite.event.date }}
+                </div>
+                <div class="col border-right">
+                    {{ invite.event.name }}
+                </div>
+                <div class="col border-right d-none d-md-block">
+                    {{ invite.event.venue }}
+                </div>
+                <div class="col border-right d-none d-xl-block">
+                    {{ invite.event.musicians_call_time }}
+                </div>
+                <div class="col-3 border-left d-none d-md-block">
+                    {{ invite.event.fee_all_incl }}
+                </div>
+            </div>
+        </div>
+        <div class="col- col-sm-4 col-lg-2 py-sm-3 py-0">
+            <a href="{% url 'worksheet_view' invite.pk %}">        
+                <button class="btn btn-dark btn-block">Worksheet</button>
+            </a>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-2 py-3">
+            <form action="{% url 'user_accept_decline_gig' invite.pk %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-success btn-block" name='accept_event'>
+                    Accept
+                </button>
+        </div>
+        <div class="col-6 col-sm-4 col-lg-2 py-3">
+                <button class="btn btn-danger btn-block" type="submit" name='decline_event'>Decline</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="row pt-4 justify-content-center">
+    <h3>
+Gig List
+    </h3>
+</div>
+
+<!-- Gigs that they have accepted -->
 <div class="container-fluid px-5 pt-1">
     <div class="row border-bottom px-4 py-3 mb-4">
         <div class="col">Gig Date</div>
@@ -34,12 +109,12 @@ Gig List
         </div>
         {% if event.event.event_complete %}
             <div class="col border-right d-none d-lg-block">
-                <a href="{% url 'generate_pdf_invoice' event.pk %}" class="d-none d-md-block">
+                <a href="{% url 'generate_pdf_invoice' event.pk %}">
                     <button class="btn btn-primary btn-block">Generate Invoice</button>
                 </a>
             </div>
         {% else %}
-            <div class="col border-right d-none d-md-block">Event pending</div>
+            <div class="col border-right d-none d-lg-block">Event pending</div>
         {% endif %}
     </div>
     {% empty %}

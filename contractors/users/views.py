@@ -38,9 +38,37 @@ def user_home(request):
         if event.event.date > datetime.date.today():
             new_events.append(event)
 
+    events = []
+    invites = []
+
+    for event in new_events:
+        if event.is_available == None:
+            invites.append(event)
+        else:
+            events.append(event)
+
     return render(request, 'users/user_home.html', {
-        'events': new_events
+        'events': events,
+        'invites': invites,
     })
+
+def user_accept_decline_gig(request, eventmusician_pk):
+    if request.method == 'POST':
+            musician = EventMusicians.objects.get(pk=eventmusician_pk)
+
+            if 'accept_event' in request.POST:
+                musician.is_available = True
+                messages.add_message(request, messages.SUCCESS, 'You are now locked in for this event!')
+                musician.save()
+            
+            elif 'decline_event' in request.POST:
+                musician.event.unavailable_musicians += f'{musician.contractor}, ' # Save who we have asked as a comma separated list so we don't ask again.
+                musician.event.save()
+
+                musician.delete()
+                messages.add_message(request, messages.SUCCESS, 'You have declined this event') # Delete who we have asked from pending.
+
+    return HttpResponseRedirect(reverse('user_home'))
 
 def user_details(request):
     """

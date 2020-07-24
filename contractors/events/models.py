@@ -7,6 +7,9 @@ from datetime import datetime
 from clients.models import Client
 from bookers.models import Booker
 from users.models import Contractor
+from events.validators import (
+    date_validator,
+    )
 
 class EventAdmin(admin.ModelAdmin):
     """
@@ -53,7 +56,7 @@ card_types = [
 class Event(models.Model):
     ### Event Basic Details
     name = models.CharField(max_length=60, default='New Event')
-    date = models.DateField(blank=True, null=True)
+    date = models.DateField(null=True, validators=[date_validator])
     event_complete = models.BooleanField(blank=True, null=True, default=False)
     event_completion_status = models.CharField(max_length=50, default='awaiting_balance_and_deposit', blank=True, null=True, choices=event_completion_statuses)
     event_status = models.CharField(max_length=20, default='tentative', blank=True, null=True, choices=event_statuses)
@@ -130,7 +133,7 @@ class Event(models.Model):
 
     ### Musician Details
     asked_musicians = models.TextField(null=True, blank=True)
-    unavailable_musicians = models.TextField(null=True, blank=True)
+    unavailable_musicians = models.TextField(default=',', null=True, blank=True)
 
     musicians = models.ManyToManyField(Contractor, through='EventMusicians')
 
@@ -141,11 +144,7 @@ class Event(models.Model):
         """
         Event Details
         self.tax = self.fee//10
-        
-        # Musician Details
-        if hasattr(self, 'musician_2'):
-            if self.musician_2.gst_status == 'yes':
-                self.fee_incl_gst = self.musician_2_base_fee*1.1 """
+        """
 
         super().save(*args, **kwargs)
 
@@ -153,6 +152,8 @@ class Event(models.Model):
         return f"{self.name} event on {self.date}."
 
 class EventMusicians(models.Model):
+    is_available = models.BooleanField(default=None, null=True, blank=True)
+    
     contractor = models.ForeignKey(Contractor, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     

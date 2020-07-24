@@ -1,0 +1,20 @@
+{% extends 'bookers_template.html' %}
+
+{% block written-title %}
+    <b>Event Edit</b>
+
+{% endblock %}
+
+{% block bookers-body %}
+<br>
+<br>
+<div class="container" style="max-width: 60%;">
+    <form method="POST">
+        {% csrf_token %}
+        <button class="btn btn-danger btn-block" type="submit" name='confirm'>Yes, i'd like to delete this event</button>
+        <br>
+        <button class="btn btn-dark btn-block" type="submit" name='go_back'>Go Back</button>
+    </form>
+</div>
+
+{% endblock %}

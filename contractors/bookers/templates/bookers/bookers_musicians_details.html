@@ -37,7 +37,7 @@
                     {{ eventmusician.event }}
                 </div>
                 <div class="col pb-2">
-                    {% if eventmusician.payment_status == 'no' %}
+                    {% if eventmusician.payment_status == 'no' and eventmusician.is_available %}
                     <form action="{% url 'bookers_musicians_view' eventmusician.pk %}" method="POST">
                         {% csrf_token %}
                     <button class="btn btn-primary" type="submit">Mark as paid</button>
