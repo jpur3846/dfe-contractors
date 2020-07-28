@@ -74,6 +74,7 @@ coverage.xml
 
 # Django stuff:
 secret.txt
+secret_settings.txt
 
 # Flask stuff:
 instance/
