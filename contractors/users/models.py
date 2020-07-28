@@ -86,7 +86,7 @@ class Contractor(models.Model):
     # Personal Details
     user = models.OneToOneField(User, on_delete=models.CASCADE, default=None) # .CASCADE will delete the user account related to this contractor and vice versa.
     profile_picture = models.ImageField(null=True, blank=True, default='generic-user.jpg')
-    phone_number = models.IntegerField(null=True, blank=True)
+    phone_number = models.CharField(max_length=12, null=True, blank=True)
     city = models.CharField(max_length=30, default='Sydney', null=True, choices=cities)
     state = models.CharField(max_length=3, default='NSW', null=True, choices=states)
     
@@ -114,6 +114,9 @@ class Contractor(models.Model):
     # Conservatorium Stuff
     alumni = models.CharField(max_length=3, null=True, blank=True, choices=yes_no_choices) # yes/no. Conservatorium alumni
     year_finished = models.IntegerField(null=True, blank=True, choices=year_dropdown) # year number year
+
+    # Denylisted - are they banned?
+    denylisted = models.BooleanField(default=False, blank=True)
 
     def save(self, *args, **kwargs):
         """

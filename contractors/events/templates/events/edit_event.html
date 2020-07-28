@@ -128,7 +128,7 @@
             </div>
             <div class="col-md-6">
                 <label>Parking address</label>
-                {{ event_edit_form.parking_cost_per_car }}
+                {{ event_edit_form.parking_address }}
             </div>
         </div>
         <div class="row">
@@ -224,8 +224,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group row mt-3">
-                        <label class="col-form-label">Total fee (No GST)</label>
-                        {{ event_edit_form.total_fee_no_gst }}
+                    <label class="col-form-label">Total fee (No GST or inclusions eg parking)</label>
+                    {{ event_edit_form.total_fee_no_gst }}
                 </div>
                 <div class="form-group row mt-3">
                     <label class="col-form-label">Deposit required</label>
@@ -237,7 +237,8 @@
                 </div>
                 <div class="form-group row mt-3">
                     <label class="col-form-label">Card type</label>
-                    {{ event_edit_form.card_type }}
+                    {{ event_edit_form.card_type }} 
+                    <small class="text-dark">{{ event.credit_card_rate }}% fee per transaction</small>
                 </div>
                 <div class="form-group row mt-3">
                     <label class="col-form-label">Booker fee</label>
@@ -245,8 +246,74 @@
                 </div>
             </div>
             <div class="col-2"></div>
-            <div class="col-md-6 border mt-3 align-right">
-                Calculations go here
+            <div class="col-md-6 border mt-3">
+                <div class="row border-bottom">
+                    <div class="col">
+                        <h4><u>Fee Calculations</u></h4><br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Musician fees total: {{ event.calculate_musicians_fees }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Musician GST component total: {{ event.parking_total }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Booker fee: {{ event.booker_fee }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Parking total: {{ event.parking_total }}
+                    </div>
+                </div>
+                <div class="row border pt-2"></div>
+                <div class="row border-bottom">
+                    <div class="col">
+                        Credit card surcharge amount: {{ event.credit_card_surcharge_amount }}
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col">
+                        Deposit incl. surcharge: {{ event.deposit_and_surcharge }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Balance incl. surcharge: {{ event.balance_and_surcharge }}
+                    </div>
+                </div>
+                <div class="row border pt-2"></div>
+                <div class="row border-bottom">
+                    <div class="col">
+                        GST: {{ event.gst_amount }}
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col">
+                        Fee + GST: {{ event.total_fee_incl_gst }}
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col">
+                        Total incl. all: {{ event.total_fee_incl_all }}
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col">
+                        Business Profit: 
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col">
+                        GST Payable: 
+                    </div>
+                </div>
             </div>
         </div>
         <br>
@@ -259,31 +326,59 @@
                 <button class="btn btn-lg btn-danger btn-block" type="submit" name='delete_event'>Delete Event</button>
             </div>
         </div>
-
+        <br>
     </form>
 </div>
 
 <div class="container-fluid px-3" style="max-width: 80%">
     <div class="row border-bottom my-3">
-        <h3>Musicians</h3>
+        <div class="col text-left">
+            <h3>Musicians</h3>
+        </div>
+    </div>
+    <div class="row border p-2 mb-2">
+        <div class="col-lg-4">
+            <form action="{% url 'email_worksheet_reminder' event.pk %}" method="POST">
+                {% csrf_token %}
+                {% if event.email_worksheet_reminder %}
+                <button class="btn btn-warning btn-block" type="submit"><small>Worksheet sent (Click to send again)</small></button>
+                {% else %}
+                <button class="btn btn-info btn-block" type="submit">
+                    Worksheet reminder email
+                </button>
+                {% endif %}
+            </form>
+        </div>
     </div>
 <!-- Edit a musician -->
     {% for musician in musicians %}
     <div class="row border px-4 py-3 mb-4">
-        <div class="col-lg-8 mb-2 border-right">
+        <div class="col-lg-6 mb-2 border-right">
             {% if musician.is_bandleader == 'yes' %}<small class="text-primary"> BANDLEADER </small>{% endif %}
             {% if musician.is_available == None %}<small class="text-warning"> INVITED </small> <br>{% endif %}
             {% if musician.is_available %}<small class="text-success"> ACCEPTED </small> <br>{% endif %}
-            {{ musician }} 
+            {{ musician }}
         </div>
-        <div class="col-6 col-lg-2">
+        <div class="col-4 col-lg-2">
+            <form action="{% url 'email_invite_musician' eventmusician_id=musician.pk event_id=event.pk %}" method="POST">
+                {% csrf_token %}
+                {% if musician.email_invite_sent %}
+                    <small type="submit"><u class="text-primary">Already invited<br> (Click to invite again)</u></small>
+                {% else %}
+                <button class="btn btn-info btn-block" type="submit">
+                    E-invite
+                </button>
+                {% endif %}
+            </form>
+        </div>
+        <div class="col-4 col-lg-2">
             <a href="{% url 'edit_event_musicians_view' musician_id=musician.contractor.pk event_id=event.pk %}">
                 <button class="btn btn-primary btn-block">
                     Edit
                 </button>
             </a>
         </div>
-        <div class="col-6 col-lg-2">
+        <div class="col-4 col-lg-2">
             <form action="{% url 'edit_event_musicians_view' musician_id=musician.contractor.pk event_id=event.pk %}" method="POST">
                 {% csrf_token %}
                 <button class="btn btn-danger btn-block" type="submit" name='delete_musician'>Remove</button>

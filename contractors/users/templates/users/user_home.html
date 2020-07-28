@@ -5,22 +5,26 @@
 DFE | Gig List
 {% endblock %}
 
+{% block written-title %}
+Gig List
+{% endblock %}
+
 {% block user-body %}
 
 <!-- Gig invites (only shows if they have some.)
 Remember we are using Eventmusician objects -->
 
 {% if invites %}
-<div class="row justify-content-center">
-    <h3>
-Gig Invites
-    </h3>
-</div>
 
 <div class="container-fluid px-3" style="max-width: 90%">
     {% for invite in invites %}
-    <div class="row border px-4 py-3 mb-4">
-        <div class="col-lg-6 mb-2 border-right">
+    <div class="row bg-light border px-4 py-3 mb-4">
+            <div class="col-12">
+                <h6><b>
+                    Gig Invite
+                </b></h6>
+            </div>
+        <div class="col-lg-6 mb-2">
             <div class="row pt-3">
                 <div class="col">
                     Date:
@@ -78,44 +82,43 @@ Gig Invites
 </div>
 {% endif %}
 
-<div class="row pt-4 justify-content-center">
-    <h3>
-Gig List
-    </h3>
-</div>
-
 <!-- Gigs that they have accepted -->
 <div class="container-fluid px-5 pt-1">
     <div class="row border-bottom px-4 py-3 mb-4">
-        <div class="col">Gig Date</div>
-        <div class="col">Event Name</div>
-        <div class="col d-none d-sm-block">Venue</div>
-        <div class="col d-none d-md-block">Call Time</div>
-        <div class="col d-none d-lg-block">Fee (Incl. GST)</div>
-        <div class="col">Worksheet</div>
-        <div class="col d-none d-lg-block">Generate an invoice</div>
+        <div class="col"><b>Gig Date</b></div>
+        <div class="col"><b>Event Name</b></div>
+        <div class="col d-none d-sm-block"><b>Venue</b></div>
+        <div class="col d-none d-lg-block"><b>Call Time</b></div>
+        <div class="col d-none d-xl-block"><b>Fee (Incl. GST)</b></div>
+        <div class="col d-none d-lg-block"><b>Worksheet</b></div>
+        <div class="col d-none d-lg-block"><b>Generate an invoice</b></div>
     </div>
     {% for event in events %}
     <div class="row p-4 mb-4">
         <div class="col border-left border-right">{{ event.event.date }}</div>
         <div class="col border-right">{{ event.event.name }}</div>
         <div class="col border-right d-none d-sm-block">{{ event.event.venue }}</div>
-        <div class="col border-right d-none d-md-block">{{ event.event.musicians_call_time }}</div>
-        <div class="col border-right d-none d-lg-block">${{ event.fee_all_incl }}</div>
-        <div class="col border-right">
+        <div class="col border-right d-none d-lg-block">{{ event.event.musicians_call_time }}</div>
+        <div class="col border-right d-none d-xl-block">${{ event.fee_all_incl }}</div>
+        <div class="col-lg col--6 my-3 my-lg-0 border-right">
             <a href="{% url 'worksheet_view' event.pk %}">        
                 <button class="btn btn-dark btn-block">Worksheet</button>
             </a>
         </div>
-        {% if event.event.event_complete %}
-            <div class="col border-right d-none d-lg-block">
-                <a href="{% url 'generate_pdf_invoice' event.pk %}">
-                    <button class="btn btn-primary btn-block">Generate Invoice</button>
+        <div class="col-lg col--6 my-2 my-lg-0 border-right">
+            {% if event.event.event_complete and event.invoice_status == 'no' %}
+                <a href="{% url 'generate_and_send_pdf_invoice' event.pk %}">
+                    <button class="btn btn-primary btn-block">Generate/Send Invoice</button>
                 </a>
-            </div>
-        {% else %}
-            <div class="col border-right d-none d-lg-block">Event pending</div>
-        {% endif %}
+            {% elif event.event.event_complete %}
+                <a href="{% url 'generate_pdf_invoice' event.pk %}">
+                    <button class="btn btn-primary btn-block">Re-generate Invoice</button>
+                </a>
+        
+            {% else %}
+                Event pending
+            {% endif %}
+        </div>
     </div>
     {% empty %}
         No Gigs Booked!

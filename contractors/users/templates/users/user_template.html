@@ -8,7 +8,7 @@ DFE | Contractors
 {% block nav %}
 <nav class="navbar justify-content-center header py-0" style="max-height: 70px;">
     <div class="row">
-        <table class="table">
+        <table class="table d-none d-md-block">
             <tr class="text-dark">
                 <td><a href="{% url 'user_home' %}" class="text-dark">Gig List</a></td>
                 <td><a href="{% url 'user_details' %}" class="text-dark">Edit My Details</a></td>
@@ -18,14 +18,28 @@ DFE | Contractors
         </table>
     </div>
 </nav>
+<div class="row d-block d-md-none">
+    <div class="col-4">
+    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-dark btn-block">Menu</button>
+    </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a href="{% url 'user_home' %}" class="text-dark dropdown-item">Gig List</a>
+            <a href="{% url 'user_details' %}" class="text-dark dropdown-item">Edit My Details</a>
+            <a href="{% url 'user_event_history' %}" class="text-dark dropdown-item">Gig History</a>
+            <div class="dropdown-divider"></div>
+            <a href="{% url 'signout' %}" class="text-dark dropdown-item">Log out</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block body %}
     <div class="row pt-4 justify-content-center">
-        <h3>
+        <h3><b>
     {% block written-title %}
     {% endblock %}
-        </h3>
+        </b></h3>
     </div>
 
     {% if messages %}

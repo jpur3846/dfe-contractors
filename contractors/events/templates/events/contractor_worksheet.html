@@ -172,11 +172,11 @@ Worksheet {{ event.event.name }} {{ event.event.date }}
         GST: ${{ event.gst_amnt }}<br>
         {% if event.is_bandleader %}
           As bandleader, to be paid you must send an invoice as well as complete this 
-          survey - https://forms.gle/PhhzGb7YuzmqhsMt5 <br><br>
+          survey - https://forms.gle/PhhzGb7YuzmqhsMt5 <br>
         {% endif %}
 
-          Please invoice info@danielfrancis.com.au. <br>
-          <a href="{% url 'generate_pdf_invoice' event.pk %}"><u style="color: orangered;">Generate an Invoice</u></a>
+        <u>Send an invoice on your home page</u>
+        <br><br>
 
       </div>
       <div class="col-md-6 border">

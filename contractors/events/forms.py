@@ -124,7 +124,7 @@ class EditEventMusician(forms.ModelForm):
             'is_bandleader': forms.Select(attrs= {'class': 'form-control'}),
             'instrument': forms.TextInput(attrs= {'class': 'form-control'}),
             'fee': forms.TextInput(attrs= {'class': 'form-control'}),
-            'gst_amnt': forms.TextInput(attrs= {'class': 'form-control'}),
+            'inclusions': forms.TextInput(attrs= {'class': 'form-control'}),
             'feedback_status': forms.Select(attrs= {'class': 'form-control'}),
             'invoice_status': forms.Select(attrs= {'class': 'form-control'}),
             'payment_status': forms.Select(attrs= {'class': 'form-control'}),

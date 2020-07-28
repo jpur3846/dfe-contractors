@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Error Handling
 from django.db import IntegrityError
@@ -23,10 +24,8 @@ from .models import Contractor
 from events.models import EventMusicians
 
 # Default landing page.
+@login_required
 def user_home(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('signin'))
-
     contractor = request.user.contractor
 
     events = EventMusicians.objects.filter(contractor=contractor)
@@ -52,6 +51,7 @@ def user_home(request):
         'invites': invites,
     })
 
+@login_required
 def user_accept_decline_gig(request, eventmusician_pk):
     if request.method == 'POST':
             musician = EventMusicians.objects.get(pk=eventmusician_pk)
@@ -70,6 +70,7 @@ def user_accept_decline_gig(request, eventmusician_pk):
 
     return HttpResponseRedirect(reverse('user_home'))
 
+@login_required
 def user_details(request):
     """
     Page to update and edit user details.
@@ -101,6 +102,7 @@ def user_details(request):
 
     return render(request, 'users/user_details.html', context)
 
+@login_required
 def user_event_history(request):
     contractor = request.user.contractor
     events = EventMusicians.objects.filter(contractor=contractor)

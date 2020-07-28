@@ -140,7 +140,7 @@ class UserContractorEditDetailsForm(forms.ModelForm):
 
         widgets = {
             'phone_number': forms.NumberInput(attrs= {'class': 'form-control'}),
-            'city': forms.TextInput(attrs= {'class': 'form-control'}),
+            'city': forms.Select(attrs= {'class': 'form-control'}),
             'state': forms.TextInput(attrs= {'class': 'form-control'}),
             'profile_picture': forms.FileInput(attrs={'class': 'custom-file-input'}),
 

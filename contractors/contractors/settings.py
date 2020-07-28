@@ -24,14 +24,24 @@ with open('contractors/secret.txt') as f:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# Email Debugging python -m smtpd -n -c DebuggingServer localhost:1025
+# Email Debugging python3 -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
+"""
+# This is the setup for Gmail to be our email server. It will not warn if a email does not exist as this is a security issue.
+https://support.google.com/accounts/answer/185833 -> For app-password setup
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'info@danielfrancis.com.au'
+EMAIL_HOST_PASSWORD = 'vljnsnktcrudcmxf'
+"""
 
 ALLOWED_HOSTS = []
 
 from django.contrib import messages
-
 
 # Application definition
 
@@ -61,6 +71,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'contractors.urls'
+LOGIN_URL = '/users/'
+LOGIN_REDIRECT_URL = '/users/'
 
 # Change the default tag values for consistent css.
 MESSAGE_TAGS = {
@@ -93,7 +105,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'contractors.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -121,7 +132,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

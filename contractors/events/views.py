@@ -5,12 +5,18 @@ from django.template.loader import get_template
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail, EmailMessage
+
+import datetime
+from smtplib import SMTPException
 
 from .models import Event, EventMusicians
 from .utils import render_to_pdf
 from .forms import EventEditForm, EditEventMusician, AddEventMusician
 from users.models import Contractor
 
+@login_required
 def edit_event_view(request, event_id):
     """
     Edit event and save changes.
@@ -26,14 +32,24 @@ def edit_event_view(request, event_id):
             messages.add_message(request, messages.SUCCESS, 'Event successfully updated')
 
         elif form.is_valid() and 'delete_event' in request.POST:
+            # Confirm event deletion.
             return HttpResponseRedirect(reverse('confirm_delete_event', args=(event_id, )))
         
         elif add_musician.is_valid() and 'add_musician' in request.POST:
             musician_id = request.POST['contractor']
 
-            if Contractor.objects.get(pk=musician_id) not in event.musicians.all():
+            # Can't add musos to expired events.
+            if event.date < datetime.date.today():
+                messages.add_message(request, messages.ERROR, 'Cannot add musicians to past events')
+
+            elif Contractor.objects.get(pk=musician_id).denylisted:
+                messages.add_message(request, messages.ERROR, 'This musician has been denylisted!')
+
+            # Add muso if they are not added
+            elif Contractor.objects.get(pk=musician_id) not in event.musicians.all():
                 event.musicians.add(request.POST['contractor'])
-                messages.add_message(request, messages.SUCCESS, 'Musician successfully added')
+                name = Contractor.objects.get(pk=musician_id).user.first_name
+                messages.add_message(request, messages.SUCCESS, f'{name} successfully added')
             
             else:
                 messages.add_message(request, messages.ERROR, 'Musician already added to event')
@@ -44,13 +60,14 @@ def edit_event_view(request, event_id):
     context = {
             'event': event,
             'musicians': event.eventmusicians_set.all(),
-            # Musos that decline are stored as a CSL.
-            'unavailable_musicians': event.unavailable_musicians.split(','),
+            # Musos that decline are stored as a Comma Separated List.
+            'unavailable_musicians': set(event.unavailable_musicians.split(',')),
             'event_edit_form': EventEditForm(instance=event),
             'add_event_musician': AddEventMusician(),
         }
     return render(request, "events/edit_event.html", context)
 
+@login_required
 def confirm_delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
 
@@ -64,6 +81,49 @@ def confirm_delete_event(request, event_id):
 
     return render(request, "events/confirm_delete_event.html")
 
+@login_required
+def email_invite_musician(request, eventmusician_id, event_id=None):
+    """
+    Musician specific invite for an event.
+    """
+    musician = EventMusicians.objects.get(pk=eventmusician_id)
+
+    send_mail(
+        'You have been invited to do a gig!',
+        'Please visit our site to accept/decline this gig.',
+        'info@danielfrancis.com.au',
+        [musician.contractor.user.email],
+        fail_silently=False,
+    )
+
+    musician.email_invite_sent = True
+    musician.save()
+    messages.add_message(request, messages.SUCCESS, 'Invite successfully sent!')
+    
+    return HttpResponseRedirect(reverse('edit_event_view', args=(event_id, )))
+
+@login_required
+def email_worksheet_reminder(request, event_id):
+    """
+    Generic worksheet reminder for all musicians.
+    """
+    event = Event.objects.get(pk=event_id)
+
+    send_mail(
+        'Worksheet reminder',
+        'Please visit our site to see info on this gig.',
+        'info@danielfrancis.com.au',
+        event.get_musicians_emails(),
+        fail_silently=False,
+    )
+
+    event.email_worksheet_reminder = True
+    event.save()
+    messages.add_message(request, messages.SUCCESS, 'Reminder worksheet successfully sent!')
+    
+    return HttpResponseRedirect(reverse('edit_event_view', args=(event_id, )))
+
+@login_required
 def edit_event_musicians_view(request, musician_id, event_id):
     event = Event.objects.get(pk=event_id)
     contractor = Contractor.objects.get(pk=musician_id)
@@ -83,7 +143,7 @@ def edit_event_musicians_view(request, musician_id, event_id):
             messages.add_message(request, messages.SUCCESS, 'Changes successfully saved')
             return HttpResponseRedirect(reverse('edit_event_musicians_view', args=(event_id, musician_id, )))
 
-        elif form.is_valid() and 'delete_musician' in request.POST:
+        elif 'delete_musician' in request.POST:
             musician.delete()
             messages.add_message(request, messages.SUCCESS, 'Musician successfully deleted')
             return HttpResponseRedirect(reverse('edit_event_view', args=(event_id,)))
@@ -94,6 +154,7 @@ def edit_event_musicians_view(request, musician_id, event_id):
 
     return render(request, "events/edit_event_musicians.html", context)
 
+@login_required
 def worksheet_view(request, event_id):
     """
     View auto generated worksheet as a contractor.
@@ -114,6 +175,7 @@ def worksheet_view(request, event_id):
         }
     return render(request, "events/contractor_worksheet.html", context)
 
+@login_required
 def generate_pdf_invoice(request, event_id, *args, **kwargs):
     """
     When click to send an invoice it generates one.
@@ -141,3 +203,36 @@ def generate_pdf_invoice(request, event_id, *args, **kwargs):
     if pdf:
         return HttpResponse(pdf, content_type='application/pdf')
     return HttpResponseRedirect(reverse('worksheet_view'))
+
+@login_required
+def generate_and_send_pdf_invoice(request, event_id, *args, **kwargs):
+    # Event is an eventmusicians object
+    event = EventMusicians.objects.get(pk=event_id)
+
+    template = get_template('pdf/contractor_invoice.html')
+    context = {'event': event, 'user': request.user}
+    html = template.render(context)
+    pdf = render_to_pdf('pdf/contractor_invoice.html', context)
+
+    email = EmailMessage(
+    f'Invoice for event on {event.event.date} from {event.contractor.user.first_name} {event.contractor.user.last_name}',
+    'Invoice for event',
+    'info@danielfrancis.com.au',
+    ['info@danielfrancis.com.au', event.contractor.user.email],
+    reply_to=['info@danielfrancis.com.au'],
+    )
+    
+    try:
+        email.send(fail_silently=False)
+        email.attach(html, 'text/html')
+
+        # This person has invoiced
+        event.invoice_status = 'yes'
+        event.save()
+
+        messages.add_message(request, messages.SUCCESS, 'Email sent!')
+
+    except SMTPException:
+        messages.add_message(request, messages.ERROR, 'Email failed to send!')
+
+    return HttpResponseRedirect(reverse('user_home'))

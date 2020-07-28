@@ -3,17 +3,19 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 
 from datetime import datetime
 
 from events.forms import EventCreationForm
-from events.models import EventMusicians
+from events.models import EventMusicians, Event
 from clients.models import Client
 from clients.forms import ClientEditForm, ClientCreationForm
 from .forms import BookerEditDetailsForm
 from users.forms import UserEditForm
 from users.models import Contractor
 
+@login_required
 def bookers_clients_view(request):
     context = {
         'clients': Client.objects.all(),
@@ -22,6 +24,7 @@ def bookers_clients_view(request):
 
     return render(request, 'bookers/bookers_clients.html', context)
 
+@login_required
 def bookers_edit_clients_view(request, client_id):
     client = Client.objects.get(pk=client_id)
 
@@ -46,6 +49,7 @@ def bookers_edit_clients_view(request, client_id):
     
     return render(request, 'bookers/bookers_edit_clients.html', context)
 
+@login_required
 def bookers_create_new_client(request):
     if request.method == 'POST':
         new_client_form = ClientCreationForm(request.POST)
@@ -59,7 +63,8 @@ def bookers_create_new_client(request):
         }
 
     return render(request, 'bookers/bookers_clients.html', context)
-    
+
+@login_required    
 def create_new_event(request):
     if request.method == 'POST':
         new_event_form = EventCreationForm(request.POST)
@@ -78,22 +83,27 @@ def create_new_event(request):
                 errors += error_dict[key].as_text()[2:]
 
             messages.add_message(request, messages.ERROR, 'Event failed to be added. ' + errors)
-        
-    context = {
-        'events': request.user.booker.events.all(),
-        'event_creation_form': EventCreationForm
-    }
 
-    return render(request, 'bookers/bookers_home_view.html', context)
+    return HttpResponseRedirect(reverse('bookers_home_view'))
 
+@login_required
 def bookers_home_view(request):
+    upcoming_events = request.user.booker.events.filter(date__gte=datetime.today())
+    past_events = request.user.booker.events.filter(date__lte=datetime.today())
+    events_to_wrap_up = []
+
+    for event in past_events:
+        if event.is_complete() == False:
+            events_to_wrap_up.append(event)
 
     context = {
-        'events': request.user.booker.events.all(),
+        'events_to_wrap_up': events_to_wrap_up,
+        'events': upcoming_events,
         'event_creation_form': EventCreationForm
     }
     return render(request, 'bookers/bookers_home_view.html', context)
 
+@login_required
 def bookers_details(request):
     """
     Page to update and edit user details.
@@ -123,12 +133,21 @@ def bookers_details(request):
     }
     return render(request, 'bookers/bookers_details.html', context)
 
+@login_required
 def bookers_gig_history(request):
+    events_ls = request.user.booker.events.filter(date__lte=datetime.today())
+    past_events = []
+
+    for event in events_ls:
+        if event.is_complete():
+            past_events.append(event)
+        
     context = {
-        'events': request.user.booker.events.filter(date__lte=datetime.today())
+        'events': past_events
     }
     return render(request, 'bookers/bookers_gig_history.html', context)
 
+@login_required
 def bookers_musicians_view(request, event_musician_pk=None):
     """
     Post method marks the muso as being paid.
@@ -147,3 +166,16 @@ def bookers_musicians_view(request, event_musician_pk=None):
         'contractors': Contractor.objects.all(),
     }
     return render(request, 'bookers/bookers_musicians_details.html', context=context)
+
+@login_required
+def bookers_undo_complete_event(request, event_pk):
+    event = Event.objects.get(pk=event_pk)
+
+    try:
+        event.event_complete = False
+        event.save()
+        messages.add_message(request, messages.SUCCESS, 'Event is now editable in booking screen')
+    except IntegrityError:
+        messages.add_message(request, messages.ERROR, 'Reversal failed')
+
+    return HttpResponseRedirect(reverse('bookers_home_view'))

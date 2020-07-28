@@ -17,7 +17,7 @@
 <div class="container d-flex justify-content-center">
     <form method='POST' style="width: 80%;">
         {% csrf_token %}
-        {{ musician.contractor.user.first_name }} {{ musician.contractor.user.last_name }} | {{ musician.contractor.user.email }}v
+        {{ musician.contractor.user.first_name }} {{ musician.contractor.user.last_name }} | {{ musician.contractor.user.email }}
         <div class="row py-2">
             <div class="col-lg-10 py-2">
                 <label>Instrument</label>
@@ -30,12 +30,31 @@
         </div>
         <div class="row py-2">
             <div class="col-6">
-                <label>Fee</label>
+                <label>Fee (things we must pay GST)</label>
                 {{ event_musicians_edit_form.fee }}
             </div>
             <div class="col-6">
-                <label>Gst Amount</label>
-                {{ event_musicians_edit_form.gst_amnt }}
+                <label>Inclusions amount (Not included in GST)</label>
+                {{ event_musicians_edit_form.inclusions }}
+            </div>
+        </div>
+        <div class="row m-1 py-2 border">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <h6>Calculations</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label>GST:</label><br>
+                        ${{ musician.gst_amnt }}
+                    </div>
+                    <div class="col-6">
+                        <label>Total Payment: </label><br>
+                        ${{ musician.fee_all_incl }}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row py-2">
@@ -60,6 +79,7 @@
             <div class="col">
                 <button class="btn btn-lg btn-danger btn-block" type="submit" name='delete_musician'>Delete Musician</button>
             </div>
+            <br>
         </div>
     </form>
 </div>

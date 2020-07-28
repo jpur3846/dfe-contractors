@@ -34,10 +34,13 @@
             {% for eventmusician in contractor.eventmusicians_set.all %}
             <div class="row border-bottom pb-1 mx-3 mt-2">
                 <div class="col border-right">
-                    {{ eventmusician.event }}
+                    <a href="{% url 'edit_event_view' eventmusician.event.pk %}">{{ eventmusician.event }}</a>
                 </div>
                 <div class="col pb-2">
                     {% if eventmusician.payment_status == 'no' and eventmusician.is_available %}
+                    <p>Owed: {{ eventmusician.fee_all_incl }} | 
+                    Invoiced: {{ eventmusician.invoice_status }} |
+                    Feedback provided: {{ eventmusician.feedback_status }}</p>
                     <form action="{% url 'bookers_musicians_view' eventmusician.pk %}" method="POST">
                         {% csrf_token %}
                     <button class="btn btn-primary" type="submit">Mark as paid</button>

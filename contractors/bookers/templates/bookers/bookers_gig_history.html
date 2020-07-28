@@ -1,15 +1,19 @@
 {% extends  'bookers_template.html' %}
 
+{% block written-title %}
+    Bookings History
+{% endblock %}
+
 {% block bookers-body %}
 
     <div class="row justify-content-center px-5">
-        <h3>Bookings History:</h3>
         <table class="table table-hover">
             <thead>
                 <tr>
                 <th scope="col">Event Date</th>
                 <th scope="col">Event Name</th>
-                <th scope="col">Venue</th>
+                <th scope="col" class="d-none d-md-block">Venue</th>
+                <th scope="col">Undo complete event</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,9 +21,17 @@
                 <tr>
                 <td>{{ event.date }}</td>
                 <td>{{ event.name }}</td>
-                <td>{{ event.venue }}</td>
+                <td class="d-none d-md-block">{{ event.venue }}</td>
+                <td>
+                    <a href="{% url 'bookers_undo_complete_event' event.pk %}">
+                        <button class="btn btn-primary btn-block">
+                        Edit
+                        </button>
+                    </a>
+                </td>
                 </tr>
             {% empty %}
+                <td>No gigs!</td>
             {% endfor %}
             </tbody>
             </table>

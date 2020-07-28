@@ -39,6 +39,11 @@ To Do:
 - ManyToMany relationship between events and muses
 - delete event button
 - Are you entitled to parking select
+- List of completed events need to editable to sign off on them (history page).
+
+Finances:
+- Have a bit on worksheet to show musician fees and inclusions.
+- Check rounding and how best to handle currencies in python
 
 NB/Other Issues to fix:
 - Block get requests to worksheets (i.e. events/1) or wrong number/404.
