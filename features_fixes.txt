@@ -25,27 +25,20 @@ To Do:
 - If client tries to login to contractor portal redirect them somewhere.
 - User forgotten password
 - Make invoice and other aspects have all details.
-- Pretty up views.
 - Feedback form.
-- Gig history
 - Comment on events
 - Complete event details -> calculate GST etc.
 - Con-client app for their special view
 - User updates need to propagate through the system.
 - Standardise profile picture size
 - Singer songlist
-- Create a blacklist option.
-- Create an administrator frontend for bookers.
-- ManyToMany relationship between events and muses
-- delete event button
+- Create a blacklist option. Add a musician to blacklist -> If they are on events say you can't add them to blacklist
 - Are you entitled to parking select
-- List of completed events need to editable to sign off on them (history page).
 
 Finances:
 - Have a bit on worksheet to show musician fees and inclusions.
-- Check rounding and how best to handle currencies in python
+- Check rounding and how best to handle currencies in python.
 
 NB/Other Issues to fix:
-- Block get requests to worksheets (i.e. events/1) or wrong number/404.
 - .gitignore setup to leave out files with possbile privacy issues i.e. sqlite DB and secret key.
 - Users should not be able to be more that one of the attributes (i.e. Contractor, Booker, Client, Con Staff)
