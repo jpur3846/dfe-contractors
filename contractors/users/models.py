@@ -112,11 +112,23 @@ class Contractor(models.Model):
     accept_on_spot_requests = models.CharField(max_length=3, null=True, blank=True, choices=yes_no_choices)
 
     # Conservatorium Stuff
-    alumni = models.CharField(max_length=3, null=True, blank=True, choices=yes_no_choices) # yes/no. Conservatorium alumni
-    year_finished = models.IntegerField(null=True, blank=True, choices=year_dropdown) # year number year
+    alumni = models.CharField(max_length=3, null=True, blank=True, choices=yes_no_choices, default='no') # yes/no. Conservatorium alumni
+    year_finished = models.IntegerField(null=True, blank=True, choices=year_dropdown, default=1951) # year number year
 
     # Denylisted - are they banned?
     denylisted = models.BooleanField(default=False, blank=True)
+
+    def is_alumni(self):
+        if self.alumni == None:
+            return False
+
+        return self.alumni == 'yes'
+
+    def is_current_student(self):
+        if self.year_finished == None:
+            return False
+
+        return datetime.today().year <= self.year_finished
 
     def save(self, *args, **kwargs):
         """

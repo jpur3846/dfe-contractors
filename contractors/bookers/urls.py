@@ -14,4 +14,6 @@ urlpatterns = [
     path("bookers_create_new_client/", views.bookers_create_new_client, name="bookers_create_new_client"),
     path("bookers_musicians_view/", views.bookers_musicians_view, name="bookers_musicians_view"),
     path("bookers_musicians_view/<int:event_musician_pk>", views.bookers_musicians_view, name="bookers_musicians_view"),
+    path("bookers_musicians_view/add_remove_denylist/<int:contractor_id>", views.add_remove_denylist, name="add_remove_denylist"),
+    
 ]

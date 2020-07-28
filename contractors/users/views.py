@@ -109,7 +109,7 @@ def user_event_history(request):
     past_events = []
 
     for event in events:
-        if event.event.date < datetime.date.today():
+        if event.event.date < datetime.date.today() and event.payment_status == 'yes':
             past_events.append(event)
 
     context = {

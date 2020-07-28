@@ -2,40 +2,33 @@
 {% load static %}
 
 {% block pagetitle %}
-DFE | Bookers
+DFE | Con Staff
 {% endblock %}
 
 {% block nav %}
 <nav class="navbar justify-content-center header py-0" style="max-height: 70px;">
     <div class="row">
-        <table class="table d-none d-md-block">
+        <table class="table">
             <tr class="text-dark">
-                <td><a href="{% url 'bookers_home_view' %}" class="text-dark">Bookings</a></td>
-                <td><a href="{% url 'bookers_clients_view' %}" class="text-dark">Clients</a></td>
-                <td><a href="{% url 'bookers_musicians_view' %}" class="text-dark">Musicians</a></td>
-                <td><a href="{% url 'bookers_details' %}" class="text-dark">Edit my details</a></td>
-                <td class="d-none d-md-block"><a href="{% url 'bookers_gig_history' %}" class="text-dark">Gig History</a></td>
+                <td><a href="{% url 'con_staff_view' %}" class="text-dark">Bookings</a></td>
                 <td><a href="{% url 'signout' %}" class="text-dark">Log out</a></td>
             </tr>
         </table>
     </div>
 </nav>
-<div class="row d-block d-md-none">
+<!-- We do not need mobile menu at this stage
+    <div class="row d-block d-md-none">
     <div class="col-6">
     <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <button class="btn btn-dark btn-block">Menu</button>
     </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a href="{% url 'bookers_home_view' %}" class="text-dark dropdown-item">Bookings</a>
-            <a href="{% url 'bookers_clients_view' %}" class="text-dark dropdown-item">Clients</a>
-            <a href="{% url 'bookers_musicians_view' %}" class="text-dark dropdown-item">Musicians</a>
-            <a href="{% url 'bookers_details' %}" class="text-dark dropdown-item">Edit my details</a>
-            <a href="{% url 'bookers_gig_history' %}" class="text-dark dropdown-item">Gig History</a></td>
+            <a href="{% url 'con_staff_view' %}" class="text-dark dropdown-item">Bookings</a>
             <div class="dropdown-divider"></div>
             <a href="{% url 'signout' %}" class="text-dark dropdown-item">Log out</a></td>
         </div>
     </div>
-</div>
+</div> -->
 {% endblock %}
 
 <!-- body is from layout.html -->
@@ -60,7 +53,7 @@ DFE | Bookers
 </div>
 {% endif %}
 
-{% block bookers-body %}
+{% block con-staff-body %}
 <!-- This is where the content will go. -->
 {% endblock %}
 

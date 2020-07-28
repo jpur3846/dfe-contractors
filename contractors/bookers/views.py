@@ -162,10 +162,37 @@ def bookers_musicians_view(request, event_musician_pk=None):
         except IntegrityError:
             messages.add_message(request, messages.ERROR, 'Payment has not been recorded')
 
+    contractors = Contractor.objects.all()
+    allowlist = []
+    denylist = []
+
+    for contractor in contractors:
+        if contractor.denylisted:
+            denylist.append(contractor)
+        else:
+            allowlist.append(contractor)
+
     context = {
-        'contractors': Contractor.objects.all(),
+        'contractors': allowlist,
+        'denylist': denylist,
     }
     return render(request, 'bookers/bookers_musicians_details.html', context=context)
+
+@login_required
+def add_remove_denylist(request, contractor_id):
+    if request.method == 'POST':
+        contractor = Contractor.objects.get(pk=contractor_id)
+        if 'add_to_denylist' in request.POST:
+            contractor.denylisted = True
+            contractor.save()
+            messages.add_message(request, messages.SUCCESS, 'Musician successfully denylisted')
+            
+        elif 'remove_from_denylist' in request.POST:
+            contractor.denylisted = False
+            contractor.save()
+            messages.add_message(request, messages.SUCCESS, 'Musician successfully removed from denylist')
+
+    return HttpResponseRedirect(reverse('bookers_musicians_view'))
 
 @login_required
 def bookers_undo_complete_event(request, event_pk):

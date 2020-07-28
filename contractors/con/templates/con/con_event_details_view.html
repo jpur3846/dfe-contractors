@@ -1,0 +1,63 @@
+{% extends 'con_staff_template.html' %}
+
+{% block written-title %}
+Event details
+{% endblock %}
+
+{% block con-staff-body %}
+
+<div class="container-fluid px-5">
+    <div class="row border-bottom px-4 py-3 mb-4">
+        <div class="col"><b>Event Date</b></div>
+        <div class="col"><b>Event Name</b></div>
+        <div class="col"><b>Venue</b></div>
+        <div class="col"><b>Total fee</b></div>
+        <div class="col-1"><b>Status</b></div>
+    </div>
+    <div class="row p-4 mb-4">
+        <div class="col border-left border-right">{{ event.date }}</div>
+        <div class="col border-right">{{ event.name }}</div>
+        <div class="col border-right">{{ event.venue }}</div>
+        <div class="col border-right">${{ event.total_fee_incl_gst }}</div>
+        <div class="col-1 justify-content-center d-xl-flex align-self-center">
+            {% if event.event_status == 'tentative' or event.event_status == None %}
+                <button class="btn btn-warning" style="height: 20px; width: 20px;">
+            {% else %}
+                <button class="btn btn-success" style="height: 20px; width: 20px;">
+            {% endif %}
+        </div>
+    </div>
+    <div class="row border-bottom px-4 py-3 mb-4">
+        <div class="col"><b>Hirer</b></div>
+        <div class="col"><b>Hirer email</b></div>
+        <div class="col"><b>Band</b></div>
+    </div>
+    <div class="row p-4 mb-4">
+        <div class="col border-left border-right">
+            {{ event.client.user.first_name }} {{ event.client.user.last_name }}
+        </div>
+        <div class="col border-right">{{ event.client.user.email }}</div>
+        <div class="col border-right">{{ event.band_lineup }}</div>
+    </div>
+
+
+    <h3><b>Musicians</b></h3>
+    <small class="text-dark">Green: Current Student,<br> Yellow: Alumni,<br> Red: Professional<br></small><br>
+    {% for musician in musicians%}
+    <div class="row border px-4 py-3 mb-4 bg-light">
+        <div class="col-4 col-lg-3"></div>
+        <div class="col-lg-6 mb-2 border-left border-right">
+            {% if musician.contractor.is_alumni and musician.contractor.is_current_student %}<small class="text-success"> CURRENT STUDENT </small><br>
+            {% elif musician.contractor.is_alumni %}<small class="text-warning"> ALUMNI </small> <br>
+            {% else %}<small class="text-danger"> PROFESSIONAL MUSICIAN </small> <br>{% endif %}
+            {{ musician }}
+        </div>
+        <div class="col-4 col-lg-3">
+        </div>
+    </div>
+    {% empty %}
+    No one is booked on this event yet!
+    {% endfor %}
+</div>
+
+{% endblock %}

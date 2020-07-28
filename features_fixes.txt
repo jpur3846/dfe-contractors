@@ -31,9 +31,11 @@ To Do:
 - Con-client app for their special view
 - User updates need to propagate through the system.
 - Standardise profile picture size
-- Singer songlist
-- Create a blacklist option. Add a musician to blacklist -> If they are on events say you can't add them to blacklist
+- Singer songlist -> Google drive connections
+- Google login?
 - Are you entitled to parking select
+- Generating Quotes
+- Generating PDF Contracts
 
 Finances:
 - Have a bit on worksheet to show musician fees and inclusions.
