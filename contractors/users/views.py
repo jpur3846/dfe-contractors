@@ -29,8 +29,8 @@ def user_home(request):
     contractor = request.user.contractor
 
     events = EventMusicians.objects.filter(contractor=contractor)
-    # Returns a query set of EventMusicians objects that we can then get
-    # The details from. See EventMusician model for more.
+    # Returns a query set of EventMusician objects that we can then get \ 
+    # the details from. See EventMusician model for more.
     new_events = []
     
     for event in events:

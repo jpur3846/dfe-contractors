@@ -31,7 +31,7 @@
             <div class="col border-right">{{ event.name }}</div>
             <div class="col border-right d-none d-md-block">{{ event.venue }}</div>
             <div class="col border-right d-none d-md-block">{{ event.booking_start_time }}</div>
-            <div class="col border-right d-none d-md-block">${{ event.total_fee_no_gst }}</div>
+            <div class="col border-right d-none d-md-block">${{ event.total_fee_no_gst|floatformat:2 }}</div>
             <div class="col border-right">
                 <a href="{% url 'edit_event_view' event.pk %}">
                     <button class="btn btn-primary btn-block">
@@ -88,7 +88,7 @@
             <div class="col border-right">{{ event.name }}</div>
             <div class="col border-right d-none d-md-block">{{ event.venue }}</div>
             <div class="col border-right d-none d-md-block">{{ event.booking_start_time }}</div>
-            <div class="col border-right d-none d-md-block">${{ event.total_fee_no_gst }}</div>
+            <div class="col border-right d-none d-md-block">${{ event.total_fee_no_gst|floatformat:2 }}</div>
             <div class="col border-right">
                 <a href="{% url 'edit_event_view' event.pk %}">
                     <button class="btn btn-primary btn-block">

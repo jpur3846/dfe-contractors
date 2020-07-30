@@ -34,8 +34,13 @@ To Do:
 - Singer songlist -> Google drive connections
 - Google login?
 - Are you entitled to parking select
-- Generating Quotes
-- Generating PDF Contracts
+- Generating Quotes -> Google API
+- Generating PDF Contracts - Google API
+- Save PDF invoices using google drive
+- Signin using google
+- Validate there is only 1 bandleader per event.
+- If a field is left to None set = to 0
+- Validate negative inputs
 
 Finances:
 - Have a bit on worksheet to show musician fees and inclusions.

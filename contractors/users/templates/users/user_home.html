@@ -99,7 +99,7 @@ Remember we are using Eventmusician objects -->
         <div class="col border-right">{{ event.event.name }}</div>
         <div class="col border-right d-none d-sm-block">{{ event.event.venue }}</div>
         <div class="col border-right d-none d-lg-block">{{ event.event.musicians_call_time }}</div>
-        <div class="col border-right d-none d-xl-block">${{ event.fee_all_incl }}</div>
+        <div class="col border-right d-none d-xl-block">${{ event.fee_all_incl|floatformat:2 }}</div>
         <div class="col-lg col--6 my-3 my-lg-0 border-right">
             <a href="{% url 'worksheet_view' event.pk %}">        
                 <button class="btn btn-dark btn-block">Worksheet</button>

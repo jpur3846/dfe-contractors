@@ -18,6 +18,9 @@
 <div class="container-fluid px-3" style="max-width: 80%">
     <form action="{% url 'edit_event_view' event.pk %}" method="POST" enctype='multipart/form-data'>
     {% csrf_token %}
+        <div class="row border p-4 mb-3">
+            <button class="btn btn-lg btn-success btn-block">Generate contract</button>
+        </div>
         <div class="row border-bottom mb-2">
             <h3>Event Basic Details</h3>
         </div>
@@ -219,10 +222,10 @@
 
 
         <div class="row border-bottom mt-3">
-            <h3>Financial Details</h3>
+            <h3>Financials</h3>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6 px-5">
                 <div class="form-group row mt-3">
                     <label class="col-form-label">Total fee (No GST or inclusions eg parking)</label>
                     {{ event_edit_form.total_fee_no_gst }}
@@ -234,85 +237,119 @@
                 <div class="form-group row mt-3">
                     <label class="col-form-label">Payment method</label>
                     {{ event_edit_form.payment_method }}
+                    <small class="text-dark">POLi is a 1% fee per transaction at a max of $3</small>
                 </div>
                 <div class="form-group row mt-3">
                     <label class="col-form-label">Card type</label>
                     {{ event_edit_form.card_type }} 
-                    <small class="text-dark">{{ event.credit_card_rate }}% fee per transaction</small>
+                    <small class="text-dark">Card fee is 1.75% + 30c or 2.9% + 30c per transaction</small>
                 </div>
                 <div class="form-group row mt-3">
                     <label class="col-form-label">Booker fee</label>
                     {{ event_edit_form.booker_fee }}
                 </div>
             </div>
-            <div class="col-2"></div>
-            <div class="col-md-6 border mt-3">
-                <div class="row border-bottom">
+
+            <div class="col-md border px-5 mx-5 mt-3">
+                <div class="row mt-2">
                     <div class="col">
-                        <h4><u>Fee Calculations</u></h4><br>
+                        <h4><u>Cost breakdown</u></h4>
+                    </div>
+                </div>
+                <div class="row px-5 mt-3 border-bottom">
+                    <div class="col">
+                        <b>Expenses</b>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        Musician fees total: {{ event.calculate_musicians_fees }}
+                        Musicians fees base: ${{ event.calculate_musicians_base_fees|floatformat:2 }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        Musician GST component total: {{ event.parking_total }}
+                        Musicians GST component total: ${{ event.calculate_musicians_gst|floatformat:2 }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        Booker fee: {{ event.booker_fee }}
+                        Musicians inclusions total: ${{ event.calculate_musicians_inclusions|floatformat:2 }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        Parking total: {{ event.parking_total }}
+                        Booker fee: ${{ event.booker_fee|floatformat:2 }}
                     </div>
                 </div>
-                <div class="row border pt-2"></div>
-                <div class="row border-bottom">
+
+                <div class="row mt-3 border-bottom">
                     <div class="col">
-                        Credit card surcharge amount: {{ event.credit_card_surcharge_amount }}
-                    </div>
-                </div>
-                <div class="row border-bottom">
-                    <div class="col">
-                        Deposit incl. surcharge: {{ event.deposit_and_surcharge }}
+                        <b>External fees/inclusions</b>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        Balance incl. surcharge: {{ event.balance_and_surcharge }}
+                        Parking total: ${{ event.parking_total|floatformat:2 }}
                     </div>
                 </div>
-                <div class="row border pt-2"></div>
-                <div class="row border-bottom">
+                <div class="row">
                     <div class="col">
-                        GST: {{ event.gst_amount }}
+                        Credit card surcharge percentage: {{ event.credit_card_rate|floatformat:2 }}%
                     </div>
                 </div>
-                <div class="row border-bottom">
+                <div class="row">
                     <div class="col">
-                        Fee + GST: {{ event.total_fee_incl_gst }}
+                        Credit card surcharge amount: ${{ event.credit_card_surcharge_amount|floatformat:2 }}
+                    </div>
+                </div>               
+
+                <div class="row mt-3 border-bottom">
+                    <div class="col">
+                        <b>Totals</b>
                     </div>
                 </div>
-                <div class="row border-bottom">
+                <div class="row">
                     <div class="col">
-                        Total incl. all: {{ event.total_fee_incl_all }}
+                        GST: ${{ event.gst_amount|floatformat:2 }}
                     </div>
                 </div>
-                <div class="row border-bottom">
+                <div class="row">
                     <div class="col">
-                        Business Profit: 
+                        Fee + GST: ${{ event.total_fee_incl_gst|floatformat:2 }}
                     </div>
                 </div>
-                <div class="row border-bottom">
+
+                <div class="row">
                     <div class="col">
-                        GST Payable: 
+                        Deposit incl. surcharge: ${{ event.deposit_and_surcharge|floatformat:2 }}
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Balance incl. surcharge: ${{ event.balance_and_surcharge|floatformat:2 }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Total incl. all: ${{ event.total_fee_incl_all|floatformat:2 }}
+                    </div>
+                </div>
+
+                <div class="row border-bottom mt-3">
+                    <div class="col">
+                        <b>Profits and payments</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        GST Payable: ${{ event.calculate_gst_payable|floatformat:2 }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Business Profit: ${{ event.calculate_business_profits|floatformat:2 }}<br><br>
+                    </div>
+                    <br>
                 </div>
             </div>
         </div>
@@ -386,7 +423,7 @@
         </div>
     </div>
     {% empty %}
-    No one is booked on this event yet!
+    <i>No one is booked on this event yet!</i><br><br>
     {% endfor %}
 
 <!-- Add a musician -->

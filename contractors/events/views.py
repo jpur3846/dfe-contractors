@@ -16,6 +16,13 @@ from .utils import render_to_pdf
 from .forms import EventEditForm, EditEventMusician, AddEventMusician
 from users.models import Contractor
 
+
+def format_currency(value):
+        return "${:,.2f}".format(value)
+
+def format_percentage(value):
+        return "{:,.2f}%".format(value)
+
 @login_required
 def edit_event_view(request, event_id):
     """
@@ -55,7 +62,16 @@ def edit_event_view(request, event_id):
                 messages.add_message(request, messages.ERROR, 'Musician already added to event')
 
         else:
-            messages.add_message(request, messages.ERROR, 'Event NOT updated')
+            context = {
+                'event': event,
+                'musicians': event.eventmusicians_set.all(),
+                # Musos that decline are stored as a Comma Separated List.
+                'unavailable_musicians': set(event.unavailable_musicians.split(',')),
+                'event_edit_form': form,
+                'add_event_musician': add_musician,
+                }
+
+            return render(request, "events/edit_event.html", context)
             
     context = {
             'event': event,

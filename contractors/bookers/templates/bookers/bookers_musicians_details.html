@@ -49,7 +49,7 @@
                 </div>
                 <div class="col pb-2">
                     {% if eventmusician.payment_status == 'no' and eventmusician.is_available %}
-                    <p>Owed: {{ eventmusician.fee_all_incl }} | 
+                    <p>Owed: ${{ eventmusician.fee_all_incl|floatformat:2 }} | 
                     Invoiced: {{ eventmusician.invoice_status }} |
                     Feedback provided: {{ eventmusician.feedback_status }}</p>
                     <form action="{% url 'bookers_musicians_view' eventmusician.pk %}" method="POST">
