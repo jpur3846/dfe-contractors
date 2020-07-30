@@ -168,8 +168,9 @@ Worksheet {{ event.event.name }} {{ event.event.date }}
     <div class="row">
       <div class="col-md-6 border">
         <b>Payment Details: </b><br>
-        Your fee: ${{ event.fee_all_incl }}<br>
-        GST: ${{ event.gst_amnt }}<br>
+        Your fee: ${{ event.fee_all_incl|floatformat:2 }}<br>
+        GST: ${{ event.gst_amnt|floatformat:2 }}<br>
+        Inclusions: ${{ event.inclusions|floatformat:2 }}<br>
         {% if event.is_bandleader %}
           As bandleader, to be paid you must send an invoice as well as complete this 
           survey - https://forms.gle/PhhzGb7YuzmqhsMt5 <br>

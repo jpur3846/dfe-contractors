@@ -7,7 +7,7 @@ def abn_validator(abn):
     abn = str(abn)
     
     if len(abn) != 11:
-        raise ValidationError("The ABN you have entered is not valid.")
+        raise ValidationError("The ABN you have entered is not valid.")  
 
 def same_instrument(inst_1, inst_2):
     """
